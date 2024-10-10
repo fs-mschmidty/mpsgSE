@@ -4,7 +4,7 @@
 #' @param taxonomy TRUE of FALSE.  TRUE if you want to return the data with taxonimic information included.  This can take a long time for states with large lists.
 #' @export
 
-get_natureserve_state_data <- function(state, taxonomy = TRUE) {
+get_ns_state_list <- function(state, taxonomy = TRUE) {
   get_state_rank <- function(x, state_code) {
     regex <- paste0(state_code, " \\(([^)]+)\\)")
 
