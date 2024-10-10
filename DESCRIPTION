@@ -1,5 +1,5 @@
-Package: mpsgSO
-Title: What the Package Does (One Line, Title Case)
+Package: mpsgSE
+Title: Functions for Creating Species Evalutaions for the Mountain States Planning Group
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
@@ -15,12 +15,19 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     dplyr,
+    glue,
+    here,
+    httr2,
+    janitor,
     lubridate,
+    natserv,
+    readxl,
     sf,
     stringr,
     taxize,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect
 Depends: 
     R (>= 2.10)
 LazyData: true
