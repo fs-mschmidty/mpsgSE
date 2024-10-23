@@ -7,5 +7,5 @@ If you find a bugs or have an idea for a feature, please submit an Issue.
 ## Installation
 
 ```r 
-remotes::install_github("mschmidty/mpsgSO")
+remotes::install_github("fs-mschmidty/mpsgSE")
 ```
