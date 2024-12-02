@@ -1,22 +1,21 @@
 #' Query GBIF species occurrence records
-#' 
-#' @param gbif_key Character. The 22-digit GFIB key including hyphen for the 
-#'                     data set. Use "new" for new GBIF queries.
-#' @param t_path Character. The directory path where the GBIF data package is or 
-#'                   will be stored.
-#' @param aoa_wkt Vector. Well-known text (wtk) string for the area of analysis. 
-#'                    Use `wkt_string` to generate the wtk string. This is 
-#'                    required when `gbif_key` is set to **new**. Default is 
-#'                    NULL.
-#' @param gbif_user Character. Your GBIF user name. This is required when 
-#'                      `gbif_key` is set to **new**. Default is NULL.
-#' @param gbif_pwd Character. Your GBIF password. This is required when 
-#'                     `gbif_key` is set to **new**. Default is NULL.
-#' @param gbif_email Character. Your GBIF email address. This is required when 
-#'                       `gbif_key` is set to **new**. Default is NULL.
-#' @param gbif_format Character. The format of the data returned from GBIF. 
-#'                        Default is Darwin-Core Achrive (DWAC). See 
-#'                        `rgbif::occ_download` for more details.
+#'
+#' @param gbif_key The 22-digit GFIB key including hyphen for the data set. Use 
+#'                     "new" for new GBIF queries.
+#' @param t_path The directory path where the GBIF data package is or will be 
+#'                   stored.
+#' @param aoa_wkt Well-known text (wtk) string for the area of analysis. Use 
+#'                    `wkt_string` to generate the wtk string. This is required 
+#'                    when `gbif_key` is set to **new**. Default is NULL.
+#' @param gbif_user Your GBIF user name. This is required when `gbif_key` is set 
+#'                      to **new**. Default is NULL.
+#' @param gbif_pwd Your GBIF password. This is required when `gbif_key` is set 
+#'                     to **new**. Default is NULL.
+#' @param gbif_email Your GBIF email address. This is required when `gbif_key` 
+#'                       is set to **new**. Default is NULL.
+#' @param gbif_format The format of the data returned from GBIF. Default is 
+#'                        Darwin-Core Achrive (DWAC). See `rgbif::occ_download` 
+#'                        for more details.
 #' @param process_data Logical (TRUE/FALSE). Are data to be processed after 
 #'                         reading them into R. Default is TRUE. The processing 
 #'                         step 1) filters the data for species, subspecies, and 
@@ -25,17 +24,20 @@
 #'                         scientific names, without authority, from the genus, 
 #'                         specific epithet, and infraspecific epithet 
 #'                         variables, and 5) attempts to parse dates, day of 
-#'                         year, and year values. 
+#'                         year, and year values.
 #'
 #' @return A tibble
 #' @export
-#' 
+#'
 #' @examples
 #' ## Not run:
+#' remotes::install_github("fs-mschmidty/mpsgSE")
+#' library("mpsgSE")
+#' 
 #' # Read spatial data into R
 #' t_path <- file.path("T:/path/to/project/directory")
 #' gdb_path <- file.path(t_path, "GIS_Data.gdb")
-#' sf_aoa <- read_lyr(lyr = "AdminBdy_1kmBuffer", dsn = gdb_path, crs = "NAD83)
+#' sf_aoa <- read_fc(lyr = "AdminBdy_1kmBuffer", dsn = gdb_path, crs = "NAD83")
 #' 
 #' # New GBIF data query
 #' gbif_dat <- get_gbif(gbif_key = 'new', 
@@ -49,7 +51,8 @@
 #' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
 #'                      t_path = file.path(t_path, "data"))
 #' 
-#' ## End (Not run)                     
+#' ## End(Not run)                     
+
 get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL, 
                      gbif_pwd = NULL, gbif_email = NULL, gbif_format = "DWCA", 
                      process_data = TRUE){

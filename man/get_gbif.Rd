@@ -16,29 +16,28 @@ get_gbif(
 )
 }
 \arguments{
-\item{gbif_key}{Character. The 22-digit GFIB key including hyphen for the
-data set. Use "new" for new GBIF queries.}
+\item{gbif_key}{The 22-digit GFIB key including hyphen for the data set. Use
+"new" for new GBIF queries.}
 
-\item{t_path}{Character. The directory path where the GBIF data package is or
-will be stored.}
+\item{t_path}{The directory path where the GBIF data package is or will be
+stored.}
 
-\item{aoa_wkt}{Vector. Well-known text (wtk) string for the area of analysis.
-Use \code{wkt_string} to generate the wtk string. This is
-required when \code{gbif_key} is set to \strong{new}. Default is
-NULL.}
+\item{aoa_wkt}{Well-known text (wtk) string for the area of analysis. Use
+\code{wkt_string} to generate the wtk string. This is required
+when \code{gbif_key} is set to \strong{new}. Default is NULL.}
 
-\item{gbif_user}{Character. Your GBIF user name. This is required when
-\code{gbif_key} is set to \strong{new}. Default is NULL.}
+\item{gbif_user}{Your GBIF user name. This is required when \code{gbif_key} is set
+to \strong{new}. Default is NULL.}
 
-\item{gbif_pwd}{Character. Your GBIF password. This is required when
-\code{gbif_key} is set to \strong{new}. Default is NULL.}
+\item{gbif_pwd}{Your GBIF password. This is required when \code{gbif_key} is set
+to \strong{new}. Default is NULL.}
 
-\item{gbif_email}{Character. Your GBIF email address. This is required when
-\code{gbif_key} is set to \strong{new}. Default is NULL.}
+\item{gbif_email}{Your GBIF email address. This is required when \code{gbif_key}
+is set to \strong{new}. Default is NULL.}
 
-\item{gbif_format}{Character. The format of the data returned from GBIF.
-Default is Darwin-Core Achrive (DWAC). See
-\code{rgbif::occ_download} for more details.}
+\item{gbif_format}{The format of the data returned from GBIF. Default is
+Darwin-Core Achrive (DWAC). See \code{rgbif::occ_download}
+for more details.}
 
 \item{process_data}{Logical (TRUE/FALSE). Are data to be processed after
 reading them into R. Default is TRUE. The processing
@@ -55,4 +54,28 @@ A tibble
 }
 \description{
 Query GBIF species occurrence records
+}
+\examples{
+## Not run:
+remotes::install_github("fs-mschmidty/mpsgSE")
+library("mpsgSE")
+
+# Read spatial data into R
+t_path <- file.path("T:/path/to/project/directory")
+gdb_path <- file.path(t_path, "GIS_Data.gdb")
+sf_aoa <- read_fc(lyr = "AdminBdy_1kmBuffer", dsn = gdb_path, crs = "NAD83")
+
+# New GBIF data query
+gbif_dat <- get_gbif(gbif_key = 'new', 
+                     t_path = file.path(t_path, "data"), 
+                     aoa_wkt = wkt_string(sf_aoa),
+                     gbif_user = Sys.getenv("GBIF_USER"),
+                     gbif_pwd = Sys.getenv("GBIF_PWD"),
+                     gbif_email = Sys.getenv("GBIF_EMAIL"))
+                     
+# Pull data from existing GBIF query
+gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
+                     t_path = file.path(t_path, "data"))
+
+## End(Not run)                     
 }
