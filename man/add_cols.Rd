@@ -8,9 +8,9 @@ This function adds missing columns to one data frame that are}
 add_cols(df1, df2)
 }
 \arguments{
-\item{df1}{}
+\item{df1}{First data frame}
 
-\item{df2}{}
+\item{df2}{Second data frame}
 }
 \description{
 Add Missing Columns

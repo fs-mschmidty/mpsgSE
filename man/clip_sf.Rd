@@ -12,24 +12,23 @@ clip_sf(sf_lyr, sf_clip, locale)
 \item{sf_clip}{sf polygon object. Spatial layer to clip data by.}
 
 \item{locale}{Character. Short description of clipped layer, usually the
-location (e.g., Forest acronym or "Buffer").}
+location (e.g., forest acronym or "Buffer").}
 }
 \value{
 sf object
 }
 \description{
-This function clips a sf object using \code{sf::st_intersection()}. First, this
+This function clips a \code{sf} object using \code{sf::st_intersection()}. First, this
 function checks that the coordinate reference system (CRS) of the input
 object is the same as the clipping object. If it is not, this function
 transforms the CRS of the input object to the clipping object using
-\code{sf::st_transform()}before clipping. The returned sf object will be in
-the clipping object CRS if they are not the same.
+\code{sf::st_transform()}before clipping.
 }
 \examples{
 ## Not run:
 # Clip species occurrence point data to the administrative boundary of a 
 # forest.
-clip_sf(sf_lyr = spocc_sf, sf_clip = admin_bdy_sf, locale = "USFS")
+clip_sf(sf_lyr = gbif_sf, sf_clip = admin_bdy_sf, locale = "FS")
 
 ## End (Not run)
 }

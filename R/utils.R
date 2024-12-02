@@ -1,10 +1,4 @@
 # title: "Functions for Species Occurrence Data Pulls"
-# author:
-#   - name: "Matthew Van Scoyoc" 
-#     affiliation: |
-#       | Mountain Planning Service Group, Regions 1-4
-#       | Forest Service, USDA
-# date: 3 January, 2024
 # 
 # This script holds functions for reading and clipping feature classes from 
 #     geodatabases and pulling G-ranks from NatureServe.
@@ -13,8 +7,8 @@
 
 #' Add Missing Columns
 #' This function adds missing columns to one data frame that are     
-#' @param df1 
-#' @param df2 
+#' @param df1 First data frame
+#' @param df2 Second data frame
 add_cols <- function(df1, df2){
   new_cols = colnames(df2)[!colnames(df2) %in% colnames(df1)]
   df1[new_cols] = NA

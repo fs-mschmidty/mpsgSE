@@ -18,7 +18,7 @@
 #' ## Not run:
 #' # Clip species occurrence point data to the administrative boundary of a 
 #' # forest.
-#' clip_sf(sf_lyr = spocc_sf, sf_clip = admin_bdy_sf, locale = "USFS")
+#' clip_sf(sf_lyr = gbif_sf, sf_clip = admin_bdy_sf, locale = "FS")
 #' 
 #' ## End (Not run)
 clip_sf <- function(sf_lyr, sf_clip, locale){

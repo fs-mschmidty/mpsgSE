@@ -28,8 +28,9 @@
 #'                         year, and year values. 
 #'
 #' @return A tibble
+#' @export
 #' 
-#' @example 
+#' @examples
 #' ## Not run:
 #' # Read spatial data into R
 #' t_path <- file.path("T:/path/to/project/directory")
@@ -48,7 +49,7 @@
 #' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
 #'                      t_path = file.path(t_path, "data"))
 #' 
-#' End (Not run)                      
+#' ## End (Not run)                     
 get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL, 
                      gbif_pwd = NULL, gbif_email = NULL, gbif_format = "DWCA", 
                      process_data = TRUE){

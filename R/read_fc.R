@@ -1,4 +1,5 @@
 #' Read feature class into R.
+#' 
 #' This function uses the `sf` package to read a feature class into R from a 
 #'     geodatabase using the `sf::read_sf` function. It then checks that the 
 #'     feature class is in the provided coordinate reference system (CRS) and 
@@ -22,8 +23,8 @@
 #' 
 #' ## End (Not run)
 read_fc <- function(lyr, dsn, crs){
-  sf_lyr = sf::read_sf(layer = lyr, dsn = dsn) |> 
+  fc = sf::read_sf(layer = lyr, dsn = dsn) |> 
     sf::st_make_valid()
-  if(sf::st_crs(sf_lyr) != crs) sf_lyr = sf::st_transform(sf_lyr, crs = crs)
-  return(sf_lyr)
+  if(sf::st_crs(fc) != crs) fc = sf::st_transform(fc, crs = crs)
+  return(fc)
 }

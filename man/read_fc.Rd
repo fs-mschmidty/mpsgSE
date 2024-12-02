@@ -2,31 +2,34 @@
 % Please edit documentation in R/read_fc.R
 \name{read_fc}
 \alias{read_fc}
-\title{Read feature class into R.
-This function uses the \code{sf} package to read a feature class into R from a
-geodatabase. It then checks that the sf object is valid and validates the
-object if it is not valid.}
+\title{Read feature class into R.}
 \usage{
-read_fc(lyr, dsn)
+read_fc(lyr, dsn, crs)
 }
 \arguments{
-\item{lyr}{Character. Feature class name.}
+\item{lyr}{Feature class name.}
 
-\item{dsn}{Character. Path to geodatabase that holds the feature class.}
+\item{dsn}{Path to geodatabase that holds the feature class.}
+
+\item{crs}{Target coordinate reference system (CRS). Either and \code{sf::st_crs()}
+object or accepted input string for \code{sf::st_crs()}. See
+\code{sf::st_crs()} for more details.}
 }
 \value{
 sf objectread_fc <- function(lyr, dsn, crs){
 }
 \description{
-Read feature class into R.
 This function uses the \code{sf} package to read a feature class into R from a
-geodatabase. It then checks that the sf object is valid and validates the
-object if it is not valid.
+geodatabase using the \code{sf::read_sf} function. It then checks that the
+feature class is in the provided coordinate reference system (CRS) and
+will transform the feature to the provided CRS if it is not using
+\code{sf::st_transform()}.
 }
 \examples{
 ## Not run:
 # Read a feature class into R
-read_lyr(lyr = "admin_bdy", dsn = file.path("T:/path/to/geodatabase"))
+read_lyr(lyr = "admin_bdy", dsn = file.path("T:/path/to/geodatabase"), 
+         crs = "NAD83")
 
 ## End (Not run)
 }
