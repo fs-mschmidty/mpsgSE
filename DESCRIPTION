@@ -22,6 +22,7 @@ Imports:
     lubridate,
     natserv,
     readxl,
+    rgbif,
     sf,
     stringr,
     taxize,
