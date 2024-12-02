@@ -1,16 +1,15 @@
 #' Clip sf object to polygon
 #' 
-#' This function clips a sf object using `sf::st_intersection()`. First, this 
+#' This function clips a `sf` object using `sf::st_intersection()`. First, this 
 #'     function checks that the coordinate reference system (CRS) of the input 
 #'     object is the same as the clipping object. If it is not, this function 
 #'     transforms the CRS of the input object to the clipping object using  
-#'     `sf::st_transform()`before clipping. The returned sf object will be in 
-#'     the clipping object CRS if they are not the same.
+#'     `sf::st_transform()`before clipping.
 #'
 #' @param sf_lyr  sf object. Spatial data to be clipped.
 #' @param sf_clip sf polygon object. Spatial layer to clip data by.
 #' @param locale  Character. Short description of clipped layer, usually the 
-#'                    location (e.g., Forest acronym or "Buffer").
+#'                    location (e.g., forest acronym or "Buffer").
 #'
 #' @return sf object
 #' @export
