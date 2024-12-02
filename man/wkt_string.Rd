@@ -10,7 +10,22 @@ wkt_string(my_polygon)
 \arguments{
 \item{my_polygon}{sf object. An sf polygon object.}
 }
+\value{
+Well-known text string vector.
+}
 \description{
 Create a WTK string
 Creates a well-known text string from a polygon (sf object).
+}
+\examples{
+## Not run:
+remotes::install_github("fs-mschmidty/mpsgSE")
+library("mpsgSE")
+
+admin_bdy_sf <- read_lyr(lyr = "admin_bdy", 
+                         dsn = file.path("T:/path/to/geodatabase"), 
+                         crs = "NAD83")
+wkt_string(admin_bdy_sf)
+
+## End (Not run)
 }

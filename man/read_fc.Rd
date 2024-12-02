@@ -2,7 +2,12 @@
 % Please edit documentation in R/read_fc.R
 \name{read_fc}
 \alias{read_fc}
-\title{Read feature class into R.}
+\title{Read feature class into R.
+This function uses the \code{sf} package to read a feature class into R from a
+geodatabase using the \code{sf::read_sf} function. It then checks that the
+feature class is in the provided coordinate reference system (CRS) and
+will transform the feature to the provided CRS if it is not using
+\code{sf::st_transform()}.}
 \usage{
 read_fc(lyr, dsn, crs)
 }
@@ -16,9 +21,10 @@ object or accepted input string for \code{sf::st_crs()}. See
 \code{sf::st_crs()} for more details.}
 }
 \value{
-sf objectread_fc <- function(lyr, dsn, crs){
+sf object
 }
 \description{
+Read feature class into R.
 This function uses the \code{sf} package to read a feature class into R from a
 geodatabase using the \code{sf::read_sf} function. It then checks that the
 feature class is in the provided coordinate reference system (CRS) and
@@ -27,7 +33,9 @@ will transform the feature to the provided CRS if it is not using
 }
 \examples{
 ## Not run:
-# Read a feature class into R
+remotes::install_github("fs-mschmidty/mpsgSE")
+library("mpsgSE")
+
 read_lyr(lyr = "admin_bdy", dsn = file.path("T:/path/to/geodatabase"), 
          crs = "NAD83")
 

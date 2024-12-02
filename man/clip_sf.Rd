@@ -2,7 +2,12 @@
 % Please edit documentation in R/clip_sf.R
 \name{clip_sf}
 \alias{clip_sf}
-\title{Clip sf object to polygon}
+\title{Clip sf object to polygon
+This function clips a \code{sf} object using \code{sf::st_intersection()}. First, this
+function checks that the coordinate reference system (CRS) of the input
+object is the same as the clipping object. If it is not, this function
+transforms the CRS of the input object to the clipping object using
+\code{sf::st_transform()}before clipping.}
 \usage{
 clip_sf(sf_lyr, sf_clip, locale)
 }
@@ -18,6 +23,7 @@ location (e.g., forest acronym or "Buffer").}
 sf object
 }
 \description{
+Clip sf object to polygon
 This function clips a \code{sf} object using \code{sf::st_intersection()}. First, this
 function checks that the coordinate reference system (CRS) of the input
 object is the same as the clipping object. If it is not, this function
@@ -26,8 +32,13 @@ transforms the CRS of the input object to the clipping object using
 }
 \examples{
 ## Not run:
-# Clip species occurrence point data to the administrative boundary of a 
-# forest.
+remotes::install_github("fs-mschmidty/mpsgSE")
+library("mpsgSE")
+
+admin_bdy_sf <- read_lyr(lyr = "admin_bdy", 
+                         dsn = file.path("T:/path/to/geodatabase"), 
+                         crs = "NAD83")
+                         
 clip_sf(sf_lyr = gbif_sf, sf_clip = admin_bdy_sf, locale = "FS")
 
 ## End (Not run)

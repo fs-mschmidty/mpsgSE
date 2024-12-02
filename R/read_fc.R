@@ -1,5 +1,4 @@
 #' Read feature class into R.
-#' 
 #' This function uses the `sf` package to read a feature class into R from a 
 #'     geodatabase using the `sf::read_sf` function. It then checks that the 
 #'     feature class is in the provided coordinate reference system (CRS) and 
@@ -12,12 +11,14 @@
 #'                object or accepted input string for `sf::st_crs()`. See 
 #'                `sf::st_crs()` for more details.
 #'
-#' @return sf objectread_fc <- function(lyr, dsn, crs){
+#' @return sf object
 #' @export
 #' 
 #' @examples
 #' ## Not run:
-#' # Read a feature class into R
+#' remotes::install_github("fs-mschmidty/mpsgSE")
+#' library("mpsgSE")
+#' 
 #' read_lyr(lyr = "admin_bdy", dsn = file.path("T:/path/to/geodatabase"), 
 #'          crs = "NAD83")
 #' 

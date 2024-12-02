@@ -1,5 +1,4 @@
 #' Clip sf object to polygon
-#' 
 #' This function clips a `sf` object using `sf::st_intersection()`. First, this 
 #'     function checks that the coordinate reference system (CRS) of the input 
 #'     object is the same as the clipping object. If it is not, this function 
@@ -16,8 +15,13 @@
 #' 
 #' @examples
 #' ## Not run:
-#' # Clip species occurrence point data to the administrative boundary of a 
-#' # forest.
+#' remotes::install_github("fs-mschmidty/mpsgSE")
+#' library("mpsgSE")
+#' 
+#' admin_bdy_sf <- read_lyr(lyr = "admin_bdy", 
+#'                          dsn = file.path("T:/path/to/geodatabase"), 
+#'                          crs = "NAD83")
+#'                          
 #' clip_sf(sf_lyr = gbif_sf, sf_clip = admin_bdy_sf, locale = "FS")
 #' 
 #' ## End (Not run)
