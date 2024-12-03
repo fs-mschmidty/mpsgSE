@@ -57,7 +57,7 @@ Query GBIF species occurrence records
 }
 \examples{
 ## Not run:
-remotes::install_github("fs-mschmidty/mpsgSE")
+devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Read spatial data into R

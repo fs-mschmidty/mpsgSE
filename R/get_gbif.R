@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' ## Not run:
-#' remotes::install_github("fs-mschmidty/mpsgSE")
+#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R
@@ -112,4 +112,33 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
   }
   #-- Return GBIF data
   return(gbif)
+}
+
+
+
+
+#' Create a WTK string
+#' 
+#' Creates a well-known text string from a polygon (sf object).
+#'
+#' @param my_polygon sf object. An sf polygon object.
+#' 
+#' @return Well-known text string vector.
+#' @export
+#' 
+#' @examples
+#' ## Not run:
+#' devtools::install_github("fs-mschmidty/mpsgSE")
+#' library("mpsgSE")
+#' 
+#' admin_bdy_sf <- read_lyr(lyr = "admin_bdy", 
+#'                          dsn = file.path("T:/path/to/geodatabase"), 
+#'                          crs = "NAD83")
+#' wkt_string(admin_bdy_sf)
+#' 
+#' ## End (Not run)
+wkt_string <- function(my_polygon){
+  sf::st_bbox(my_polygon) |> 
+    sf::st_as_sfc() |> 
+    sf::st_as_text()
 }
