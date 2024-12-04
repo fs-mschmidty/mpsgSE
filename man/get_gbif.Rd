@@ -16,47 +16,52 @@ get_gbif(
 )
 }
 \arguments{
-\item{gbif_key}{The 22-digit GFIB key including hyphen for the data set. Use
-"new" for new GBIF queries.}
+\item{gbif_key}{The 22-digit GFIB key including hyphen for the data package.
+Use "new" for new GBIF queries.}
 
 \item{t_path}{The directory path where the GBIF data package is or will be
 stored.}
 
 \item{aoa_wkt}{Well-known text (wtk) string for the area of analysis. Use
-\code{wkt_string} to generate the wtk string. This is required
-when \code{gbif_key} is set to \strong{new}. Default is NULL.}
+\code{wkt_string()} to generate the wtk string. This is required when \emph{gbif_key}
+is set to \strong{new}. Default is NULL.}
 
-\item{gbif_user}{Your GBIF user name. This is required when \code{gbif_key} is set
+\item{gbif_user}{Your GBIF user name. This is required when \emph{gbif_key} is set
 to \strong{new}. Default is NULL.}
 
-\item{gbif_pwd}{Your GBIF password. This is required when \code{gbif_key} is set
+\item{gbif_pwd}{Your GBIF password. This is required when \emph{gbif_key} is set
 to \strong{new}. Default is NULL.}
 
-\item{gbif_email}{Your GBIF email address. This is required when \code{gbif_key}
+\item{gbif_email}{Your GBIF email address. This is required when \emph{gbif_key}
 is set to \strong{new}. Default is NULL.}
 
 \item{gbif_format}{The format of the data returned from GBIF. Default is
-Darwin-Core Achrive (DWAC). See \code{rgbif::occ_download}
-for more details.}
+Darwin-Core Achrive (DWAC). See \code{rgbif::occ_download()} for more details.}
 
-\item{process_data}{Logical (TRUE/FALSE). Are data to be processed after
-reading them into R. Default is TRUE. The processing
-step 1) filters the data for species, subspecies, and
-varieties, 2) filters the data for present records,
-3) filters against fossil records, 4) assembles clean
-scientific names, without authority, from the genus,
-specific epithet, and infraspecific epithet
-variables, and 5) attempts to parse dates, day of
-year, and year values.}
+\item{process_data}{Logical. Process data after reading them into R (TRUE ==
+yes, FALSE == no). Default is TRUE. The processing step
+\enumerate{
+\item filters the data for species, subspecies, and varieties,
+\item filters the data for present records,
+\item filters against fossil records,
+\item assembles clean scientific names (i.e., without authority) from the
+genus, specific epithet, and infraspecific epithet, and
+\item attempts to parse dates, day of year, and year values.
+}}
 }
 \value{
-A tibble
+A tibble.
 }
 \description{
-Query GBIF species occurrence records
+This function queries GBIF for species occurrence records for a given area,
+or polygon (\code{sf} object), and then reads the data into R.
+}
+\details{
+Additional details...
 }
 \examples{
 ## Not run:
+
 devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
@@ -78,4 +83,9 @@ gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
                      t_path = file.path(t_path, "data"))
 
 ## End(Not run)                     
+}
+\seealso{
+\code{\link[rgbif:download_predicate_dsl]{rgbif::pred_within()}}, \code{\link[rgbif:occ_download]{rgbif::occ_download()}},
+\code{\link[rgbif:occ_download_wait]{rgbif::occ_download_wait()}}, \code{\link[rgbif:occ_download_get]{rgbif::occ_download_get()}},
+\code{\link[rgbif:occ_download_import]{rgbif::occ_download_import()}}
 }

@@ -9,10 +9,10 @@ clip_fc(sf_lyr, sf_clip, locale)
 \arguments{
 \item{sf_lyr}{Spatial (\code{sf}) object to be clipped.}
 
-\item{sf_clip}{Polygon (\code{sf}) object used to clip \code{sf_lyr} by.}
+\item{sf_clip}{Polygon (\code{sf}) object used to clip by.}
 
-\item{locale}{Character. Short description of clipped layer, usually the
-location (e.g., forest acronym or "Buffer").}
+\item{locale}{Short description of clipped layer, usually the location
+(e.g., forest acronym or "Buffer").}
 }
 \value{
 sf object
@@ -21,19 +21,34 @@ sf object
 This function clips a \code{sf} object using \code{sf::st_intersection()}. First, this
 function checks that the coordinate reference system (CRS) of the input
 object is the same as the clipping object. If it is not, this function
-transforms the CRS of the input object to the clipping object using
-\code{sf::st_transform()}before clipping.
+transforms the input object to CRS of the clipping object using
+\code{sf::st_transform()}before clipping. The output CRS is that of the clipping
+object.
 }
 \examples{
 ## Not run:
+
 devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
-admin_bdy_sf <- read_lyr(lyr = "admin_bdy", 
-                         dsn = file.path("T:/path/to/geodatabase"), 
-                         crs = "NAD83")
-                         
-clip_fc(sf_lyr = gbif_sf, sf_clip = admin_bdy_sf, locale = "FS")
+# Read spatial data into R
+t_path <- file.path("T:/path/to/project/directory")
+gdb_path <- file.path(t_path, "GIS_Data.gdb")
+sf_fs <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
+sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
+
+# Pull data from existing GBIF query
+gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
+                     t_path = file.path(t_path, "data"))
+
+# Convert to spatial object
+gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
+
+# Clip to extents
+unit_gbif <- clip_fc(gbif_sf, sf_fs)
 
 ## End (Not run)
+}
+\seealso{
+\code{\link[sf:geos_binary_ops]{sf::st_intersection()}}, \code{\link[sf:st_transform]{sf::st_transform()}}
 }
