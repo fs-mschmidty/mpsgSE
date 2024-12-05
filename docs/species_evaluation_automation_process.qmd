@@ -1,0 +1,36 @@
+---
+title: Species Evaluation Automation Process
+date: 2024-12-05
+format:
+  html: default
+  pdf: default
+  docx: default
+execute:
+  echo: true
+  message: false
+  warning: false
+  class-output: 'r'
+---
+
+## Introduction
+
+## The Process
+
+* Overview of the process
+* The use of R in the MPSG process and an explination of why it is not neccessary to use R but also why we do. 
+* A note about Taxonomies. 
+
+### Unit Spatial Layers and Other Unit Relevant Spatial Layers
+
+### Natureserve State List
+
+1. Pull all species from natureserve for any given state[`mpsgSE::get_ns_state_list`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R)
+  a. Scientific  Name
+  b. Global Rank
+  c. State Rank for given state. 
+  d. USFWS status
+2. Merge State Lists if necessary and keep only unique species
+3. Use [`mpsgSE::get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) to acquire unique ID. 
+
+### 
+
