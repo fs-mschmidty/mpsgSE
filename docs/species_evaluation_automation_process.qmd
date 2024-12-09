@@ -12,13 +12,15 @@ execute:
   class-output: 'r'
 ---
 
-## Introduction
+# Introduction
 
-## The Process
+# The Process
 
 * Overview of the process
 * The use of R in the MPSG process and an explination of why it is not neccessary to use R but also why we do. 
 * A note about Taxonomies. 
+
+## Build Eligible List
 
 ### Unit Spatial Layers and Other Unit Relevant Spatial Layers
 
@@ -32,5 +34,115 @@ execute:
 2. Merge State Lists if necessary and keep only unique species
 3. Use [`mpsgSE::get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) to acquire unique ID. 
 
-### 
+### Get Occurrence Data Lists
+
+<!-- Matt I think it would be best if you wrote this section. -->
+<!-- For now these lists are just the lists have occurrence numbers and not the acual spatial data! (see section below "Load Occurrence Spatial Data") -->
+
+* GBIF
+* SEInet
+* EO State Data (NHP Data)
+* IMBCR Data
+* NABat Data
+* Maybe why we don't us Idigbio anymore
+
+###  Get Qualifying Lists
+
+* State T and E, and Tier 1 Lists
+* Regional Sensitive Species Lists
+* Neighboring Unit SCC lists
+* USFWS Status (see above in Natureserve)
+
+### Make Preliminary Eligible List
+
+* To the Natureserve State List, which already includes global, state and USFWS ranks, full_join (So that if  species is not on one list it does not get dropped) by taxon_id:
+  * State SWAP Lists
+  * State T and E list
+  * Regional Foresters List
+  * Neighboring SCC lists
+* Then to create all potential species eligible filter the list by: 
+  * G/T 1,2 or 3 Ranks.
+  * Any S/T 1 or 2 Ranks.
+  * State SWAP Tier 1 Ranks
+  * State T and E Ranks
+  * Regional Foresters Sensitive Species Lists
+  * Neighboring Regional SCC Designation
+* Join all occurrence lists to all potential species eligible filtered list
+* Filter by those species that have one occurrence record in the planning unit.
+
+#### Notes on Taxonomic Problems in the Process
+
+### Manually Check Accidental Transients, Native and Known, and Local Concern, to Produce Final SCC Eligible List
+
+<!-- I think we should add into this process the Units local concern species -->
+
+#### Transient Bird List
+* Get ebird maps from ebirdst
+* Do check on each species
+* Output for manual checking
+
+#### Filter those species that need native and known checks
+* Those  species with less than 6 occurrences combined from each list in the planning area.
+* Those species with their most recent detection being greater than 40 years ago. 
+
+#### Species with uncertain taxanomic determinations
+* Multiple species may be taxonomically identified as the same species with `get_taxonomies()`.  Becuase we cannot determine their taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted. 
+
+#### Get user feedback
+#### Use user feedback to refine list
+Based on manual checks remove species that are:
+* Determined to not be native and known. 
+* Determined to be accidental or transients
+* ! Determined to be of local concern by the unit
+
+## Retrieve External Data for Automating Reports
+
+### Get Synonyms
+
+### Get Data for Making Automated Maps
+
+#### Load Occurrence Spatial Data
+
+#### Load Species Distribution Models
+
+* IUCN
+* BIEN Plant Maps
+* Ebird Maps
+
+#### Get Other Base Map Information
+
+* State Boundaries
+* United States - lower 48
+* North America
+* The Americas (North and South America)
+* Get Open Street Map Highways ("highway")
+  * motorway
+  * trunk
+  * primary
+* Clean Unit Names
+
+#### Get Natureserve Habitats From the Natureserve API and Manually Crosswalk to Ecology
+
+#### Retrieve, Clean, and Build Narratives for IMBCR Trend Information
+
+#### Retrieve, Clean, and Build Narratives for Breeding Bird Survey
+
+## Automate Reports
+<!-- Look at the qmd and write out each section.  (Maybe should wait until we finish revamping the reports) -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
