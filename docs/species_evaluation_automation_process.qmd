@@ -63,6 +63,8 @@ One-kilometer buffers are created around the administrative boundary and the pla
 <!-- Matt I think it would be best if you wrote this section. -->
 <!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") -->
 
+The following datasets are assigned a taxonomic ID using the [`mpsgSE::get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) function and summarized to the species, subspecies, or variety level.
+
 #### Global Biodiversity Information Facility
 
 Global Biodiversity Information Facility (GBIF; Global Biodiversity Information Facility 2022a) is a repository of externally sourced species occurrence records from museum collections, academic studies, and citizen science programs.
@@ -159,6 +161,11 @@ Based on manual checks remove species that are:
 ### Get Data for Making Automated Maps
 
 #### Load Occurrence Spatial Data
+
+GBIF data are acquired using the [`mpsgSE::get_gbif()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_gibif.R) function. This function submits a record request, and downloads and read the data into R when the request if complete. The data are then summarized using the [`mpsgSE::gbif_spp()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/gbif_spp.R) function and a list of species recorded in the plan area and 1-km buffer of the plan area is created using the [`mpsgSE::compile_gbif_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/compile_gbif_list.R) function.
+
+Currently, SEINet, State NHP EO, and IMBCR data are read into R and summarized using individual R scripts that follow similar workflows as the GBIF data. 
+These scripts will be converted to R functions and included in the `mpsgSE` package in the near future.
 
 #### Load Species Distribution Models
 
