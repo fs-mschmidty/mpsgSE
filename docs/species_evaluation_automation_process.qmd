@@ -42,10 +42,11 @@ We tried a variety of resources to resolve taxonomies, but ultimately landed on 
 
 ### Unit Spatial Layers and Other Unit Relevant Spatial Layers
 
-Administrative boundary data (S_USA.AdministrativeForest) are acquired from the Forest Service Enterprise Data Warehouse (EDW) by using a Definition Query for a national forest or grassland in ArcGIS Pro (ESRI Inc. 2024).
-The administrative boundary is used to clip (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) Forest Service owned lands, or Plan Area, from the basic ownership data (S_USA.BasicOwnership) in the EDW.
+Spatial administrative boundary data (S_USA.AdministrativeForest) are acquired from the Forest Service Enterprise Data Warehouse (EDW). 
+Forest or grassland boundaries are subseted using a Definition Query for that Forest Service unit in ArcGIS Pro (ESRI Inc. 2024).
+The administrative boundary is used to clip (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) Forest Service owned lands, or Plan Area, from the EDW basic ownership data (S_USA.BasicOwnership).
 The administrative boundary and plan area data are exported to a geodatabse for use through out the plan revision process.
-A 1-km buffer is created around the plan area using the Buffer tool (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) to capture observations immediately adjacent to the plan area.
+One-kilometer buffers are created around the administrative boundary and the plan area using the Buffer tool (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) to capture observations immediately adjacent to the plan area.
 
 ### Natureserve State List
 
@@ -57,26 +58,36 @@ A 1-km buffer is created around the plan area using the Buffer tool (Analysis To
 2. Merge State Lists if necessary and keep only unique species
 3. Use [`mpsgSE::get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) to acquire unique ID. 
 
-### Get Occurrence Data Lists
+### Get Occurrence Data
 
 <!-- Matt I think it would be best if you wrote this section. -->
 <!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") -->
 
 #### Global Biodiversity Information Facility
 
-Global Biodiversity Information Facility (GBIF; Global Biodiversity Information Facility 2022a) is a repository of externally sourced species occurrence records from museum collections, academic studies, and citizen science programs. GBIF records requests are staged on GBIF servers and have to be downloaded. See Getting Occurrence Data From GBIF for details. An R script submits a records request using the 1-km buffer around the administrative forest or grassland boundary to spatially query GBIF records in Darwin Core Archive format (GBIF, 2022b) for full data provenance. The data are downloaded, unzipped, and read in to R once the request is available using the rgbif package (version 3.7.8, Chamberlain et al. 2023).
+Global Biodiversity Information Facility (GBIF; Global Biodiversity Information Facility 2022a) is a repository of externally sourced species occurrence records from museum collections, academic studies, and citizen science programs.
+GBIF records requests are staged on GBIF servers and have to be downloaded (see [Getting Occurrence Data From GBIF](https://docs.ropensci.org/rgbif/articles/getting_occurrence_data.html) for details).
+An R script submits a records request using the 1-km buffer around the administrative boundary to spatially query GBIF records. 
+The data are downloaded in [Darwin Core Archive format](https://www.gbif.org/darwin-core) (GBIF, 2022b) for full data provenance.
+The data are unzipped and read in to R once the request is available using the `rgbif` package (version 3.7.8, Chamberlain et al. 2023).
 
-#### SEInet
+#### SEINet
 
-SEINet is a data portal that provides suite of data access tools that distributed species occurrence data from museums, collections, and state and federal agencies. SEINet data are available through an online data portal and are downloaded manually. An polygon box (WKT Footprint) was drawn around the administrative boundary of the Cimarron and Comanche National Grasslands to query species observations using the Taxonomic Criteria search page (https://swbiodiversity.org/seinet/collections/harvestparams.php). The query results were then downloaded in Darwin Core Archive format. They were then manually unzipped and a script reads them into R.
+[SEINet](https://swbiodiversity.org/seinet/index.php) is a data portal that provides a suite of data access tools, including species occurrence data from museums, collections, and state and federal agencies. 
+SEINet data are available through an online data portal and are downloaded manually.
+A polygon box, or well-known text (WKT) footprint, is drawn around the administrative boundary to query species observations using the Taxonomic Criteria search page (<https://swbiodiversity.org/seinet/collections/harvestparams.php>).
+The query results are downloaded in Darwin Core Archive format, manually unzipped, and a script reads them into R.
 
 #### EO State Data (NHP Data)
 
-State Natural Heritage Programs (NHPs) often provide species occurrence data, and habitat and distribution models for federal, state, and non-governmental agencies throughout their state. Element occurrence (EO) spatial data from the are acquired from the NHPs a forest of grasslands resides.
+State Natural Heritage Programs (NHPs) provide species occurrence data, and habitat and distribution models for federal, state, and non-governmental agencies throughout their state. 
+Element occurrence (EO) spatial data are requested from an HNP which are often provided in a geodatabase.
+The EO data are read to R using an R script.
 
-#### IMBCR Data
-
-The Integrated Monitoring in Bird Conservation Regions (IMBCR) is a long-term avian monitoring program coordinated by the Birds Conservancy of the Rockies, and maintains monitoring plots on public lands throughout Forest Service Regions 1-4. IMBCR data spanning 2008-2023 were obtained for Forest Service lands on 12 December, 2023, for use in these analyses. These data were received in and Excel file and an script reads them into R.
+#### Integrated Monitoring in Bird Conservation Regions
+The [Integrated Monitoring in Bird Conservation Regions (IMBCR)](https://www.birdconservancy.org/what-we-do/science/monitoring/imbcr-program/) is a long-term avian monitoring program coordinated by the [Birds Conservancy of the Rockies](https://www.birdconservancy.org/), and maintains monitoring plots on public lands throughout Forest Service Regions 1-4. 
+IMBCR data spanning 2008-2023 were obtained for Forest Service lands on 12 December, 2023, for use in these analyses. 
+These data were received in and Excel file and an script reads them into R.
 
 * NABat Data
 
@@ -84,7 +95,13 @@ The Integrated Monitoring in Bird Conservation Regions (IMBCR) is a long-term av
 
 * Maybe why we don't us Idigbio anymore
 
-The iDigBio Project (iDigBio 2023) is a repository of digitized vouchered natural history collections including the Consortium of Lichen Herbaria, the Consortium of Bryophyte Herbaria, and Rocky Mountain Herbarium. iDigBio records are available through an API and can be accessed using the `spocc` package (version 1.2.3, Owens and Chamberlain 2023). An R script submits a records request using the 1-km buffer around the forest or grassland administrative boundary to spatially query iDigBio records. These records are read directly into R.
+The iDigBio Project (iDigBio 2023) is a repository of digitized vouchered natural history collections including the [Consortium of Lichen Herbaria](https://lichenportal.org/portal/), the [Consortium of Bryophyte Herbaria](https://bryophyteportal.org/portal/), and [Rocky Mountain Herbarium](https://rmh.uwyo.edu/data/search.php).
+iDigBio records are available through an API and can be accessed using the `spocc` package (version `r packageVersion('spocc')`, Owens and Chamberlain 2023).
+An R script submits a records request using the 1-km buffer around the administrative boundary to spatially query iDigBio records, which are read directly into R.
+
+<!--
+Do we want to a include data limitations section?
+-->
 
 ###  Get Qualifying Lists
 
