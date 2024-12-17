@@ -3,8 +3,9 @@ title: Species Evaluation Automation Process
 date: 2024-12-05
 format:
   html: default
-  pdf: default
-  docx: default
+  # pdf: default
+  # docx: default
+bibliography: references.bib
 execute:
   echo: true
   message: false
@@ -31,12 +32,18 @@ Broadly there are three parts to automating:
 
 ### The Use of R Programming Language
 
-The MPSG uses the R programming language (CITE R) for much of the work we do in automation and will be referencing R code and packages in this document because it helps explain how we accomplished a lot of what we did.  However, automation is not necessarily dependent on R.  Many of these processes could be completed by other means and R is irrelevant to many of the data sources and structures we have developed at the MPSG. 
+The MPSG uses the R programming language (CITE R) for much of the work we do in automation and will be referencing R code and packages in this document because it helps explain how we accomplished a lot of what we did.  However, automation is not necessarily dependent on R. Many of these processes could be completed by other means and R is irrelevant to many of the data sources and structures we have developed at the MPSG. 
 
 ### Taxonomy
-Before we explain the steps in the automation process it is important to mention how we handled species taxonomy.  One of the first hurdles that needed to be overcome at the beginning of automating the species evaluation process was how we were going to resolve taxonomy in a systematic and programmatic way. This process relies on dozens of external resources for information.  Many of those resources have their own methods for dealing with taxonomy, but almost all of them differ in how they define species.  This is particularly problematic in the botany world where many experts and institutions differ on plant taxonomy.  When we retrieve a list of species, weather it be status, spatial or some other resource, we needed a way to algorithmically settle on what that species was. It is important that it could be done algorythmically because we had to parse hundreds of thousands of records during this process. 
+Integral to the whole process is how we handled species taxonomy.  One of the first hurdles that needed to be overcome at the beginning of automating the species evaluation process was how we were going to resolve taxonomy in a systematic and programmatic way. This process relies on dozens of external resources for information.  Many of those resources have their own methods for dealing with taxonomy, but almost all of them differ in how they define species.  This is particularly problematic in the botany world where many experts and institutions differ on plant taxonomy.  When we retrieve a list of species, weather it be status, spatial or some other resource, we needed a way to algorithmically settle on what that species was. It is important that it could be done algorythmically because we had to parse hundreds of thousands of records during this process. 
 
-We tried a variety of resources to resolve taxonomies, but ultimately landed on using the [`taxize`] R package to access the GBIF Backbone Taxonomy. 
+A variety of resources to resolve taxonomies, but ultimately landed on using the [`taxize`] R package to access the GBIF Backbone Taxonomy. To resolve taxonomies, every species name from every list we use is searched using the taxize package.  The name that the taxize package uses is not necessarily used in the species evaluations.  Instead the name resolves to a species ID number assigned by GBIF and we use that number to identify the species in analysis and comparison.  
+
+For accepted Scientific Names, the names that are used by Natureserve are used to identify species in our process.  These names are also validated with the taxize package and the taxon_id number is used to relate NatureServe chosen names to other occurrence and status lists. 
+
+While the system works well, it is not perfect, and occasionally many Natureserve recognized species resolve to one species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually.  
+
+The process for resolving taxonomy is codified in a function 
 
 ## Build Eligible List
 
@@ -104,6 +111,8 @@ An R script submits a records request using the 1-km buffer around the administr
 <!--
 Do we want to a include data limitations section?
 -->
+
+### A Not on Limitations of Species Occurrence Data
 
 ###  Get Qualifying Lists
 
