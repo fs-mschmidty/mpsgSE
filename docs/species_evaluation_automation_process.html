@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-12-05">
+
+<title>Species Evaluation Automation Process</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="species_evaluation_automation_process_files/libs/clipboard/clipboard.min.js"></script>
+<script src="species_evaluation_automation_process_files/libs/quarto-html/quarto.js"></script>
+<script src="species_evaluation_automation_process_files/libs/quarto-html/popper.min.js"></script>
+<script src="species_evaluation_automation_process_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="species_evaluation_automation_process_files/libs/quarto-html/anchor.min.js"></script>
+<link href="species_evaluation_automation_process_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="species_evaluation_automation_process_files/libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="species_evaluation_automation_process_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="species_evaluation_automation_process_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="species_evaluation_automation_process_files/libs/bootstrap/bootstrap-5bdc1ec511977dd36301403cf8f4f68d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="species_evaluation_automation_process.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Species Evaluation Automation Process</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 5, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>This document details the process of automating parts of the Mountain State Planning Group’s (MPSG), Species Evaluations for Species of Conservation Concern (SCC). The MPSG is tasked with helping National Forests with planning efforts. Part of the Pre-assessment portion of Forest Planning is writing Species Evaluations for SCC. Species assessments are intended to inform selection of SCC by the Regional Forester by providing the best available scientific (BASI) information on if there is “substantial concern about the species’ capability to persist over the long-term in the plan area” (36 CFR 219.9(c)). This process is detailed in draft in the “Species of Conservation Concern Identification Process” (CITE MPSG) document. This document is not intended to outline the SCC process. Rather it will focus on documenting the automation of the process outlined in the SCC process document.</p>
+<p>Automation is recommended for this process for two primary reasons: hundreds of Species Evaluations are required for any given planning unit, resulting in a substantial workload. Automation of repeatable steps decreases the workload of MPSG staff, produces more consistent and repeatable documents, and can help define, programmatically or otherwise, best sources of BASI and processes for retrieving BASI.</p>
+</section>
+<section id="the-process" class="level1">
+<h1>The Process</h1>
+</section>
+<section id="species-evaluation-automation-process" class="level1">
+<h1>Species Evaluation Automation Process</h1>
+<p>Broadly there are three parts to automating: 1. Develop eligible list of species for potential listing as SCC 2. Gather available relevant BASI for species on the eligible list. 3. Automate SCC species evaluation templates with as much data pre input as possible.</p>
+<section id="process-preface" class="level2">
+<h2 class="anchored" data-anchor-id="process-preface">Process Preface</h2>
+<section id="the-use-of-r-programming-language" class="level3">
+<h3 class="anchored" data-anchor-id="the-use-of-r-programming-language">The Use of R Programming Language</h3>
+<p>The MPSG uses the R programming language <span class="citation" data-cites="rcoreteamLanguageEnvironmentStatistical2023">(<a href="#ref-rcoreteamLanguageEnvironmentStatistical2023" role="doc-biblioref">R Core Team 2023</a>)</span> for much of the work we do in automation and will be referencing R code and packages in this document because it helps explain how we accomplished a lot of what we did. However, automation is not necessarily dependent on R. Many of these processes could be completed by other means and R is irrelevant to many of the data sources and structures we have developed at the MPSG.</p>
+</section>
+<section id="taxonomy" class="level3">
+<h3 class="anchored" data-anchor-id="taxonomy">Taxonomy</h3>
+<p>Automation would not be possible without first automating taxonomic classification of species names. The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information. Many of those resources have their own methods for resolving taxonomy, but almost all of them differ in some way on how they define and classify species. This is problematic for automating species evaluations because almost every part of the process relies on reliably cross referencing information. For example, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (<em>Bouteloua gracilis</em>) one uses <em>Bouteloua gracilis</em> and another uses a recognized synonym <em>Chondrosum gracile</em> we need a way to recognize both as the same plant. To resolve this, we needed a way to algorithmically link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. Manual resolution of taxonomic classification would not be possible.</p>
+<p>A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the <a href="https://github.com/ropensci/taxize"><code>taxize</code></a> <span class="citation" data-cites="scottchamberlainTaxizeTaxonomicInformation2020">(<a href="#ref-scottchamberlainTaxizeTaxonomicInformation2020" role="doc-biblioref">Scott Chamberlain et al. 2020</a>)</span> R package to access the GBIF Backbone Taxonomy. Natureserve, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name. ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names. Natureserves search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution.</p>
+<p>Often when a name is searched in GBIF, the name that is returned does not match the name in the Natureserve database. The Forest Service Assessment Handbook (<span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">USDA Forest Service (<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">2015</a>)</span>) directs the use of Natureserve in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations. The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms. When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.</p>
+<p>While the system works well, it is not perfect, and occasionally many scientific names recognized by Natureserve will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually. This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings. It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.</p>
+<p>The process for resolving taxonomy is codified in a function in the <a href="https://github.com/fs-mschmidty/mpsgSE">mpsgSE</a> package called <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R"><code>get_taxonomies()</code></a>. Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. It takes one parameter which identifies the field with the scientific name.</p>
+</section>
+</section>
+<section id="build-eligible-list" class="level2">
+<h2 class="anchored" data-anchor-id="build-eligible-list">Build Eligible List</h2>
+<section id="natureserve-state-list" class="level3">
+<h3 class="anchored" data-anchor-id="natureserve-state-list">Natureserve State List</h3>
+<p>The eligible list development begins with pulling all species in Natureserve for a given unit. To do this we begin by pulling all species for the state where a unit resides. In most cases one state pull is needed, but for units that reside in multiple states each state must be pulled and then the lists should be merged, eliminating duplicates.</p>
+<p>A pull for any given state does note determine eligibility for a unit list, instead it is the total number of species tracked by Natureserve for any given state. Species found on the state list must also be determined to occupy a given unit (determined to be Native and Known) and meet other qualifying criteria <span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">(<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">USDA Forest Service 2015</a>)</span>.</p>
+<p>Data used from the Natureserve state pull to determine eligibility are:</p>
+<ol type="a">
+<li>Scientific Name</li>
+<li>Natureserve Global Rank (G/T Rank)</li>
+<li>State Rank for given state (S/T Rank)</li>
+<li>USFWS Status (Endangered, Threatened, Candidate, or Under Review)</li>
+</ol>
+<p>A function was developed for this process for pulling data from any given state calle <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R"><code>get_ns_state_list()</code></a>. It relies on the <a href="https://github.com/cran/natserv">natserve</a> <span class="citation" data-cites="chamberlainNatservNatureServeInterface2024">(<a href="#ref-chamberlainNatservNatureServeInterface2024" role="doc-biblioref">Chamberlain and Tracey 2024</a>)</span> package <code>ns_export</code> function. This could also be accomplished by querying the <a href="https://explorer.natureserve.org/api-docs/?gad_source=1&amp;gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export">Natureserve API directly</a>. It takes one input, which is the state short code (ex: “CO” for Colorado) and returns the full list of track Natureserve species for that state.</p>
+<p>After the list is aquired <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R">get_taxonomies</a> is use to get the taxon_id for each species for joining with other lists.</p>
+</section>
+<section id="unit-spatial-layers-and-other-unit-relevant-spatial-layers" class="level3">
+<h3 class="anchored" data-anchor-id="unit-spatial-layers-and-other-unit-relevant-spatial-layers">Unit Spatial Layers and Other Unit Relevant Spatial Layers</h3>
+<p>Spatial administrative boundary data (S_USA.AdministrativeForest) are acquired from the Forest Service Enterprise Data Warehouse (EDW). Forest or grassland boundaries are subseted using a Definition Query for that Forest Service unit in ArcGIS Pro <span class="citation" data-cites="esriincArcGISPro332024">(<a href="#ref-esriincArcGISPro332024" role="doc-biblioref">ESRI Inc 2024</a>)</span>. The administrative boundary is used to clip (Analysis Toolbox, ArcGIS Pro, ESRI Inc.&nbsp;2024) Forest Service owned lands, or Plan Area, from the EDW basic ownership data (S_USA.BasicOwnership). The administrative boundary and plan area data are exported to a geodatabse for use through out the plan revision process. One-kilometer buffers are created around the administrative boundary and the plan area using the Buffer tool (Analysis Toolbox, ArcGIS Pro, ESRI Inc.&nbsp;2024) to capture observations immediately adjacent to the plan area.</p>
+</section>
+<section id="get-occurrence-data" class="level3">
+<h3 class="anchored" data-anchor-id="get-occurrence-data">Get Occurrence Data</h3>
+<!-- Matt I think it would be best if you wrote this section. -->
+<!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") -->
+<p>The following datasets are assigned a taxonomic ID using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R"><code>mpsgSE::get_taxonomies()</code></a> function and summarized to the species, subspecies, or variety level.</p>
+<section id="global-biodiversity-information-facility" class="level4">
+<h4 class="anchored" data-anchor-id="global-biodiversity-information-facility">Global Biodiversity Information Facility</h4>
+<p>Global Biodiversity Information Facility (GBIF; Global Biodiversity Information Facility 2022a) is a repository of externally sourced species occurrence records from museum collections, academic studies, and citizen science programs.</p>
+<p>GBIF records requests are staged on GBIF servers and have to be downloaded (see <a href="https://docs.ropensci.org/rgbif/articles/getting_occurrence_data.html">Getting Occurrence Data From GBIF</a> for details).</p>
+<p>An R script submits a records request using the 1-km buffer around the administrative boundary to spatially query GBIF records.</p>
+<p>The data are downloaded in <a href="https://www.gbif.org/darwin-core">Darwin Core Archive format</a> (GBIF, 2022b) for full data provenance.</p>
+<p>The data are unzipped and read in to R once the request is available using the <code>rgbif</code> package (version 3.7.8, Chamberlain et al.&nbsp;2023).</p>
+</section>
+<section id="seinet" class="level4">
+<h4 class="anchored" data-anchor-id="seinet">SEINet</h4>
+<p><a href="https://swbiodiversity.org/seinet/index.php">SEINet</a> is a data portal that provides a suite of data access tools, including species occurrence data from museums, collections, and state and federal agencies. SEINet data are available through an online data portal and are downloaded manually. A polygon box, or well-known text (WKT) footprint, is drawn around the administrative boundary to query species observations using the Taxonomic Criteria search page (<a href="https://swbiodiversity.org/seinet/collections/harvestparams.php" class="uri">https://swbiodiversity.org/seinet/collections/harvestparams.php</a>). The query results are downloaded in Darwin Core Archive format, manually unzipped, and a script reads them into R.</p>
+</section>
+<section id="eo-state-data-nhp-data" class="level4">
+<h4 class="anchored" data-anchor-id="eo-state-data-nhp-data">EO State Data (NHP Data)</h4>
+<p>State Natural Heritage Programs (NHPs) provide species occurrence data, and habitat and distribution models for federal, state, and non-governmental agencies throughout their state. Element occurrence (EO) spatial data are requested from an HNP which are often provided in a geodatabase. The EO data are read to R using an R script.</p>
+</section>
+<section id="integrated-monitoring-in-bird-conservation-regions" class="level4">
+<h4 class="anchored" data-anchor-id="integrated-monitoring-in-bird-conservation-regions">Integrated Monitoring in Bird Conservation Regions</h4>
+<p>The <a href="https://www.birdconservancy.org/what-we-do/science/monitoring/imbcr-program/">Integrated Monitoring in Bird Conservation Regions (IMBCR)</a> is a long-term avian monitoring program coordinated by the <a href="https://www.birdconservancy.org/">Birds Conservancy of the Rockies</a>, and maintains monitoring plots on public lands throughout Forest Service Regions 1-4. IMBCR data spanning 2008-2023 were obtained for Forest Service lands on 12 December, 2023, for use in these analyses. These data were received in and Excel file and an script reads them into R.</p>
+<ul>
+<li>NABat Data</li>
+</ul>
+<!-- I'm not currently pulling NABat data because the process is prohibitive to do so across the MPSG footprint. -->
+<ul>
+<li>Maybe why we don’t us Idigbio anymore</li>
+</ul>
+<p>The iDigBio Project (iDigBio 2023) is a repository of digitized vouchered natural history collections including the <a href="https://lichenportal.org/portal/">Consortium of Lichen Herbaria</a>, the <a href="https://bryophyteportal.org/portal/">Consortium of Bryophyte Herbaria</a>, and <a href="https://rmh.uwyo.edu/data/search.php">Rocky Mountain Herbarium</a>. iDigBio records are available through an API and can be accessed using the <code>spocc</code> package (version <code>r packageVersion('spocc')</code>, Owens and Chamberlain 2023). An R script submits a records request using the 1-km buffer around the administrative boundary to spatially query iDigBio records, which are read directly into R.</p>
+<!--
+Do we want to a include data limitations section?
+-->
+</section>
+</section>
+<section id="a-not-on-limitations-of-species-occurrence-data" class="level3">
+<h3 class="anchored" data-anchor-id="a-not-on-limitations-of-species-occurrence-data">A Not on Limitations of Species Occurrence Data</h3>
+</section>
+<section id="get-qualifying-lists" class="level3">
+<h3 class="anchored" data-anchor-id="get-qualifying-lists">Get Qualifying Lists</h3>
+<ul>
+<li>State T and E, and Tier 1 Lists</li>
+<li>Regional Sensitive Species Lists</li>
+<li>Neighboring Unit SCC lists</li>
+<li>USFWS Status (see above in Natureserve)</li>
+</ul>
+</section>
+<section id="make-preliminary-eligible-list" class="level3">
+<h3 class="anchored" data-anchor-id="make-preliminary-eligible-list">Make Preliminary Eligible List</h3>
+<ul>
+<li>To the Natureserve State List, which already includes global, state and USFWS ranks, full_join (So that if species is not on one list it does not get dropped) by taxon_id:
+<ul>
+<li>State SWAP Lists</li>
+<li>State T and E list</li>
+<li>Regional Foresters List</li>
+<li>Neighboring SCC lists</li>
+</ul></li>
+<li>Then to create all potential species eligible filter the list by:
+<ul>
+<li>G/T 1,2 or 3 Ranks.</li>
+<li>Any S/T 1 or 2 Ranks.</li>
+<li>State SWAP Tier 1 Ranks</li>
+<li>State T and E Ranks</li>
+<li>Regional Foresters Sensitive Species Lists</li>
+<li>Neighboring Regional SCC Designation</li>
+</ul></li>
+<li>Join all occurrence lists to all potential species eligible filtered list</li>
+<li>Filter by those species that have one occurrence record in the planning unit.</li>
+</ul>
+<section id="notes-on-taxonomic-problems-in-the-process" class="level4">
+<h4 class="anchored" data-anchor-id="notes-on-taxonomic-problems-in-the-process">Notes on Taxonomic Problems in the Process</h4>
+</section>
+</section>
+<section id="manually-check-accidental-transients-native-and-known-and-local-concern-to-produce-final-scc-eligible-list" class="level3">
+<h3 class="anchored" data-anchor-id="manually-check-accidental-transients-native-and-known-and-local-concern-to-produce-final-scc-eligible-list">Manually Check Accidental Transients, Native and Known, and Local Concern, to Produce Final SCC Eligible List</h3>
+<!-- I think we should add into this process the Units local concern species -->
+<section id="transient-bird-list" class="level4">
+<h4 class="anchored" data-anchor-id="transient-bird-list">Transient Bird List</h4>
+<ul>
+<li>Get ebird maps from ebirdst</li>
+<li>Do check on each species</li>
+<li>Output for manual checking</li>
+</ul>
+</section>
+<section id="filter-those-species-that-need-native-and-known-checks" class="level4">
+<h4 class="anchored" data-anchor-id="filter-those-species-that-need-native-and-known-checks">Filter those species that need native and known checks</h4>
+<ul>
+<li>Those species with less than 6 occurrences combined from each list in the planning area.</li>
+<li>Those species with their most recent detection being greater than 40 years ago.</li>
+</ul>
+</section>
+<section id="species-with-uncertain-taxanomic-determinations" class="level4">
+<h4 class="anchored" data-anchor-id="species-with-uncertain-taxanomic-determinations">Species with uncertain taxanomic determinations</h4>
+<ul>
+<li>Multiple species may be taxonomically identified as the same species with <code>get_taxonomies()</code>. Becuase we cannot determine their taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted.</li>
+</ul>
+</section>
+<section id="get-user-feedback" class="level4">
+<h4 class="anchored" data-anchor-id="get-user-feedback">Get user feedback</h4>
+</section>
+<section id="use-user-feedback-to-refine-list" class="level4">
+<h4 class="anchored" data-anchor-id="use-user-feedback-to-refine-list">Use user feedback to refine list</h4>
+<p>Based on manual checks remove species that are: * Determined to not be native and known. * Determined to be accidental or transients * ! Determined to be of local concern by the unit</p>
+</section>
+</section>
+</section>
+<section id="retrieve-external-data-for-automating-reports" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-external-data-for-automating-reports">Retrieve External Data for Automating Reports</h2>
+<section id="get-synonyms" class="level3">
+<h3 class="anchored" data-anchor-id="get-synonyms">Get Synonyms</h3>
+</section>
+<section id="get-data-for-making-automated-maps" class="level3">
+<h3 class="anchored" data-anchor-id="get-data-for-making-automated-maps">Get Data for Making Automated Maps</h3>
+<section id="load-occurrence-spatial-data" class="level4">
+<h4 class="anchored" data-anchor-id="load-occurrence-spatial-data">Load Occurrence Spatial Data</h4>
+<p>GBIF data are acquired using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_gibif.R"><code>mpsgSE::get_gbif()</code></a> function. This function submits a record request, and downloads and read the data into R when the request if complete. The data are then summarized using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/gbif_spp.R"><code>mpsgSE::gbif_spp()</code></a> function and a list of species recorded in the plan area and 1-km buffer of the plan area is created using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/compile_gbif_list.R"><code>mpsgSE::compile_gbif_list()</code></a> function. The resulting data are saved in an *.RData file, a data format specific to the R coding language, and loaded back into R when the automated reports are created.</p>
+<p>Currently, SEINet, State NHP EO, and IMBCR data are read into R and summarized using individual R scripts that follow similar workflows as the GBIF data. These scripts will be converted to R functions and included in the <code>mpsgSE</code> package in the near future.</p>
+</section>
+<section id="load-species-distribution-models" class="level4">
+<h4 class="anchored" data-anchor-id="load-species-distribution-models">Load Species Distribution Models</h4>
+<ul>
+<li>IUCN</li>
+<li>BIEN Plant Maps</li>
+<li>Ebird Maps</li>
+</ul>
+</section>
+<section id="get-other-base-map-information" class="level4">
+<h4 class="anchored" data-anchor-id="get-other-base-map-information">Get Other Base Map Information</h4>
+<ul>
+<li>State Boundaries</li>
+<li>United States - lower 48</li>
+<li>North America</li>
+<li>The Americas (North and South America)</li>
+<li>Get Open Street Map Highways (“highway”)
+<ul>
+<li>motorway</li>
+<li>trunk</li>
+<li>primary</li>
+</ul></li>
+<li>Clean Unit Names</li>
+</ul>
+</section>
+<section id="get-natureserve-habitats-from-the-natureserve-api-and-manually-crosswalk-to-ecology" class="level4">
+<h4 class="anchored" data-anchor-id="get-natureserve-habitats-from-the-natureserve-api-and-manually-crosswalk-to-ecology">Get Natureserve Habitats From the Natureserve API and Manually Crosswalk to Ecology</h4>
+</section>
+<section id="retrieve-clean-and-build-narratives-for-imbcr-trend-information" class="level4">
+<h4 class="anchored" data-anchor-id="retrieve-clean-and-build-narratives-for-imbcr-trend-information">Retrieve, Clean, and Build Narratives for IMBCR Trend Information</h4>
+</section>
+<section id="retrieve-clean-and-build-narratives-for-breeding-bird-survey" class="level4">
+<h4 class="anchored" data-anchor-id="retrieve-clean-and-build-narratives-for-breeding-bird-survey">Retrieve, Clean, and Build Narratives for Breeding Bird Survey</h4>
+</section>
+</section>
+</section>
+<section id="automate-reports" class="level2">
+
+<!-- Look at the qmd and write out each section.  (Maybe should wait until we finish revamping the reports) -->
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Automate Reports</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-chamberlainNatservNatureServeInterface2024" class="csl-entry" role="listitem">
+Chamberlain, Scott, and Christopher Tracey. 2024. <span>“Natserv: ’NatureServe’ Interface.”</span> <a href="https://docs.ropensci.org/natserv/">https://docs.ropensci.org/natserv/</a>.
+</div>
+<div id="ref-esriincArcGISPro332024" class="csl-entry" role="listitem">
+ESRI Inc. 2024. <span>“ArcGIS Pro 3.3.”</span>
+</div>
+<div id="ref-rcoreteamLanguageEnvironmentStatistical2023" class="csl-entry" role="listitem">
+R Core Team. 2023. <span>“R: A Language and Environment for Statistical Computing.”</span> <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-scottchamberlainTaxizeTaxonomicInformation2020" class="csl-entry" role="listitem">
+Scott Chamberlain, Zachary Foster, Zebulun Arendsee, Eduard Szoecs, Carl Boettiger, Karthik Ram, Ignasi Bartomeus, et al. 2020. <span>“Taxize: Taxonomic Information from Around the Web.”</span> <a href="https://github.com/ropensci/taxize">https://github.com/ropensci/taxize</a>.
+</div>
+<div id="ref-usdaforestserviceHandbook190912Land2015" class="csl-entry" role="listitem">
+USDA Forest Service. 2015. <span>“Handbook 1909.12. Land Management Planning Handbook. Chapter 10 - the Assessments.”</span>
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
