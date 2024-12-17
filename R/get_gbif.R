@@ -18,6 +18,11 @@
 #'   is set to **new**. Default is NULL.
 #' @param gbif_format The format of the data returned from GBIF. Default is 
 #'   Darwin-Core Achrive (DWAC). See `rgbif::occ_download()` for more details.
+#' @param crs Target coordinate reference system (CRS). Either and 
+#'                `sf::st_crs()` object or accepted input string for 
+#'                `sf::st_crs()` (e.g. "WGS84" or "NAD83"). See `sf::st_crs()`
+#'                for more details. Default is NULL. If NULL, resulting sf 
+#'                object CRS will be WGS84.
 #' @param process_data Logical. Process data after reading them into R (TRUE == 
 #'   yes, FALSE == no). Default is TRUE. The processing step  
 #'   
@@ -53,46 +58,48 @@
 #'                      aoa_wkt = wkt_string(sf_aoa),
 #'                      gbif_user = Sys.getenv("GBIF_USER"),
 #'                      gbif_pwd = Sys.getenv("GBIF_PWD"),
-#'                      gbif_email = Sys.getenv("GBIF_EMAIL"))
+#'                      gbif_email = Sys.getenv("GBIF_EMAIL"), 
+#'                      crs = 'NAD83')
 #'                      
 #' # Pull data from existing GBIF query
 #' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
-#'                      t_path = file.path(t_path, "data"))
+#'                      t_path = file.path(t_path, "data"), 
+#'                      crs = 'NAD83')
 #' 
 #' ## End(Not run)                     
 
 get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL, 
                      gbif_pwd = NULL, gbif_email = NULL, gbif_format = "DWCA", 
-                     process_data = TRUE){
+                     crs = NULL, process_data = TRUE){
   #-- Function variables
   # GBIF data package file path
-  gbif_path <- if(!gbif_key == "new"){
+  gbif_path = if(!gbif_key == "new"){
     file.path(t_path, paste0(gbif_key, ".zip"))
   } else(NULL)
   # Date formats
-  date_formats <- c("%Y-%m-%d", "%y-%m-%d", "%y-%m", "%y")
+  date_formats = c("%Y-%m-%d", "%y-%m-%d", "%y-%m", "%y")
   
   #-- Pull GBIF Data
   if(gbif_key == "new"){
     message("Requesting data from GBIF")
-    gbifPred <- rgbif::pred_within(aoa_wkt)
-    gbifDwnld <- rgbif::occ_download(gbifPred, user = gbif_user, pwd = gbif_pwd, 
+    gbifPred = rgbif::pred_within(aoa_wkt)
+    gbifDwnld = rgbif::occ_download(gbifPred, user = gbif_user, pwd = gbif_pwd, 
                                      email = gbif_email, format = gbif_format)
     rgbif::occ_download_wait(gbifDwnld)
-    gbif <- rgbif::occ_download_get(gbifDwnld, path = file.path(t_path)) |>
+    gbif = rgbif::occ_download_get(gbifDwnld, path = file.path(t_path)) |>
       rgbif::occ_download_import()
   } else if(file.exists(gbif_path)){
     message("Reading GBIF data into R")
-    gbif <- rgbif::occ_download_import(key = gbif_key, path = file.path(t_path))
+    gbif = rgbif::occ_download_import(key = gbif_key, path = file.path(t_path))
   } else({
     message("Downloading GBIF data")
-    gbif <- rgbif::occ_download_get(key = gbif_key, path = file.path(t_path)) |>
+    gbif = rgbif::occ_download_get(key = gbif_key, path = file.path(t_path)) |>
       rgbif::occ_download_import()
   })
   
   #-- Process GBIF data
   if(isTRUE(process_data)){
-    gbif <- gbif |>
+    gbif = gbif |>
       # Filter for species & subspecies and not fossil records
       dplyr::filter(taxonRank %in% c("SPECIES", "SUBSPECIES", "VARIETY") &
                       occurrenceStatus == "PRESENT" &
@@ -111,10 +118,14 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
         # Parse date formats, day of year, and year
         date = lubridate::parse_date_time(eventDate, date_formats),
         dayOfYear = lubridate::yday(date),
-        year = lubridate::year(date)
+        year = lubridate::year(date), 
+        source = "GBIF"
       ) |>
       dplyr::mutate_if(is.character, trimws)
   }
+  
+  gbif = gbif_spatial(gbif)
+  
   #-- Return GBIF data
   return(gbif)
 }
@@ -167,7 +178,6 @@ wkt_string <- function(my_polygon){
 #'
 #' @return An sf object.
 #' @seealso [get_gbif()], [sf::st_as_sf()], [sf::st_crs()]
-#' @export
 #'
 #' @examples
 #' ## Not run:
@@ -248,7 +258,9 @@ gbif_spp <- function(sf_data){
                      .groups = "drop") |> 
     dplyr::mutate(GBIF_locale = locale, source = "GBIF") |> 
     dplyr::distinct(scientific_name, .keep_all = TRUE) |> 
-    mpsgSE::get_taxonomies(query_field = "scientific_name")
+    mpsgSE::get_taxonomies(query_field = "scientific_name") |> 
+    dplyr::arrange(kingdom, phylum, class, order, family, genus, 
+                   species, scientific_name)
   return(dat)
 }
 
@@ -265,7 +277,7 @@ gbif_spp <- function(sf_data){
 #'                    buffer of FS land.
 #'
 #' @return A tibble.
-#' @seealso [get_gbif()], [gbif_spatial()], [gbif_spp()]
+#' @seealso [get_gbif()], [gbif_spatial()], [gbif_spp()], [clip_fc()]
 #' @export
 #'
 #' @examples
@@ -297,12 +309,12 @@ gbif_spp <- function(sf_data){
 #' ## End(Not run)                     
 compile_gbif_list <- function(unit_sf, buff_sf){
   message("Processing unit species data")
-  unit_list <- gbif_spp(unit_sf)
+  unit_list = gbif_spp(unit_sf)
   message("Processing buffer species data")
-  buff_list <- gbif_spp(buff_sf)
+  buff_list = gbif_spp(buff_sf)
   message("Compiling species list")
-  comp_list <- rbind(unit_list,
-                     dplyr::filter(buff_list, 
+  comp_list = rbind(add_cols(unit_list, buff_list),
+                     dplyr::filter(add_cols(buff_list, unit_list), 
                                    !taxon_id %in% unit_list$taxon_id))
   return(comp_list)
 }
