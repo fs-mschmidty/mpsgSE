@@ -19,10 +19,9 @@
 #' @param gbif_format The format of the data returned from GBIF. Default is 
 #'   Darwin-Core Achrive (DWAC). See `rgbif::occ_download()` for more details.
 #' @param crs Target coordinate reference system (CRS). Either and 
-#'                `sf::st_crs()` object or accepted input string for 
-#'                `sf::st_crs()` (e.g. "WGS84" or "NAD83"). See `sf::st_crs()`
-#'                for more details. Default is NULL. If NULL, resulting sf 
-#'                object CRS will be WGS84.
+#'                `sf::st_crs()` object or accepted input string (e.g. "NAD83"). 
+#'                See `sf::st_crs()` for more details. Default is NULL. If NULL, 
+#'                resulting sf object CRS will be WGS84.
 #' @param process_data Logical. Process data after reading them into R (TRUE == 
 #'   yes, FALSE == no). Default is TRUE. The processing step  
 #'   
@@ -34,11 +33,13 @@
 #'   5. attempts to parse dates, day of year, and year values.
 #'
 #' @return A tibble.
+#' 
 #' @details
 #' Additional details...
+#' 
 #' @seealso [rgbif::pred_within()], [rgbif::occ_download()], 
 #'          [rgbif::occ_download_wait()], [rgbif::occ_download_get()], 
-#'          [rgbif::occ_download_import()]
+#'          [rgbif::occ_download_import()], [sf::st_crs()]
 #' @export
 #'
 #' @examples
@@ -175,27 +176,6 @@ wkt_string <- function(my_polygon){
 #'                `sf::st_crs()` (e.g. "WGS84" or "NAD83"). See `sf::st_crs()`
 #'                for more details. Default is NULL. If NULL, resulting sf 
 #'                object CRS will be WGS84.
-#'
-#' @return An sf object.
-#' @seealso [get_gbif()], [sf::st_as_sf()], [sf::st_crs()]
-#'
-#' @examples
-#' ## Not run:
-#' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
-#' library("mpsgSE")
-#' 
-#' # Project directory path
-#' t_path <- file.path("T:/path/to/project/directory")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
-#'                      t_path = file.path(t_path, "data"))
-#' 
-#' # Convert to spatial object
-#' gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
-#' 
-#' ## End(Not run)                     
 gbif_spatial <- function(gbif_dat, crs = NULL){
   fc = sf::st_as_sf(gbif_dat, coords = c("decimalLongitude", "decimalLatitude"),
                     crs = "WGS84")

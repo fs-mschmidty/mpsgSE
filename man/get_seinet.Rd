@@ -14,6 +14,9 @@ get_seinet(dir_path, crs = NULL)
 See \code{sf::st_crs()} for more details. Default is NULL. If NULL,
 resulting sf object CRS will be WGS84.}
 }
+\value{
+A tibble.
+}
 \description{
 This function reads SEINet data in Darwin Core Archive format into R.
 }

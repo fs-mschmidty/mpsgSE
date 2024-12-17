@@ -14,6 +14,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
+    devtools, 
     dplyr,
     glue,
     httr2,
@@ -21,8 +22,9 @@ Imports:
     lubridate,
     natserv,
     readr,
-    readxl,
+    remotes,
     rgbif,
+    readxl,
     sf,
     stringr,
     taxize,

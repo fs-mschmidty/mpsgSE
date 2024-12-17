@@ -8,7 +8,7 @@
 #'                See `sf::st_crs()` for more details. Default is NULL. If NULL, 
 #'                resulting sf object CRS will be WGS84.
 #'
-#' @return
+#' @return A tibble.
 #' 
 #' @details
 #' Additional details...

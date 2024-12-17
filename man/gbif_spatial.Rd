@@ -15,32 +15,8 @@ gbif_spatial(gbif_dat, crs = NULL)
 for more details. Default is NULL. If NULL, resulting sf
 object CRS will be WGS84.}
 }
-\value{
-An sf object.
-}
 \description{
 This function converts the output from \code{get_gbif()} to a spatial (\code{sf})
 object using \code{sf::st_as_sf()}. This function will also transform the data
 to a target coordinate reference system.
-}
-\examples{
-## Not run:
-
-devtools::install_github("fs-mschmidty/mpsgSE")
-library("mpsgSE")
-
-# Project directory path
-t_path <- file.path("T:/path/to/project/directory")
-
-# Pull data from existing GBIF query
-gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
-                     t_path = file.path(t_path, "data"))
-
-# Convert to spatial object
-gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
-
-## End(Not run)                     
-}
-\seealso{
-\code{\link[=get_gbif]{get_gbif()}}, \code{\link[sf:st_as_sf]{sf::st_as_sf()}}, \code{\link[sf:st_crs]{sf::st_crs()}}
 }

@@ -40,10 +40,9 @@ is set to \strong{new}. Default is NULL.}
 Darwin-Core Achrive (DWAC). See \code{rgbif::occ_download()} for more details.}
 
 \item{crs}{Target coordinate reference system (CRS). Either and
-\code{sf::st_crs()} object or accepted input string for
-\code{sf::st_crs()} (e.g. "WGS84" or "NAD83"). See \code{sf::st_crs()}
-for more details. Default is NULL. If NULL, resulting sf
-object CRS will be WGS84.}
+\code{sf::st_crs()} object or accepted input string (e.g. "NAD83").
+See \code{sf::st_crs()} for more details. Default is NULL. If NULL,
+resulting sf object CRS will be WGS84.}
 
 \item{process_data}{Logical. Process data after reading them into R (TRUE ==
 yes, FALSE == no). Default is TRUE. The processing step
@@ -96,5 +95,5 @@ gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
 \seealso{
 \code{\link[rgbif:download_predicate_dsl]{rgbif::pred_within()}}, \code{\link[rgbif:occ_download]{rgbif::occ_download()}},
 \code{\link[rgbif:occ_download_wait]{rgbif::occ_download_wait()}}, \code{\link[rgbif:occ_download_get]{rgbif::occ_download_get()}},
-\code{\link[rgbif:occ_download_import]{rgbif::occ_download_import()}}
+\code{\link[rgbif:occ_download_import]{rgbif::occ_download_import()}}, \code{\link[sf:st_crs]{sf::st_crs()}}
 }
