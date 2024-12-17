@@ -38,3 +38,23 @@ view_dups <- function(spp_dat, spp_vec){
   }
 
 
+#' Convert GBIF data frame to an sf object
+#' 
+#' This function converts the output from `get_gbif()` to a spatial (`sf`) 
+#'     object using `sf::st_as_sf()`. This function will also transform the data
+#'     to a target coordinate reference system.
+#'
+#' @param gbif_dat GBIF data frame from `get_gbif()`.
+#' @param crs Target coordinate reference system (CRS). Either and 
+#'                `sf::st_crs()` object or accepted input string for 
+#'                `sf::st_crs()` (e.g. "WGS84" or "NAD83"). See `sf::st_crs()`
+#'                for more details. Default is NULL. If NULL, resulting sf 
+#'                object CRS will be WGS84.
+gbif_spatial <- function(gbif_dat, crs = NULL){
+  fc = sf::st_as_sf(gbif_dat, coords = c("decimalLongitude", "decimalLatitude"),
+                    crs = "WGS84")
+  if(!is.null(crs)){
+    if(sf::st_crs(fc) != crs) fc = sf::st_transform(fc, crs = crs)
+  }
+  return(fc)
+} 
