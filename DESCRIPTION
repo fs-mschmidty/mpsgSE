@@ -20,6 +20,7 @@ Imports:
     janitor,
     lubridate,
     natserv,
+    readr,
     readxl,
     rgbif,
     sf,
