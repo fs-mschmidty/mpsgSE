@@ -12,6 +12,7 @@ get_gbif(
   gbif_pwd = NULL,
   gbif_email = NULL,
   gbif_format = "DWCA",
+  crs = NULL,
   process_data = TRUE
 )
 }
@@ -37,6 +38,12 @@ is set to \strong{new}. Default is NULL.}
 
 \item{gbif_format}{The format of the data returned from GBIF. Default is
 Darwin-Core Achrive (DWAC). See \code{rgbif::occ_download()} for more details.}
+
+\item{crs}{Target coordinate reference system (CRS). Either and
+\code{sf::st_crs()} object or accepted input string for
+\code{sf::st_crs()} (e.g. "WGS84" or "NAD83"). See \code{sf::st_crs()}
+for more details. Default is NULL. If NULL, resulting sf
+object CRS will be WGS84.}
 
 \item{process_data}{Logical. Process data after reading them into R (TRUE ==
 yes, FALSE == no). Default is TRUE. The processing step
@@ -76,11 +83,13 @@ gbif_dat <- get_gbif(gbif_key = 'new',
                      aoa_wkt = wkt_string(sf_aoa),
                      gbif_user = Sys.getenv("GBIF_USER"),
                      gbif_pwd = Sys.getenv("GBIF_PWD"),
-                     gbif_email = Sys.getenv("GBIF_EMAIL"))
+                     gbif_email = Sys.getenv("GBIF_EMAIL"), 
+                     crs = 'NAD83')
                      
 # Pull data from existing GBIF query
 gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
-                     t_path = file.path(t_path, "data"))
+                     t_path = file.path(t_path, "data"), 
+                     crs = 'NAD83')
 
 ## End(Not run)                     
 }

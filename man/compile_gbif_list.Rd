@@ -50,5 +50,5 @@ gbif_list <- compile_gbif_list(unit_gbif, buff_gbif)
 ## End(Not run)                     
 }
 \seealso{
-\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spatial]{gbif_spatial()}}, \code{\link[=gbif_spp]{gbif_spp()}}
+\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spatial]{gbif_spatial()}}, \code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=clip_fc]{clip_fc()}}
 }
