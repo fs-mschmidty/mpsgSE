@@ -3,6 +3,7 @@ title: Species Evaluation Automation Process
 date: 2024-12-05
 format:
   html: default
+  md: default
   # pdf: default
   # docx: default
 bibliography: references.bib
@@ -32,40 +33,42 @@ Broadly there are three parts to automating:
 
 ### The Use of R Programming Language
 
-The MPSG uses the R programming language (CITE R) for much of the work we do in automation and will be referencing R code and packages in this document because it helps explain how we accomplished a lot of what we did.  However, automation is not necessarily dependent on R. Many of these processes could be completed by other means and R is irrelevant to many of the data sources and structures we have developed at the MPSG. 
+The MPSG uses the R programming language [@rcoreteamLanguageEnvironmentStatistical2023] for much of the work we do in automation and will be referencing R code and packages in this document because it helps explain how we accomplished a lot of what we did.  However, automation is not necessarily dependent on R. Many of these processes could be completed by other means and R is irrelevant to many of the data sources and structures we have developed at the MPSG. 
 
 ### Taxonomy
-Automation would not be possible withought first automating taxonomic classification of species names.  The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information.  Many of those resources have their own methods for dealing with taxonomy, but almost all of them differ in some way on how they define and classify species.  This is problematic for autamating species evaluations because almost every part of the process relies on reliable cross referencing information. For eexample, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (*Bouteloua gracilis*) one uses *Bouteloua gracilis* and another uses a recognized synonym *Chondrosum gracile* we need a way to recognize both.  They are the same plant. But one database recognizes one synonmy and the other recognizes another.  In other words, if we are to use these occurrence databases,  we needed a way to algorithmically to link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. 
 
-A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the [`taxize`] R package to access the GBIF Backbone Taxonomy. Natureserve, ITIS, and USDA plants were all tried before we landed on GBIF. 
+Automation would not be possible without first automating taxonomic classification of species names.  The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information.  Many of those resources have their own methods for resolving taxonomy, but almost all of them differ in some way on how they define and classify species.  This is problematic for automating species evaluations because almost every part of the process relies on reliably cross referencing information. For example, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (*Bouteloua gracilis*) one uses *Bouteloua gracilis* and another uses a recognized synonym *Chondrosum gracile* we need a way to recognize both as the same plant.  To resolve this,  we needed a way to algorithmically link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. Manual resolution of taxonomic classification would not be possible. 
 
-The name that the taxize package uses is not necessarily used in the species evaluations.  Instead the name resolves to a species ID number assigned by GBIF and we use that number to identify the species in analysis and comparison.  
+A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the [`taxize`](https://github.com/ropensci/taxize)  [@scottchamberlainTaxizeTaxonomicInformation2020] R package to access the GBIF Backbone Taxonomy. Natureserve, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name.  ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names.  Natureserves search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution. 
 
-However, we do not use the scientific names that GBIF returns, instead we use Naturserve for accepted scientific names.  ### Maybe Keats can help with why this is so imporant.  
+Often when a name is searched in GBIF, the name that is returned does not match the name in the Natureserve database. The Forest Service Assessment Handbook (@usdaforestserviceHandbook190912Land2015) directs the use of Natureserve in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations.  The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms.  When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.  
 
-While the system works well, it is not perfect, and occasionally many scientific names recognized by Natureserve will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually.  
+While the system works well, it is not perfect, and occasionally many scientific names recognized by Natureserve will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually.  This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings.  It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.  
 
-The process for resolving taxonomy is codified in a function in the [mpsgSE](https://github.com/fs-mschmidty/mpsgSE) package called [`get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R). Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. 
+The process for resolving taxonomy is codified in a function in the [mpsgSE](https://github.com/fs-mschmidty/mpsgSE) package called [`get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R). Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. It takes one parameter which identifies the field with the scientific name.  
 
 ## Build Eligible List
 
-### Unit Spatial Layers and Other Unit Relevant Spatial Layers
-
-Spatial administrative boundary data (S_USA.AdministrativeForest) are acquired from the Forest Service Enterprise Data Warehouse (EDW). 
-Forest or grassland boundaries are subseted using a Definition Query for that Forest Service unit in ArcGIS Pro (ESRI Inc. 2024).
-The administrative boundary is used to clip (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) Forest Service owned lands, or Plan Area, from the EDW basic ownership data (S_USA.BasicOwnership).
-The administrative boundary and plan area data are exported to a geodatabse for use through out the plan revision process.
-One-kilometer buffers are created around the administrative boundary and the plan area using the Buffer tool (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) to capture observations immediately adjacent to the plan area.
-
 ### Natureserve State List
 
-1. Pull all species from natureserve for any given state[`mpsgSE::get_ns_state_list`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R)
-  a. Scientific  Name
-  b. Global Rank
-  c. State Rank for given state. 
-  d. USFWS status
-2. Merge State Lists if necessary and keep only unique species
-3. Use [`mpsgSE::get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) to acquire unique ID. 
+The eligible list development begins with pulling all species in Natureserve for a given unit. To do this we begin by pulling all species for the state where a unit resides.  In most cases one state pull is needed, but for units that reside in multiple states each state must be pulled and then the lists should be merged, eliminating duplicates. 
+
+A pull for any given state does note determine eligibility for a unit list, instead it is the total number of species tracked by Natureserve for any given state.  Species found on the state list must also be determined to occupy a given unit (determined to be Native and Known) and meet other qualifying criteria [@usdaforestserviceHandbook190912Land2015]. 
+
+Data used from the Natureserve state pull to determine eligibility are: 
+
+  a. Scientific Name
+  b. Natureserve Global Rank (G/T Rank)
+  c. State Rank for given state (S/T Rank)
+  d. USFWS Status (Endangered, Threatened, Candidate, or Under Review)
+
+A function was developed for this process for pulling data from any given state calle [`get_ns_state_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R). It relies on the [natserve](https://github.com/cran/natserv) [@chamberlainNatservNatureServeInterface2024] package `ns_export` function. This could also be accomplished by querying the [Natureserve API directly](https://explorer.natureserve.org/api-docs/?gad_source=1&gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export). It takes one input, which is the state short code (ex: "CO" for Colorado) and returns the full list of track Natureserve species for that state. 
+
+After the list is aquired [get_taxonomies](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) is use to get the taxon_id for each species for joining with other lists. 
+
+### Unit Spatial Layers and Other Unit Relevant Spatial Layers
+
+Spatial administrative boundary data (S_USA.AdministrativeForest) are acquired from the Forest Service Enterprise Data Warehouse (EDW). Forest or grassland boundaries are subseted using a Definition Query for that Forest Service unit in ArcGIS Pro [@esriincArcGISPro332024]. The administrative boundary is used to clip (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) Forest Service owned lands, or Plan Area, from the EDW basic ownership data (S_USA.BasicOwnership). The administrative boundary and plan area data are exported to a geodatabse for use through out the plan revision process. One-kilometer buffers are created around the administrative boundary and the plan area using the Buffer tool (Analysis Toolbox, ArcGIS Pro, ESRI Inc. 2024) to capture observations immediately adjacent to the plan area.
 
 ### Get Occurrence Data
 
@@ -77,9 +80,13 @@ The following datasets are assigned a taxonomic ID using the [`mpsgSE::get_taxon
 #### Global Biodiversity Information Facility
 
 Global Biodiversity Information Facility (GBIF; Global Biodiversity Information Facility 2022a) is a repository of externally sourced species occurrence records from museum collections, academic studies, and citizen science programs.
+
 GBIF records requests are staged on GBIF servers and have to be downloaded (see [Getting Occurrence Data From GBIF](https://docs.ropensci.org/rgbif/articles/getting_occurrence_data.html) for details).
+
 An R script submits a records request using the 1-km buffer around the administrative boundary to spatially query GBIF records. 
+
 The data are downloaded in [Darwin Core Archive format](https://www.gbif.org/darwin-core) (GBIF, 2022b) for full data provenance.
+
 The data are unzipped and read in to R once the request is available using the `rgbif` package (version 3.7.8, Chamberlain et al. 2023).
 
 #### SEINet
