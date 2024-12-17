@@ -72,6 +72,7 @@ Spatial administrative boundary data (S_USA.AdministrativeForest) are acquired f
 
 ### Get Occurrence Data
 
+As state in the 2012 Planning Rule species must be known to occur in the planning area. To determine if species are known to occur, open source occurrence databases are quiried for species occurrences within the planning unit. While occurrence provide the first line of evidence for known to occur we also rely on people who work on the planning unit for additional information. 
 <!-- Matt I think it would be best if you wrote this section. -->
 <!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") -->
 
@@ -107,8 +108,6 @@ The [Integrated Monitoring in Bird Conservation Regions (IMBCR)](https://www.bir
 IMBCR data spanning 2008-2023 were obtained for Forest Service lands on 12 December, 2023, for use in these analyses. 
 These data were received in and Excel file and an script reads them into R.
 
-* NABat Data
-
 <!-- I'm not currently pulling NABat data because the process is prohibitive to do so across the MPSG footprint. -->
 
 * Maybe why we don't us Idigbio anymore
@@ -121,7 +120,7 @@ An R script submits a records request using the 1-km buffer around the administr
 Do we want to a include data limitations section?
 -->
 
-### A Not on Limitations of Species Occurrence Data
+#### A Note on Limitations of Species Occurrence Data
 
 ###  Get Qualifying Lists
 
