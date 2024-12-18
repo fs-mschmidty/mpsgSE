@@ -142,7 +142,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #'     This function then verifies taxonomy using the `get_taxonomies()` 
 #'     function.
 #'
-#' @param sf_data Spatial GBIF data from `gbif_spatial()`.
+#' @param gbif_data Spatial GBIF data from `gbif_spatial()`.
 #'
 #' @return A tibble.
 #' @seealso [get_gbif()], [gbif_spatial()], [get_taxonomies()]
@@ -168,9 +168,9 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #' gbif_list <- gbif_spp(gbif_sf)
 #' 
 #' ## End(Not run)                     
-gbif_spp <- function(sf_data){
-  locale = stringr::str_c(unique(sf_data$locale), collapse = ", ")
-  dat = sf::st_drop_geometry(sf_data) |>
+gbif_spp <- function(gbif_data){
+  locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
+  dat = sf::st_drop_geometry(gbif_data) |>
     dplyr::select(scientific_name, taxonKey, occurrenceID, year) |> 
     dplyr::distinct() |>
     dplyr::group_by(scientific_name) |> 
@@ -198,8 +198,8 @@ gbif_spp <- function(sf_data){
 #'     `gbif_spp()` function on two clipped spatial objects from 
 #'     `gbif_spatial()`.
 #'
-#' @param unit_sf Spatial GBIF data from `gbif_spatial()` clipped to FS land.
-#' @param buff_sf Spatial GBIF data from `gbif_spatial()` clipped to the 1-km 
+#' @param gbif_unit Spatial GBIF data from `gbif_spatial()` clipped to FS land.
+#' @param gbif_buff Spatial GBIF data from `gbif_spatial()` clipped to the 1-km 
 #'                    buffer of FS land.
 #'
 #' @return A tibble.
@@ -233,11 +233,11 @@ gbif_spp <- function(sf_data){
 #' gbif_list <- compile_gbif_list(unit_gbif, buff_gbif)
 #' 
 #' ## End(Not run)                     
-compile_gbif_list <- function(unit_sf, buff_sf){
+compile_gbif_list <- function(gbif_unit, gbif_buff){
   message("Processing unit species data")
-  unit_list = gbif_spp(unit_sf)
+  unit_list = gbif_spp(gbif_unit)
   message("Processing buffer species data")
-  buff_list = gbif_spp(buff_sf)
+  buff_list = gbif_spp(gbif_buff)
   message("Compiling species list")
   comp_list = rbind(add_cols(unit_list, buff_list),
                      dplyr::filter(add_cols(buff_list, unit_list), 

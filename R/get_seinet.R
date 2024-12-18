@@ -44,7 +44,7 @@ get_seinet <- function(dir_path, crs = NULL){
                  crs = "WGS84")
   # Re-project CRS
   if(!is.null(crs)){
-    if(sf::st_crs(dat) != crs) fc = sf::st_transform(dat, crs = crs)
+    if(sf::st_crs(dat) != crs) dat = sf::st_transform(dat, crs = crs)
   }
   
   return(dat)
@@ -58,7 +58,7 @@ get_seinet <- function(dir_path, crs = NULL){
 #'     there are less than seven (7) observations. This function then verifies 
 #'     taxonomy using the `get_taxonomies()` function.
 #'
-#' @param sei_dat Spatial SEINet data from `get_seinet()`.
+#' @param seinet_data Spatial SEINet data from `get_seinet()`.
 #'
 #' @return A tibble.
 #' @seealso [get_seinet()], [get_taxonomies()]
@@ -80,9 +80,9 @@ get_seinet <- function(dir_path, crs = NULL){
 #' spp_list <- seinet_spp(sei_dat)
 #' 
 #' ## End(Not run)                     
-seinet_spp <- function(sei_dat){
-  locale = stringr::str_c(unique(sei_dat$locale), collapse = ", ")
-  dat = sf::st_drop_geometry(sei_dat) |> 
+seinet_spp <- function(seinet_data){
+  locale = stringr::str_c(unique(seinet_data$locale), collapse = ", ")
+  dat = sf::st_drop_geometry(seinet_data) |> 
     dplyr::select(occurrenceID, scientificName, taxonID, date) |> 
     dplyr::rename("scientific_name" = scientificName) |>
     dplyr::distinct() |> 
@@ -113,8 +113,8 @@ seinet_spp <- function(sei_dat){
 #'     `seinet_spp()` function on two clipped spatial objects from 
 #'     `get_seinet()`.
 #'
-#' @param unit_sf Spatial SEINet data from `get_seinet()` clipped to FS land.
-#' @param buff_sf Spatial SEINet data from `get_seinet()` clipped to the 1-km 
+#' @param seinet_unit Spatial SEINet data from `get_seinet()` clipped to FS land.
+#' @param seinet_buff Spatial SEINet data from `get_seinet()` clipped to the 1-km 
 #'                    buffer of FS land.
 #'
 #' @return A tibble.
@@ -145,11 +145,11 @@ seinet_spp <- function(sei_dat){
 #' spp_list <- compile_seinet_list(unit_sei, buff_sei)
 #' 
 #' ## End(Not run)                     
-compile_seinet_list <- function(unit_sf, buff_sf){
+compile_seinet_list <- function(seinet_unit, seinet_buff){
   message("Processing unit species data")
-  unit_list = seinet_spp(unit_sf)
+  unit_list = seinet_spp(seinet_unit)
   message("Processing buffer species data")
-  buff_list = seinet_spp(buff_sf)
+  buff_list = seinet_spp(seinet_buff)
   message("Compiling species list")
   comp_list = rbind(add_cols(unit_list, buff_list),
                      dplyr::filter(add_cols(buff_list, unit_list), 
