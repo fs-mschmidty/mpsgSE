@@ -32,7 +32,7 @@
 #'   genus, specific epithet, and infraspecific epithet, and  
 #'   5. attempts to parse dates, day of year, and year values.
 #'
-#' @return A tibble.
+#' @return An sf class object.
 #' 
 #' @details
 #' Additional details...
@@ -134,7 +134,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 
 #' Summarize GBIF data by species
 #' 
-#' This function summarizes the spatial GBIF object from `gbif_spatial()` by 
+#' This function summarizes the spatial GBIF object from `get_gbif()` by 
 #'     species. Currently this function only works when 
 #'     `get_gbif(..., process_data = TRUE)`. The summary includes the number of 
 #'     records per species, minimum and maximum year a species is observed, and 
@@ -142,10 +142,10 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #'     This function then verifies taxonomy using the `get_taxonomies()` 
 #'     function.
 #'
-#' @param gbif_data Spatial GBIF data from `gbif_spatial()`.
+#' @param gbif_data Spatial GBIF data from `get_gbif()`.
 #'
 #' @return A tibble.
-#' @seealso [get_gbif()], [gbif_spatial()], [get_taxonomies()]
+#' @seealso [get_gbif()], [get_taxonomies()]
 #' @export
 #'
 #' @examples
@@ -160,9 +160,6 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #' # Pull data from existing GBIF query
 #' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
 #'                      t_path = file.path(t_path, "data"))
-#' 
-#' # Convert to spatial object
-#' gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
 #' 
 #' # Summarize species
 #' gbif_list <- gbif_spp(gbif_sf)
@@ -195,15 +192,14 @@ gbif_spp <- function(gbif_data){
 #' 
 #' Compile a comprehensive species list from GBIF occurrence records on Forest 
 #'     Service (FS) land and a 1-km buffer of FS land. This function uses the 
-#'     `gbif_spp()` function on two clipped spatial objects from 
-#'     `gbif_spatial()`.
+#'     `gbif_spp()` function on two clipped spatial objects from `get_gbif()`.
 #'
-#' @param gbif_unit Spatial GBIF data from `gbif_spatial()` clipped to FS land.
-#' @param gbif_buff Spatial GBIF data from `gbif_spatial()` clipped to the 1-km 
+#' @param gbif_unit Spatial GBIF data from `get_gbif()` clipped to FS land.
+#' @param gbif_buff Spatial GBIF data from `get_gbif()` clipped to the 1-km 
 #'                    buffer of FS land.
 #'
 #' @return A tibble.
-#' @seealso [get_gbif()], [gbif_spatial()], [gbif_spp()], [clip_fc()]
+#' @seealso [get_gbif()], [gbif_spp()], [clip_fc()]
 #' @export
 #'
 #' @examples
@@ -221,9 +217,6 @@ gbif_spp <- function(gbif_data){
 #' # Pull data from existing GBIF query
 #' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
 #'                      t_path = file.path(t_path, "data"))
-#' 
-#' # Convert to spatial object
-#' gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
 #' 
 #' # Clip to extents
 #' unit_gbif <- clip_fc(gbif_sf, sf_fs)

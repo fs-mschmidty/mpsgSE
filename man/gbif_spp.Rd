@@ -4,16 +4,16 @@
 \alias{gbif_spp}
 \title{Summarize GBIF data by species}
 \usage{
-gbif_spp(sf_data)
+gbif_spp(gbif_data)
 }
 \arguments{
-\item{sf_data}{Spatial GBIF data from \code{gbif_spatial()}.}
+\item{gbif_data}{Spatial GBIF data from \code{get_gbif()}.}
 }
 \value{
 A tibble.
 }
 \description{
-This function summarizes the spatial GBIF object from \code{gbif_spatial()} by
+This function summarizes the spatial GBIF object from \code{get_gbif()} by
 species. Currently this function only works when
 \code{get_gbif(..., process_data = TRUE)}. The summary includes the number of
 records per species, minimum and maximum year a species is observed, and
@@ -34,14 +34,11 @@ t_path <- file.path("T:/path/to/project/directory")
 gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
                      t_path = file.path(t_path, "data"))
 
-# Convert to spatial object
-gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
-
 # Summarize species
 gbif_list <- gbif_spp(gbif_sf)
 
 ## End(Not run)                     
 }
 \seealso{
-\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spatial]{gbif_spatial()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
+\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
 }

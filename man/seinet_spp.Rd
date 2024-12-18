@@ -4,10 +4,10 @@
 \alias{seinet_spp}
 \title{Summarize SEINet data by species}
 \usage{
-seinet_spp(sei_dat)
+seinet_spp(seinet_data)
 }
 \arguments{
-\item{sei_dat}{Spatial SEINet data from \code{get_seinet()}.}
+\item{seinet_data}{Spatial SEINet data from \code{get_seinet()}.}
 }
 \value{
 A tibble.
@@ -26,10 +26,10 @@ devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Path to data folder
-data_folder <- file.path("T:/path/to/project/directory"/data/SEINet)
+data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 
 # Pull data from existing SEINet query
-sei_dat <- get_seinet(dat_dir = data_folder, crs = "NAD83")
+sei_dat <- get_seinet(data_folder, crs = "NAD83")
 
 # Summarize species
 spp_list <- seinet_spp(sei_dat)

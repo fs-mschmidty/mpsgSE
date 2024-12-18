@@ -4,12 +4,12 @@
 \alias{compile_gbif_list}
 \title{Compile GBIF list}
 \usage{
-compile_gbif_list(unit_sf, buff_sf)
+compile_gbif_list(gbif_unit, gbif_buff)
 }
 \arguments{
-\item{unit_sf}{Spatial GBIF data from \code{gbif_spatial()} clipped to FS land.}
+\item{gbif_unit}{Spatial GBIF data from \code{get_gbif()} clipped to FS land.}
 
-\item{buff_sf}{Spatial GBIF data from \code{gbif_spatial()} clipped to the 1-km
+\item{gbif_buff}{Spatial GBIF data from \code{get_gbif()} clipped to the 1-km
 buffer of FS land.}
 }
 \value{
@@ -18,8 +18,7 @@ A tibble.
 \description{
 Compile a comprehensive species list from GBIF occurrence records on Forest
 Service (FS) land and a 1-km buffer of FS land. This function uses the
-\code{gbif_spp()} function on two clipped spatial objects from
-\code{gbif_spatial()}.
+\code{gbif_spp()} function on two clipped spatial objects from \code{get_gbif()}.
 }
 \examples{
 ## Not run:
@@ -37,9 +36,6 @@ sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
 gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
                      t_path = file.path(t_path, "data"))
 
-# Convert to spatial object
-gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
-
 # Clip to extents
 unit_gbif <- clip_fc(gbif_sf, sf_fs)
 buff_gbif <- clip_fc(gbif_sf, sf_buff)
@@ -50,5 +46,5 @@ gbif_list <- compile_gbif_list(unit_gbif, buff_gbif)
 ## End(Not run)                     
 }
 \seealso{
-\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spatial]{gbif_spatial()}}, \code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=clip_fc]{clip_fc()}}
+\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=clip_fc]{clip_fc()}}
 }

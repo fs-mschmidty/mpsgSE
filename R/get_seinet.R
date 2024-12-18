@@ -8,7 +8,7 @@
 #'                See `sf::st_crs()` for more details. Default is NULL. If NULL, 
 #'                resulting sf object CRS will be WGS84.
 #'
-#' @return A tibble.
+#' @return An sf class object.
 #' 
 #' @details
 #' Additional details...
@@ -22,10 +22,10 @@
 #' library("mpsgSE")
 #' 
 #' # Path to data folder
-#' data_folder <- file.path("T:/path/to/project/directory"/data/SEINet)
+#' data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 #' 
 #' # Pull data from existing SEINet query
-#' sei_dat <- get_seinet(dat_dir = data_folder, crs = "NAD83")
+#' sei_dat <- get_seinet(data_folder, crs = "NAD83")
 #' 
 #' ## End(Not run)                     
 get_seinet <- function(dir_path, crs = NULL){
@@ -71,10 +71,10 @@ get_seinet <- function(dir_path, crs = NULL){
 #' library("mpsgSE")
 #' 
 #' # Path to data folder
-#' data_folder <- file.path("T:/path/to/project/directory"/data/SEINet)
+#' data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 #' 
 #' # Pull data from existing SEINet query
-#' sei_dat <- get_seinet(dat_dir = data_folder, crs = "NAD83")
+#' sei_dat <- get_seinet(data_folder, crs = "NAD83")
 #' 
 #' # Summarize species
 #' spp_list <- seinet_spp(sei_dat)
@@ -134,8 +134,7 @@ seinet_spp <- function(seinet_data){
 #' sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
 #' 
 #' # Pull data from existing SEINet query
-#' sei_dat <- get_seinet(dat_dir = file.path(t_path, "data/SEINet"), 
-#'                       crs = "NAD83")
+#' sei_dat <- get_seinet(file.path(t_path, "data/SEINet"), crs = "NAD83")
 #' 
 #' # Clip to extents
 #' unit_sei <- clip_fc(sei_dat, sf_fs)

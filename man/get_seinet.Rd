@@ -15,7 +15,7 @@ See \code{sf::st_crs()} for more details. Default is NULL. If NULL,
 resulting sf object CRS will be WGS84.}
 }
 \value{
-A tibble.
+An sf class object.
 }
 \description{
 This function reads SEINet data in Darwin Core Archive format into R.
@@ -30,10 +30,10 @@ devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Path to data folder
-data_folder <- file.path("T:/path/to/project/directory"/data/SEINet)
+data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 
 # Pull data from existing SEINet query
-sei_dat <- get_seinet(dat_dir = data_folder, crs = "NAD83")
+sei_dat <- get_seinet(data_folder, crs = "NAD83")
 
 ## End(Not run)                     
 }
