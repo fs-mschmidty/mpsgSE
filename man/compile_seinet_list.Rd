@@ -4,12 +4,12 @@
 \alias{compile_seinet_list}
 \title{Compile SEINet list}
 \usage{
-compile_seinet_list(unit_sf, buff_sf)
+compile_seinet_list(seinet_unit, seinet_buff)
 }
 \arguments{
-\item{unit_sf}{Spatial SEINet data from \code{get_seinet()} clipped to FS land.}
+\item{seinet_unit}{Spatial SEINet data from \code{get_seinet()} clipped to FS land.}
 
-\item{buff_sf}{Spatial SEINet data from \code{get_seinet()} clipped to the 1-km
+\item{seinet_buff}{Spatial SEINet data from \code{get_seinet()} clipped to the 1-km
 buffer of FS land.}
 }
 \value{
@@ -34,8 +34,7 @@ sf_fs <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
 sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
 
 # Pull data from existing SEINet query
-sei_dat <- get_seinet(dat_dir = file.path(t_path, "data/SEINet"), 
-                      crs = "NAD83")
+sei_dat <- get_seinet(file.path(t_path, "data/SEINet"), crs = "NAD83")
 
 # Clip to extents
 unit_sei <- clip_fc(sei_dat, sf_fs)

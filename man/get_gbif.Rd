@@ -56,7 +56,7 @@ genus, specific epithet, and infraspecific epithet, and
 }}
 }
 \value{
-A tibble.
+An sf class object.
 }
 \description{
 This function queries GBIF for species occurrence records for a given area,
