@@ -69,18 +69,18 @@ would not be possible.
 A variety of resources were evaluated as potential solutions taxanomic
 classification, but ultimately landed on using the
 [`taxize`](https://github.com/ropensci/taxize) (Scott Chamberlain et al.
-2020) R package to access the GBIF Backbone Taxonomy. Natureserve, ITIS,
+2020) R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS,
 and USDA plants were all tried before we ultimately decided on GBIF.
 GBIF was chosen because it reliably returned the correct name. ITIS was
 a close second, but it was routinely down and would fail when trying to
-resolve long lists of names. Natureserves search returned incorrect
-names too frequently. USDA plants was also considered but they do not
-provide an APIfor name resolution.
+resolve long lists of names. NatureServe search returned incorrect names
+too frequently. USDA plants was also considered but they do not provide
+an APIfor name resolution.
 
 Often when a name is searched in GBIF, the name that is returned does
-not match the name in the Natureserve database. The Forest Service
+not match the name in the NatureServe database. The Forest Service
 Assessment Handbook (USDA Forest Service (2015)) directs the use of
-Natureserve in species consideration lists. Therfore, scientific names
+NatureServe in species consideration lists. Therfore, scientific names
 provided by Naturserve for are used for species evaluations. The taxomic
 process we developed is agnostic to the scientific name source. It
 instead relies on the a taxon_id that is associated with names
@@ -89,7 +89,7 @@ sources we rely on the Taxonomic Identifier and not the names for list
 joining.
 
 While the system works well, it is not perfect, and occasionally many
-scientific names recognized by Natureserve will resolve to the same
+scientific names recognized by NatureServe will resolve to the same
 species in the GBIF Backbone Taxonomy. In this case manual resolution of
 names is necessary and species evaluations must be completed manually.
 This is necessary because without matching taxonomic identifiers we have
@@ -108,24 +108,24 @@ parameter which identifies the field with the scientific name.
 
 ## Build Eligible List
 
-### Natureserve State List
+### NatureServe State List
 
 The eligible list development begins with pulling all species in
-Natureserve for a given unit. To do this we begin by pulling all species
+NatureServe for a given unit. To do this we begin by pulling all species
 for the state where a unit resides. In most cases one state pull is
 needed, but for units that reside in multiple states each state must be
 pulled and then the lists should be merged, eliminating duplicates.
 
 A pull for any given state does note determine eligibility for a unit
-list, instead it is the total number of species tracked by Natureserve
+list, instead it is the total number of species tracked by NatureServe
 for any given state. Species found on the state list must also be
 determined to occupy a given unit (determined to be Native and Known)
 and meet other qualifying criteria (USDA Forest Service 2015).
 
-Data used from the Natureserve state pull to determine eligibility are:
+Data used from the NatureServe state pull to determine eligibility are:
 
 1.  Scientific Name
-2.  Natureserve Global Rank (G/T Rank)
+2.  NatureServe Global Rank (G/T Rank)
 3.  State Rank for given state (S/T Rank)
 4.  USFWS Status (Endangered, Threatened, Candidate, or Under Review)
 
@@ -134,10 +134,10 @@ given state calle
 [`get_ns_state_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R).
 It relies on the [natserve](https://github.com/cran/natserv)
 (Chamberlain and Tracey 2024) package `ns_export` function. This could
-also be accomplished by querying the [Natureserve API
+also be accomplished by querying the [NatureServe API
 directly](https://explorer.natureserve.org/api-docs/?gad_source=1&gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export).
 It takes one input, which is the state short code (ex: “CO” for
-Colorado) and returns the full list of track Natureserve species for
+Colorado) and returns the full list of track NatureServe species for
 that state.
 
 After the list is aquired
@@ -162,6 +162,12 @@ to the plan area.
 
 ### Get Occurrence Data
 
+As state in the 2012 Planning Rule species must be known to occur in the
+planning area. To determine if species are known to occur, open source
+occurrence databases are quiried for species occurrences within the
+planning unit. While occurrence provide the first line of evidence for
+known to occur we also rely on people who work on the planning unit for
+additional information.
 <!-- Matt I think it would be best if you wrote this section. -->
 <!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") -->
 
@@ -223,8 +229,6 @@ Regions 1-4. IMBCR data spanning 2008-2023 were obtained for Forest
 Service lands on 12 December, 2023, for use in these analyses. These
 data were received in and Excel file and an script reads them into R.
 
--   NABat Data
-
 <!-- I'm not currently pulling NABat data because the process is prohibitive to do so across the MPSG footprint. -->
 
 -   Maybe why we don’t us Idigbio anymore
@@ -244,18 +248,18 @@ records, which are read directly into R.
 Do we want to a include data limitations section?
 -->
 
-### A Not on Limitations of Species Occurrence Data
+#### A Note on Limitations of Species Occurrence Data
 
 ### Get Qualifying Lists
 
 -   State T and E, and Tier 1 Lists
 -   Regional Sensitive Species Lists
 -   Neighboring Unit SCC lists
--   USFWS Status (see above in Natureserve)
+-   USFWS Status (see above in NatureServe)
 
 ### Make Preliminary Eligible List
 
--   To the Natureserve State List, which already includes global, state
+-   To the NatureServe State List, which already includes global, state
     and USFWS ranks, full_join (So that if species is not on one list it
     does not get dropped) by taxon_id:
     -   State SWAP Lists
@@ -352,7 +356,7 @@ included in the `mpsgSE` package in the near future.
     -   primary
 -   Clean Unit Names
 
-#### Get Natureserve Habitats From the Natureserve API and Manually Crosswalk to Ecology
+#### Get NatureServe Habitats From the NatureServe API and Manually Crosswalk to Ecology
 
 #### Retrieve, Clean, and Build Narratives for IMBCR Trend Information
 

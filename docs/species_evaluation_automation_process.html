@@ -110,26 +110,26 @@ div.csl-indent {
 <section id="taxonomy" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomy">Taxonomy</h3>
 <p>Automation would not be possible without first automating taxonomic classification of species names. The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information. Many of those resources have their own methods for resolving taxonomy, but almost all of them differ in some way on how they define and classify species. This is problematic for automating species evaluations because almost every part of the process relies on reliably cross referencing information. For example, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (<em>Bouteloua gracilis</em>) one uses <em>Bouteloua gracilis</em> and another uses a recognized synonym <em>Chondrosum gracile</em> we need a way to recognize both as the same plant. To resolve this, we needed a way to algorithmically link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. Manual resolution of taxonomic classification would not be possible.</p>
-<p>A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the <a href="https://github.com/ropensci/taxize"><code>taxize</code></a> <span class="citation" data-cites="scottchamberlainTaxizeTaxonomicInformation2020">(<a href="#ref-scottchamberlainTaxizeTaxonomicInformation2020" role="doc-biblioref">Scott Chamberlain et al. 2020</a>)</span> R package to access the GBIF Backbone Taxonomy. Natureserve, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name. ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names. Natureserves search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution.</p>
-<p>Often when a name is searched in GBIF, the name that is returned does not match the name in the Natureserve database. The Forest Service Assessment Handbook (<span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">USDA Forest Service (<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">2015</a>)</span>) directs the use of Natureserve in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations. The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms. When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.</p>
-<p>While the system works well, it is not perfect, and occasionally many scientific names recognized by Natureserve will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually. This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings. It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.</p>
+<p>A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the <a href="https://github.com/ropensci/taxize"><code>taxize</code></a> <span class="citation" data-cites="scottchamberlainTaxizeTaxonomicInformation2020">(<a href="#ref-scottchamberlainTaxizeTaxonomicInformation2020" role="doc-biblioref">Scott Chamberlain et al. 2020</a>)</span> R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name. ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names. NatureServe search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution.</p>
+<p>Often when a name is searched in GBIF, the name that is returned does not match the name in the NatureServe database. The Forest Service Assessment Handbook (<span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">USDA Forest Service (<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">2015</a>)</span>) directs the use of NatureServe in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations. The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms. When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.</p>
+<p>While the system works well, it is not perfect, and occasionally many scientific names recognized by NatureServe will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually. This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings. It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.</p>
 <p>The process for resolving taxonomy is codified in a function in the <a href="https://github.com/fs-mschmidty/mpsgSE">mpsgSE</a> package called <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R"><code>get_taxonomies()</code></a>. Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. It takes one parameter which identifies the field with the scientific name.</p>
 </section>
 </section>
 <section id="build-eligible-list" class="level2">
 <h2 class="anchored" data-anchor-id="build-eligible-list">Build Eligible List</h2>
 <section id="natureserve-state-list" class="level3">
-<h3 class="anchored" data-anchor-id="natureserve-state-list">Natureserve State List</h3>
-<p>The eligible list development begins with pulling all species in Natureserve for a given unit. To do this we begin by pulling all species for the state where a unit resides. In most cases one state pull is needed, but for units that reside in multiple states each state must be pulled and then the lists should be merged, eliminating duplicates.</p>
-<p>A pull for any given state does note determine eligibility for a unit list, instead it is the total number of species tracked by Natureserve for any given state. Species found on the state list must also be determined to occupy a given unit (determined to be Native and Known) and meet other qualifying criteria <span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">(<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">USDA Forest Service 2015</a>)</span>.</p>
-<p>Data used from the Natureserve state pull to determine eligibility are:</p>
+<h3 class="anchored" data-anchor-id="natureserve-state-list">NatureServe State List</h3>
+<p>The eligible list development begins with pulling all species in NatureServe for a given unit. To do this we begin by pulling all species for the state where a unit resides. In most cases one state pull is needed, but for units that reside in multiple states each state must be pulled and then the lists should be merged, eliminating duplicates.</p>
+<p>A pull for any given state does note determine eligibility for a unit list, instead it is the total number of species tracked by NatureServe for any given state. Species found on the state list must also be determined to occupy a given unit (determined to be Native and Known) and meet other qualifying criteria <span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">(<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">USDA Forest Service 2015</a>)</span>.</p>
+<p>Data used from the NatureServe state pull to determine eligibility are:</p>
 <ol type="a">
 <li>Scientific Name</li>
-<li>Natureserve Global Rank (G/T Rank)</li>
+<li>NatureServe Global Rank (G/T Rank)</li>
 <li>State Rank for given state (S/T Rank)</li>
 <li>USFWS Status (Endangered, Threatened, Candidate, or Under Review)</li>
 </ol>
-<p>A function was developed for this process for pulling data from any given state calle <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R"><code>get_ns_state_list()</code></a>. It relies on the <a href="https://github.com/cran/natserv">natserve</a> <span class="citation" data-cites="chamberlainNatservNatureServeInterface2024">(<a href="#ref-chamberlainNatservNatureServeInterface2024" role="doc-biblioref">Chamberlain and Tracey 2024</a>)</span> package <code>ns_export</code> function. This could also be accomplished by querying the <a href="https://explorer.natureserve.org/api-docs/?gad_source=1&amp;gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export">Natureserve API directly</a>. It takes one input, which is the state short code (ex: “CO” for Colorado) and returns the full list of track Natureserve species for that state.</p>
+<p>A function was developed for this process for pulling data from any given state calle <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R"><code>get_ns_state_list()</code></a>. It relies on the <a href="https://github.com/cran/natserv">natserve</a> <span class="citation" data-cites="chamberlainNatservNatureServeInterface2024">(<a href="#ref-chamberlainNatservNatureServeInterface2024" role="doc-biblioref">Chamberlain and Tracey 2024</a>)</span> package <code>ns_export</code> function. This could also be accomplished by querying the <a href="https://explorer.natureserve.org/api-docs/?gad_source=1&amp;gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export">NatureServe API directly</a>. It takes one input, which is the state short code (ex: “CO” for Colorado) and returns the full list of track NatureServe species for that state.</p>
 <p>After the list is aquired <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R">get_taxonomies</a> is use to get the taxon_id for each species for joining with other lists.</p>
 </section>
 <section id="unit-spatial-layers-and-other-unit-relevant-spatial-layers" class="level3">
@@ -138,8 +138,7 @@ div.csl-indent {
 </section>
 <section id="get-occurrence-data" class="level3">
 <h3 class="anchored" data-anchor-id="get-occurrence-data">Get Occurrence Data</h3>
-<!-- Matt I think it would be best if you wrote this section. -->
-<!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") -->
+<p>As state in the 2012 Planning Rule species must be known to occur in the planning area. To determine if species are known to occur, open source occurrence databases are quiried for species occurrences within the planning unit. While occurrence provide the first line of evidence for known to occur we also rely on people who work on the planning unit for additional information. <!-- Matt I think it would be best if you wrote this section. --> <!-- For now these lists are just the lists have occurrence numbers and not the actual spatial data! (see section below "Load Occurrence Spatial Data") --></p>
 <p>The following datasets are assigned a taxonomic ID using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R"><code>mpsgSE::get_taxonomies()</code></a> function and summarized to the species, subspecies, or variety level.</p>
 <section id="global-biodiversity-information-facility" class="level4">
 <h4 class="anchored" data-anchor-id="global-biodiversity-information-facility">Global Biodiversity Information Facility</h4>
@@ -160,9 +159,6 @@ div.csl-indent {
 <section id="integrated-monitoring-in-bird-conservation-regions" class="level4">
 <h4 class="anchored" data-anchor-id="integrated-monitoring-in-bird-conservation-regions">Integrated Monitoring in Bird Conservation Regions</h4>
 <p>The <a href="https://www.birdconservancy.org/what-we-do/science/monitoring/imbcr-program/">Integrated Monitoring in Bird Conservation Regions (IMBCR)</a> is a long-term avian monitoring program coordinated by the <a href="https://www.birdconservancy.org/">Birds Conservancy of the Rockies</a>, and maintains monitoring plots on public lands throughout Forest Service Regions 1-4. IMBCR data spanning 2008-2023 were obtained for Forest Service lands on 12 December, 2023, for use in these analyses. These data were received in and Excel file and an script reads them into R.</p>
-<ul>
-<li>NABat Data</li>
-</ul>
 <!-- I'm not currently pulling NABat data because the process is prohibitive to do so across the MPSG footprint. -->
 <ul>
 <li>Maybe why we don’t us Idigbio anymore</li>
@@ -172,9 +168,9 @@ div.csl-indent {
 Do we want to a include data limitations section?
 -->
 </section>
+<section id="a-note-on-limitations-of-species-occurrence-data" class="level4">
+<h4 class="anchored" data-anchor-id="a-note-on-limitations-of-species-occurrence-data">A Note on Limitations of Species Occurrence Data</h4>
 </section>
-<section id="a-not-on-limitations-of-species-occurrence-data" class="level3">
-<h3 class="anchored" data-anchor-id="a-not-on-limitations-of-species-occurrence-data">A Not on Limitations of Species Occurrence Data</h3>
 </section>
 <section id="get-qualifying-lists" class="level3">
 <h3 class="anchored" data-anchor-id="get-qualifying-lists">Get Qualifying Lists</h3>
@@ -182,13 +178,13 @@ Do we want to a include data limitations section?
 <li>State T and E, and Tier 1 Lists</li>
 <li>Regional Sensitive Species Lists</li>
 <li>Neighboring Unit SCC lists</li>
-<li>USFWS Status (see above in Natureserve)</li>
+<li>USFWS Status (see above in NatureServe)</li>
 </ul>
 </section>
 <section id="make-preliminary-eligible-list" class="level3">
 <h3 class="anchored" data-anchor-id="make-preliminary-eligible-list">Make Preliminary Eligible List</h3>
 <ul>
-<li>To the Natureserve State List, which already includes global, state and USFWS ranks, full_join (So that if species is not on one list it does not get dropped) by taxon_id:
+<li>To the NatureServe State List, which already includes global, state and USFWS ranks, full_join (So that if species is not on one list it does not get dropped) by taxon_id:
 <ul>
 <li>State SWAP Lists</li>
 <li>State T and E list</li>
@@ -281,7 +277,7 @@ Do we want to a include data limitations section?
 </ul>
 </section>
 <section id="get-natureserve-habitats-from-the-natureserve-api-and-manually-crosswalk-to-ecology" class="level4">
-<h4 class="anchored" data-anchor-id="get-natureserve-habitats-from-the-natureserve-api-and-manually-crosswalk-to-ecology">Get Natureserve Habitats From the Natureserve API and Manually Crosswalk to Ecology</h4>
+<h4 class="anchored" data-anchor-id="get-natureserve-habitats-from-the-natureserve-api-and-manually-crosswalk-to-ecology">Get NatureServe Habitats From the NatureServe API and Manually Crosswalk to Ecology</h4>
 </section>
 <section id="retrieve-clean-and-build-narratives-for-imbcr-trend-information" class="level4">
 <h4 class="anchored" data-anchor-id="retrieve-clean-and-build-narratives-for-imbcr-trend-information">Retrieve, Clean, and Build Narratives for IMBCR Trend Information</h4>

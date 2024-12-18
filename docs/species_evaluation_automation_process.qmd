@@ -39,30 +39,30 @@ The MPSG uses the R programming language [@rcoreteamLanguageEnvironmentStatistic
 
 Automation would not be possible without first automating taxonomic classification of species names.  The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information.  Many of those resources have their own methods for resolving taxonomy, but almost all of them differ in some way on how they define and classify species.  This is problematic for automating species evaluations because almost every part of the process relies on reliably cross referencing information. For example, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (*Bouteloua gracilis*) one uses *Bouteloua gracilis* and another uses a recognized synonym *Chondrosum gracile* we need a way to recognize both as the same plant.  To resolve this,  we needed a way to algorithmically link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. Manual resolution of taxonomic classification would not be possible. 
 
-A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the [`taxize`](https://github.com/ropensci/taxize)  [@scottchamberlainTaxizeTaxonomicInformation2020] R package to access the GBIF Backbone Taxonomy. Natureserve, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name.  ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names.  Natureserves search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution. 
+A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the [`taxize`](https://github.com/ropensci/taxize)  [@scottchamberlainTaxizeTaxonomicInformation2020] R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name.  ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names.  NatureServe search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution. 
 
-Often when a name is searched in GBIF, the name that is returned does not match the name in the Natureserve database. The Forest Service Assessment Handbook (@usdaforestserviceHandbook190912Land2015) directs the use of Natureserve in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations.  The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms.  When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.  
+Often when a name is searched in GBIF, the name that is returned does not match the name in the NatureServe database. The Forest Service Assessment Handbook (@usdaforestserviceHandbook190912Land2015) directs the use of NatureServe in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations.  The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms.  When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.  
 
-While the system works well, it is not perfect, and occasionally many scientific names recognized by Natureserve will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually.  This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings.  It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.  
+While the system works well, it is not perfect, and occasionally many scientific names recognized by NatureServe will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually.  This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings.  It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.  
 
 The process for resolving taxonomy is codified in a function in the [mpsgSE](https://github.com/fs-mschmidty/mpsgSE) package called [`get_taxonomies()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R). Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. It takes one parameter which identifies the field with the scientific name.  
 
 ## Build Eligible List
 
-### Natureserve State List
+### NatureServe State List
 
-The eligible list development begins with pulling all species in Natureserve for a given unit. To do this we begin by pulling all species for the state where a unit resides.  In most cases one state pull is needed, but for units that reside in multiple states each state must be pulled and then the lists should be merged, eliminating duplicates. 
+The eligible list development begins with pulling all species in NatureServe for a given unit. To do this we begin by pulling all species for the state where a unit resides.  In most cases one state pull is needed, but for units that reside in multiple states each state must be pulled and then the lists should be merged, eliminating duplicates. 
 
-A pull for any given state does note determine eligibility for a unit list, instead it is the total number of species tracked by Natureserve for any given state.  Species found on the state list must also be determined to occupy a given unit (determined to be Native and Known) and meet other qualifying criteria [@usdaforestserviceHandbook190912Land2015]. 
+A pull for any given state does note determine eligibility for a unit list, instead it is the total number of species tracked by NatureServe for any given state.  Species found on the state list must also be determined to occupy a given unit (determined to be Native and Known) and meet other qualifying criteria [@usdaforestserviceHandbook190912Land2015]. 
 
-Data used from the Natureserve state pull to determine eligibility are: 
+Data used from the NatureServe state pull to determine eligibility are: 
 
   a. Scientific Name
-  b. Natureserve Global Rank (G/T Rank)
+  b. NatureServe Global Rank (G/T Rank)
   c. State Rank for given state (S/T Rank)
   d. USFWS Status (Endangered, Threatened, Candidate, or Under Review)
 
-A function was developed for this process for pulling data from any given state calle [`get_ns_state_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R). It relies on the [natserve](https://github.com/cran/natserv) [@chamberlainNatservNatureServeInterface2024] package `ns_export` function. This could also be accomplished by querying the [Natureserve API directly](https://explorer.natureserve.org/api-docs/?gad_source=1&gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export). It takes one input, which is the state short code (ex: "CO" for Colorado) and returns the full list of track Natureserve species for that state. 
+A function was developed for this process for pulling data from any given state calle [`get_ns_state_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R). It relies on the [natserve](https://github.com/cran/natserv) [@chamberlainNatservNatureServeInterface2024] package `ns_export` function. This could also be accomplished by querying the [NatureServe API directly](https://explorer.natureserve.org/api-docs/?gad_source=1&gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export). It takes one input, which is the state short code (ex: "CO" for Colorado) and returns the full list of track NatureServe species for that state. 
 
 After the list is aquired [get_taxonomies](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R) is use to get the taxon_id for each species for joining with other lists. 
 
@@ -127,11 +127,11 @@ Do we want to a include data limitations section?
 * State T and E, and Tier 1 Lists
 * Regional Sensitive Species Lists
 * Neighboring Unit SCC lists
-* USFWS Status (see above in Natureserve)
+* USFWS Status (see above in NatureServe)
 
 ### Make Preliminary Eligible List
 
-* To the Natureserve State List, which already includes global, state and USFWS ranks, full_join (So that if  species is not on one list it does not get dropped) by taxon_id:
+* To the NatureServe State List, which already includes global, state and USFWS ranks, full_join (So that if  species is not on one list it does not get dropped) by taxon_id:
   * State SWAP Lists
   * State T and E list
   * Regional Foresters List
@@ -204,7 +204,7 @@ These scripts will be converted to R functions and included in the `mpsgSE` pack
   * primary
 * Clean Unit Names
 
-#### Get Natureserve Habitats From the Natureserve API and Manually Crosswalk to Ecology
+#### Get NatureServe Habitats From the NatureServe API and Manually Crosswalk to Ecology
 
 #### Retrieve, Clean, and Build Narratives for IMBCR Trend Information
 
