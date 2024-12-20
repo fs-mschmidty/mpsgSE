@@ -115,6 +115,10 @@ div.csl-indent {
 <p>While the system works well, it is not perfect, and occasionally many scientific names recognized by NatureServe will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually. This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings. It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.</p>
 <p>The process for resolving taxonomy is codified in a function in the <a href="https://github.com/fs-mschmidty/mpsgSE">mpsgSE</a> package called <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R"><code>get_taxonomies()</code></a>. Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. It takes one parameter which identifies the field with the scientific name.</p>
 </section>
+<section id="mpsgse-package" class="level3">
+<h3 class="anchored" data-anchor-id="mpsgse-package">mpsgSE package</h3>
+<!-- Write stuff and consdider moving higher-->
+</section>
 </section>
 <section id="build-eligible-list" class="level2">
 <h2 class="anchored" data-anchor-id="build-eligible-list">Build Eligible List</h2>
@@ -129,7 +133,7 @@ div.csl-indent {
 <li>State Rank for given state (S/T Rank)</li>
 <li>USFWS Status (Endangered, Threatened, Candidate, or Under Review)</li>
 </ol>
-<p>A function was developed for this process for pulling data from any given state calle <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R"><code>get_ns_state_list()</code></a>. It relies on the <a href="https://github.com/cran/natserv">natserve</a> <span class="citation" data-cites="chamberlainNatservNatureServeInterface2024">(<a href="#ref-chamberlainNatservNatureServeInterface2024" role="doc-biblioref">Chamberlain and Tracey 2024</a>)</span> package <code>ns_export</code> function. This could also be accomplished by querying the <a href="https://explorer.natureserve.org/api-docs/?gad_source=1&amp;gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export">NatureServe API directly</a>. It takes one input, which is the state short code (ex: “CO” for Colorado) and returns the full list of track NatureServe species for that state.</p>
+<p>A function was developed for this process for pulling data from any given state called <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R"><code>get_ns_state_list()</code></a>. It relies on the <a href="https://github.com/cran/natserv">natserve</a> <span class="citation" data-cites="chamberlainNatservNatureServeInterface2024">(<a href="#ref-chamberlainNatservNatureServeInterface2024" role="doc-biblioref">Chamberlain and Tracey 2024</a>)</span> package <code>ns_export</code> function. This could also be accomplished by querying the <a href="https://explorer.natureserve.org/api-docs/?gad_source=1&amp;gclid=CjwKCAiA34S7BhAtEiwACZzv4QJvuZl31unU2neO0rDSs3JlxTfPvisTwUBKEfuogoeqspagN02w0BoCPeAQAvD_BwE#_export">NatureServe API directly</a>. It takes one input, which is the state short code (ex: “CO” for Colorado) and returns the full list of track NatureServe species for that state.</p>
 <p>After the list is aquired <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R">get_taxonomies</a> is use to get the taxon_id for each species for joining with other lists.</p>
 </section>
 <section id="unit-spatial-layers-and-other-unit-relevant-spatial-layers" class="level3">
@@ -171,15 +175,26 @@ Do we want to a include data limitations section?
 <section id="a-note-on-limitations-of-species-occurrence-data" class="level4">
 <h4 class="anchored" data-anchor-id="a-note-on-limitations-of-species-occurrence-data">A Note on Limitations of Species Occurrence Data</h4>
 </section>
+<section id="build-summary-occurrence-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="build-summary-occurrence-dataset">Build Summary Occurrence Dataset</h4>
+<p>Once all occurrence records are retrieved, each dataset is summarized with the following fields per species(or taxon_id):</p>
+<ul>
+<li>_nObs - Total number of observations within the unit</li>
+<li>_minYear - Minimum year of any record</li>
+<li>_maxYear - Max year of any occurrence record</li>
+</ul>
+</section>
 </section>
 <section id="get-qualifying-lists" class="level3">
 <h3 class="anchored" data-anchor-id="get-qualifying-lists">Get Qualifying Lists</h3>
+<p>In addition to global and state ranks provided by natureserve, four additional sources are needed to determine if any given species is eligible for SCC evaluation:</p>
 <ul>
-<li>State T and E, and Tier 1 Lists</li>
+<li>State Threatened and Endangered, and State Wildlife Action Plan (SWAP) Tier 1 Lists</li>
 <li>Regional Sensitive Species Lists</li>
 <li>Neighboring Unit SCC lists</li>
 <li>USFWS Status (see above in NatureServe)</li>
 </ul>
+<p>State</p>
 </section>
 <section id="make-preliminary-eligible-list" class="level3">
 <h3 class="anchored" data-anchor-id="make-preliminary-eligible-list">Make Preliminary Eligible List</h3>

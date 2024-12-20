@@ -106,6 +106,10 @@ and classifies each species name returning full taxonomy and a taxon_id
 field added on to the table that was originally input. It takes one
 parameter which identifies the field with the scientific name.
 
+### mpsgSE package
+
+<!-- Write stuff and consdider moving higher-->
+
 ## Build Eligible List
 
 ### NatureServe State List
@@ -130,7 +134,7 @@ Data used from the NatureServe state pull to determine eligibility are:
 4.  USFWS Status (Endangered, Threatened, Candidate, or Under Review)
 
 A function was developed for this process for pulling data from any
-given state calle
+given state called
 [`get_ns_state_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_ns_state_list.R).
 It relies on the [natserve](https://github.com/cran/natserv)
 (Chamberlain and Tracey 2024) package `ns_export` function. This could
@@ -250,12 +254,28 @@ Do we want to a include data limitations section?
 
 #### A Note on Limitations of Species Occurrence Data
 
+#### Build Summary Occurrence Dataset
+
+Once all occurrence records are retrieved, each dataset is summarized
+with the following fields per species(or taxon_id):
+
+-   \_nObs - Total number of observations within the unit
+-   \_minYear - Minimum year of any record
+-   \_maxYear - Max year of any occurrence record
+
 ### Get Qualifying Lists
 
--   State T and E, and Tier 1 Lists
+In addition to global and state ranks provided by natureserve, four
+additional sources are needed to determine if any given species is
+eligible for SCC evaluation:
+
+-   State Threatened and Endangered, and State Wildlife Action Plan
+    (SWAP) Tier 1 Lists
 -   Regional Sensitive Species Lists
 -   Neighboring Unit SCC lists
 -   USFWS Status (see above in NatureServe)
+
+State
 
 ### Make Preliminary Eligible List
 
