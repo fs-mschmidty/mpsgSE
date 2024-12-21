@@ -108,7 +108,7 @@ parameter which identifies the field with the scientific name.
 
 ### mpsgSE package
 
-<!-- Write stuff and consdider moving higher-->
+<!-- Write stuff and consider moving higher-->
 
 ## Build Eligible List
 
@@ -265,17 +265,80 @@ with the following fields per species(or taxon_id):
 
 ### Get Qualifying Lists
 
-In addition to global and state ranks provided by natureserve, four
+In addition to global and state ranks provided by NatureServe, four
 additional sources are needed to determine if any given species is
 eligible for SCC evaluation:
 
--   State Threatened and Endangered, and State Wildlife Action Plan
-    (SWAP) Tier 1 Lists
+-   State Ranks: State Threatened and Endangered, and State Wildlife
+    Action Plan (SWAP) Tier 1 Lists
 -   Regional Sensitive Species Lists
 -   Neighboring Unit SCC lists
 -   USFWS Status (see above in NatureServe)
 
-State
+#### State Ranks
+
+States have a variety of wildlife and plant conservation lists for
+imperiled species. These lists are typically developed by State Natural
+Resource or Natural Heritage organizations. Conservation lists, most
+commonly come in the form of State Wildlife Actions Plans, which make
+states eligible for federal conservation funding, and Threatened,
+Endangered and Sensitive Wildlife Lists. The MPSG interprets the that
+from these conservation lists species with Tier 1 and Species of
+Greatest Conservation Need (SGCN) rankings as well as Threatened and
+Endangered rankings are eligible for SCC species evaluations. Some state
+develop rankings that do not adhere to these ranking criteria and may
+need to be evaluated on a case by case bases. South Dakota for example
+has a three number ranking system (species were given 1,2 or 3 ranks).
+The MPSG, based on the description of the ranking criteria, determined
+that just those species ranked 1 would qualify for evaluations.
+
+#### Regional Sensitive Species Lists
+
+If a species is ranked as sensitive by the Regional Forester in the
+region where the planning unit resides that species is considered
+eligible for ranking if it is native and known to occur on the planning
+unit. These lists are acquired from Forest Service websites
+(i.e. [Region 2 Sensitive Species
+List](https://www.fs.usda.gov/detail/r2/landmanagement/?cid=stelprdb5390116))
+
+#### Neighboring Unit SCC Lists
+
+If SCC are developed for a neighboring Forests, they should be
+considered eligible for SCC if they are native and known on the unit.
+Current SCC lists can be found here on the Forest Service planning
+public site. Some region make them available grouped by region and
+others are available at the Forest Level. A few examples:
+
+-   Region 1 -
+    <https://www.fs.usda.gov/detail/r1/landmanagement/planning/?cid=fseprd500402>
+-   Region 2, GMUG NF-
+    <https://www.fs.usda.gov/detail/carson/landmanagement/planning/?cid=stelprdb5443166>.
+-   Region 4, Manti La Sal NF -
+    <https://www.fs.usda.gov/main/mantilasal/landmanagement/planning>
+
+#### USFWS Lists
+
+The USFWS, rankings are retrieved from Nature Serve. Species that have
+been delisted within the last 5 years or have had a positive 90 day
+finding and are under review for listing are eligible.
+
+#### A Note About Tribal Species of Concern
+
+The MPSG is still developing procedures to incorporate species
+recognized by “federally recognized Tribes”. Those species will be
+included in the future.
+
+#### Data Cleaning and Encorporation
+
+Most commonly these lists come in PDF form but can also come in csv or
+Excel formats. They typically require extensive cleaning and/or
+conversion from their original format. To aid in the parsing of these
+lists the MPSG has developed standardized variables for each species
+based on multiple ranks. These values are as follows:
+
+-   `status_area`: the area the ranking applies to (i.e. Colorado, North
+    Dakota, United States)
+-   `status_type`: the type of ranking
 
 ### Make Preliminary Eligible List
 
