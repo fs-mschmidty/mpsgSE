@@ -175,7 +175,7 @@ Most commonly these lists come in PDF form but can also come in csv or Excel for
 
 ### Make Preliminary Eligible List
 
-* To the NatureServe State List, which already includes global, state and USFWS ranks, full_join (So that if  species is not on one list it does not get dropped) by taxon_id:
+* To the NatureServe State List, which already includes global, state and USFWS ranks, full_join (so that if  species is not on one list it does not get dropped) by taxon_id:
   * State SWAP Lists
   * State T and E list
   * Regional Foresters List
@@ -190,23 +190,50 @@ Most commonly these lists come in PDF form but can also come in csv or Excel for
 * Join all occurrence lists to all potential species eligible filtered list
 * Filter by those species that have one occurrence record in the planning unit.
 
-#### Notes on Taxonomic Problems in the Process
 
-### Manually Check Accidental Transients, Native and Known, and Local Concern, to Produce Final SCC Eligible List
+
+### Manually Check and Automated Checks: Accidental Transients, Native and Known, and Local Concern, to Produce Final SCC Eligible List
 
 <!-- I think we should add into this process the Units local concern species -->
 
 #### Transient Bird List
-* Get ebird maps from ebirdst
-* Do check on each species
-* Output for manual checking
+
+Per the 2012 planning rule only species that are native to a planning area and not transients or accidental are required to be considered for species evaluation for SCC consideration.  As such species must be checked to determine if they are indeed native and not occurring accidentally or due to migration.  For many groups of species we can assume that if they are detected and if they have a state ranking or some other ranking that they are likely not accidental nor transients on the plan area.  However for migratory birds, some verification should be performed to remove birds that are accidental or transient, including those with detection during migration.
+
+Birds must overwinter or breed within a planning unit to not be considered accidental or transient. To verify that species that are on the initial species list winter or breed on the planning unit we use species distribution modeling provided by the Cornell Lab of Ornothology, through analysis of ebird data [@finkEBirdStatusTrends2023]. Species distribution models are provided through the [ebirdst](https://doi.org/10.2173/ebirdst.2022) R package.  Several datasets are available, for our analysis we relied on the 27k resolution "Smooth Range" ("range_smooth") dataset. The dataset provides a variety of polygon spatial layers for each species queried that contain a season attribute that can be used to determine if the species should occur in the planning unit during: breeding, non breeding, pre breeding migration, and post breeding migration or if it occurs year round a single layer representing the resident range. The layers useful to us are those that are breeding, non breeding and resident. 
+
+To run the check, each of the native layers (breeding, non breeding or resident) are clipped to the unit boundary.  Each range is returned with a TRUE for the range type for that species. So for example if a American goshawks breeding range overlaps overlaps the planning unit goshawk is returned with a true. If any of the non-transient ranges overlaps the planning unit then the variable should_remain_eligible is returned as TRUE.   If non of the non-transient ranges overlaps the planning unit then the variable is returned false.  These automated checks can be manually verified by an individual if necessary. 
+
+This product is stored and read into to inform the final eligible list. Those species with non-transient ranges are kept while those with no resident ranges are removed. 
 
 #### Filter those species that need native and known checks
-* Those  species with less than 6 occurrences combined from each list in the planning area.
-* Those species with their most recent detection being greater than 40 years ago. 
+For species with with occurrence records on the unit that could be eligible it must be verified that they are native and known to occur on the planning unit. For many species, there are dozens of records on the planning unit.  In these cases we assume that they are native an known to occur on the planning unit (unless they are a bird species that migrates over the area, for instance, and is removed in the previous step).  For species with very few occurrence records or with records that are very old we manually check to verify that the occurrence records completely occur on the unit or that that least one record is less than 40 years old.  
 
-#### Species with uncertain taxanomic determinations
-* Multiple species may be taxonomically identified as the same species with `get_taxonomies()`.  Becuase we cannot determine their taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted. 
+These checks are run manually.  To provide specialists a list of potential checks that need to be conducted we output a spreadsheet with species that have less than 6 occurrence records on the unit or were recorded more than 40 years ago.  
+
+Native and known determinations are made and recorded for each species with the following categories with the options: 
+
+* Is the Species Native and Known to Occur?
+ * Yes
+ * No, the species was introduced or is adventive to the plan area 
+ * No, there is insufficient taxonomic certainty to identify the observation data to a species
+ * No, there is insufficient temporal certainty that the species still occupies the plan area
+ * No, there is insufficient spatial certainty that the observation occurred within the plan area
+ * No, the species is accidental or transient to the plan area
+ * No, the observations represent an expanding species range or irruptive population that is not established in the plan area 
+ * No, the species is not in the plan area but is in the admin unit therfore is not included in the species overview spatial layer
+
+The checker also writes notes on their determination under "*What is the rationale and supporting BASI for recommending that an observation does not meet the requirements of native to, and known to occur in the plan area?*". Species that are not not Native an Known will remain on the list be will get short species evaluations that only include taxonomic information, eligibility ranking information and a section noting that they are not native and known and why. 
+
+#### Species with uncertain taxonomic determinations
+
+
+Multiple species may be taxonomically identified as the same species with `get_taxonomies()`.  Becuase we cannot determine their taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted and we cannot produce automated reports.  
+
+An example of a species or group of species with ambiguous taxonomic status is the eastern woodrat (*Neotoma floridana"). Natureserve recognizes three subspecies of eastern woodrat: *Neotoma floridana attwateri*, *Neotoma floridana baileyi*, and *Neotoma floridana campestris*.  Neither GBIF nor ITIS recognize any of these subspecies but they both recognize the speices *Neotoma floridana*.  Because we use the scientific name, varieity or subspecies that NatureServe recognizes, we must recognize all three of these subspecies.  However, if we were to link other qualifying lists and occurrence records with the taxon_id provided by GBIF we would use the same ID for occurrence records of all three subspecies and the species.  Additionally, if we have no automated way to link the species or subspecies together there is no way to build an automated report as all steps are automated by referencing the `taxon_id`. 
+
+#### Add in Species with Local Concern
+
 
 #### Get user feedback
 #### Use user feedback to refine list
