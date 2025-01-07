@@ -64,7 +64,7 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL,
                                show_col_types = FALSE) |>
     dplyr::filter(MgmtUnit %in% mgmt_unit) |> 
     dplyr::filter(!stringr::str_detect(Species, "Unknown")) |> 
-    dplyr::rename("rec_ID" = `...1`) |>
+    # dplyr::rename("rec_ID" = `...1`) |>
     dplyr::left_join(ebird_list, 
                      by = dplyr::join_by("Species" == "common_name")) |> 
     sf::st_as_sf(coords = c("PointLongitude", "PointLatitude"), crs = "NAD83")
