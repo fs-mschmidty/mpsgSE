@@ -10,7 +10,12 @@
 #'                [sf::st_crs()] object or accepted input string (e.g. "NAD83"). 
 #'                See [sf::st_crs()] for more details. Default is NULL. If NULL, 
 #'                resulting sf object CRS will be NAD83.
-#' @param file_path Path to *.rda file.
+#' @param dir_path Path to the IMBCR data folder. Default is NULL. If NULL, data 
+#'                     will be read from the MPSG T-drive folder.
+#' @param imbcr_file Name of IMBCR data file. Default is NULL. If NULL, the file 
+#'                       name in the MPSG T-drive will be used.
+#' @param ebird_file Name of eBird taxa list file. Default is NULL. If NULL, the 
+#'                       file name in the MPSG T-drive will be used.
 #'
 #' @return An [sf] class object.
 #' 
@@ -30,22 +35,45 @@
 #' get_imbcr(mgmt_units)
 #' 
 #' ## End(Not run)                     
-get_imbcr <- function(mgmt_unit, crs = NULL, file_path = NULL){
+get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL, 
+                      imbcr_file = NULL, ebird_file = NULL){
   # Define file path
-  if(is.null(file_path)){
-    file_path = file.path(file.path("T:/FS/NFS/PSO/MPSG/Data/ExternalData", 
-                                    "2023_IMBCR_USFSdata/2023_imbcr_data.rda"))
+  if(is.null(dir_path)){
+    dir_path = file.path("T:/FS/NFS/PSO/MPSG/Data/ExternalData", 
+                         "2023_IMBCR_USFSdata")
   }
+  if(is.null(imbcr_file)) imbcr_file = 'USFS bird data.csv'
+  if(is.null(ebird_file)){
+    ebird_file = 'ebird-Clements-v2022-integrated-checklist-October-2022.csv'
+    }
+  
+  # eBird Taxa List ----
+  message("Reading eBird taxa list")
+  ebird_list = readr::read_csv(file.path(dir_path, ebird_file),  
+                                show_col_types = FALSE) |> 
+    tibble::tibble(.name_repair = function(x)tolower(x)) |> 
+    dplyr::rename("common_name" = primary_com_name, 
+                  "scientific_name" = sci_name, 
+                  "order" = order1) |> 
+    dplyr::select(-report_as)
   
   # Load and filter data
-  load(file_path)
-  dat = dplyr::filter(imbcr_dat, MgmtUnit %in% mgmt_unit)
+  # IMBCR Data ----
+  message("Reading IMBCR data")
+  dat = readr::read_csv(file.path(dir_path, imbcr_file),
+                               show_col_types = FALSE) |>
+    dplyr::filter(MgmtUnit %in% mgmt_unit) |> 
+    dplyr::filter(!stringr::str_detect(Species, "Unknown")) |> 
+    dplyr::left_join(ebird_list, 
+                     by = dplyr::join_by("Species" == "common_name")) |> 
+    sf::st_as_sf(coords = c("PointLongitude", "PointLatitude"), crs = "NAD83")
   
   # Re-project CRS
   if(!is.null(crs)){
     if(sf::st_crs(dat) != crs) dat = sf::st_transform(dat, crs = crs)
   }
   
+  # Return data
   return(dat)
 }
 
