@@ -10,7 +10,7 @@ imbcr_spp(imbcr_data)
 \item{imbcr_data}{Spatial IMBCR data from \code{get_imbcr()}.}
 }
 \value{
-A tibble.
+A \code{\link[tibble:tibble]{tibble::tibble()}}.
 }
 \description{
 This function summarizes the spatial IMBCR object from \code{get_imbcr()} by
@@ -22,7 +22,6 @@ taxonomy using the \code{get_taxonomies()} function.
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Read IMBCR data into R

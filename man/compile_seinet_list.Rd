@@ -24,7 +24,6 @@ Service (FS) land and a 1-km buffer of FS land. This function uses the
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Read spatial data into R

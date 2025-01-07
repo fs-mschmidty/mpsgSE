@@ -28,7 +28,6 @@
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' mgmt_units <- c("Cimarron National Grassland", "Comanche National Grassland")
@@ -64,7 +63,6 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL,
                                show_col_types = FALSE) |>
     dplyr::filter(MgmtUnit %in% mgmt_unit) |> 
     dplyr::filter(!stringr::str_detect(Species, "Unknown")) |> 
-    # dplyr::rename("rec_ID" = `...1`) |>
     dplyr::left_join(ebird_list, 
                      by = dplyr::join_by("Species" == "common_name")) |> 
     sf::st_as_sf(coords = c("PointLongitude", "PointLatitude"), crs = "NAD83")
@@ -98,7 +96,6 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL,
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' see_imbcr_mgmt_units()
@@ -125,14 +122,13 @@ see_imbcr_mgmt_units <- function(file_path = NULL){
 #'
 #' @param imbcr_data Spatial IMBCR data from `get_imbcr()`.
 #'
-#' @return A tibble.
+#' @return A [tibble::tibble()].
 #' @seealso [get_imbcr()], [get_taxonomies()]
 #' @export
 #'
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read IMBCR data into R
@@ -154,13 +150,13 @@ imbcr_spp <- function(imbcr_data){
                   "family_eBird" = family, 
                   "IMBCR_locale" = locale)
   spp_stats = sf::st_drop_geometry(imbcr_data) |>
-    dplyr::select(rec_id, scientific_name, Year) |> 
+    dplyr::select(rec_ID, scientific_name, Year) |> 
     dplyr::group_by(scientific_name) |> 
     dplyr::summarize(IMBCR_nObs = dplyr::n(), 
                      IMBCR_minYear = min(Year, na.rm = TRUE), 
                      IMBCR_maxYear = max(Year, na.rm = TRUE), 
                      IMBCR_recID = ifelse(IMBCR_nObs <= 6, 
-                                          stringr::str_c(unique(rec_id),
+                                          stringr::str_c(unique(rec_ID),
                                                          collapse = ", "), 
                                           NA),
                      .groups = "drop")
@@ -190,7 +186,6 @@ imbcr_spp <- function(imbcr_data){
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R

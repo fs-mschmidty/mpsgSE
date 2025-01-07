@@ -45,7 +45,6 @@
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R
@@ -151,7 +150,6 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Project directory path
@@ -205,7 +203,6 @@ gbif_spp <- function(gbif_data){
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R
@@ -251,7 +248,6 @@ compile_gbif_list <- function(gbif_unit, gbif_buff){
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R

@@ -18,7 +18,6 @@ Creates a well-known text string from a polygon (\code{sf} object).
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Read spatial data into R

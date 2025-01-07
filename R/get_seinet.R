@@ -18,7 +18,6 @@
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Path to data folder
@@ -67,7 +66,6 @@ get_seinet <- function(dir_path, crs = NULL){
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Path to data folder
@@ -124,7 +122,6 @@ seinet_spp <- function(seinet_data){
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R

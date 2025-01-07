@@ -24,7 +24,6 @@ function.
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Project directory path

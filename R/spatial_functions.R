@@ -19,7 +19,6 @@
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' read_fc(lyr = "feature_name", dsn = file.path("T:/path/to/geodatabase"), 
@@ -57,7 +56,6 @@ read_fc <- function(lyr, dsn, crs = NULL){
 #' @examples
 #' ## Not run:
 #' 
-#' devtools::install_github("fs-mschmidty/mpsgSE")
 #' library("mpsgSE")
 #' 
 #' # Read spatial data into R

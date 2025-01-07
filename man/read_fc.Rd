@@ -28,7 +28,6 @@ transform the feature to the target CRS if it is not.
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 read_fc(lyr = "feature_name", dsn = file.path("T:/path/to/geodatabase"), 

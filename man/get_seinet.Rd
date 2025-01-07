@@ -26,7 +26,6 @@ Additional details...
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Path to data folder

@@ -28,7 +28,6 @@ object.
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 # Read spatial data into R

@@ -45,7 +45,6 @@ unless you have the *.rda file on your local machine.
 \examples{
 ## Not run:
 
-devtools::install_github("fs-mschmidty/mpsgSE")
 library("mpsgSE")
 
 mgmt_units <- c("Cimarron National Grassland", "Comanche National Grassland")
