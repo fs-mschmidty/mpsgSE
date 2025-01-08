@@ -39,7 +39,7 @@ The MPSG uses the R programming language [@rcoreteamLanguageEnvironmentStatistic
 
 Automation would not be possible without first automating taxonomic classification of species names.  The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information.  Many of those resources have their own methods for resolving taxonomy, but almost all of them differ in some way on how they define and classify species.  This is problematic for automating species evaluations because almost every part of the process relies on reliably cross referencing information. For example, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (*Bouteloua gracilis*) one uses *Bouteloua gracilis* and another uses a recognized synonym *Chondrosum gracile* we need a way to recognize both as the same plant.  To resolve this,  we needed a way to algorithmically link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. Manual resolution of taxonomic classification would not be possible. 
 
-A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the [`taxize`](https://github.com/ropensci/taxize)  [@scottchamberlainTaxizeTaxonomicInformation2020] R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name.  ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names.  NatureServe search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution. 
+A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the [`taxize`](https://github.com/ropensci/taxize)  [@scottchamberlainTaxizeTaxonomicInformation2020] R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name.  ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names.  NatureServe search returned incorrect names too frequently. USDA plants was also considered but they do not provide an API for name resolution. 
 
 Often when a name is searched in GBIF, the name that is returned does not match the name in the NatureServe database. The Forest Service Assessment Handbook (@usdaforestserviceHandbook190912Land2015) directs the use of NatureServe in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations.  The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms.  When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.  
 
@@ -166,14 +166,21 @@ The USFWS, rankings are retrieved from Nature Serve. Species that have been deli
 
 The MPSG is still developing procedures to incorporate species recognized by "federally recognized Tribes". Those species will be included in the future. 
 
-#### Data Cleaning and Encorporation
+#### Data Cleaning and Incorporation
 
 Most commonly these lists come in PDF form but can also come in csv or Excel formats.  They typically require extensive cleaning and/or conversion from their original format.  To aid in the parsing of these lists the MPSG has developed standardized variables for each species based on multiple ranks. These values are as follows: 
 
 * `status_area`: the area the ranking applies to (i.e. Colorado, North Dakota, United States)
-* `status_type`: the type of ranking
+* `status_type`: the type of ranking (i.e. SWAP, State T and E, or Sensitive Species)
+* `status_autority`: who made the conservation ranking (i.e. USFWS, USFS, CPW, etc. )
+* `status_all`: the entire ranking with type and agency (i.e. USFS R2 Sensitive Species, Colorado Threatened, Colorado SWAP Tier 1, etc.)
+* `status_simple`: just the ranking itself (i.e. Tier 1, Sensitive Species, Threatened, etc)
+
+The current list can be found at the [mpsgSE package](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/conservation_lists.R).
 
 ### Make Preliminary Eligible List
+
+Making the preliminary eligible lists consists of combining all of the lists we have listed above.  These steps are as follows. 
 
 * To the NatureServe State List, which already includes global, state and USFWS ranks, full_join (so that if  species is not on one list it does not get dropped) by taxon_id:
   * State SWAP Lists
@@ -190,11 +197,13 @@ Most commonly these lists come in PDF form but can also come in csv or Excel for
 * Join all occurrence lists to all potential species eligible filtered list
 * Filter by those species that have one occurrence record in the planning unit.
 
-
+The result is a list of species with at least one occurrence record inside the planning area the meats at least one qualifying criteria for consideration as SCC. This list is preliminary because we recognize that his process does not perfectly capture all species that should be considered for SCC and that user input and manual vetting of the list could lead to the addition or subtraction of species.
 
 ### Manually Check and Automated Checks: Accidental Transients, Native and Known, and Local Concern, to Produce Final SCC Eligible List
 
 <!-- I think we should add into this process the Units local concern species -->
+
+<!-- One thing I'm unclear on is if this step leads to shorter evaluations or no evaluation at all.  -->
 
 #### Transient Bird List
 
@@ -207,6 +216,7 @@ To run the check, each of the native layers (breeding, non breeding or resident)
 This product is stored and read into to inform the final eligible list. Those species with non-transient ranges are kept while those with no resident ranges are removed. 
 
 #### Filter those species that need native and known checks
+
 For species with with occurrence records on the unit that could be eligible it must be verified that they are native and known to occur on the planning unit. For many species, there are dozens of records on the planning unit.  In these cases we assume that they are native an known to occur on the planning unit (unless they are a bird species that migrates over the area, for instance, and is removed in the previous step).  For species with very few occurrence records or with records that are very old we manually check to verify that the occurrence records completely occur on the unit or that that least one record is less than 40 years old.  
 
 These checks are run manually.  To provide specialists a list of potential checks that need to be conducted we output a spreadsheet with species that have less than 6 occurrence records on the unit or were recorded more than 40 years ago.  
@@ -227,24 +237,29 @@ The checker also writes notes on their determination under "*What is the rationa
 
 #### Species with uncertain taxonomic determinations
 
-
-Multiple species may be taxonomically identified as the same species with `get_taxonomies()`.  Becuase we cannot determine their taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted and we cannot produce automated reports.  
+Multiple species may be taxonomically identified as the same species with `get_taxonomies()`.  Because we cannot determine the taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted. Additionally, for those species with ambiguous taxonomy we cannot produce automated evaluations. 
 
 An example of a species or group of species with ambiguous taxonomic status is the eastern woodrat (*Neotoma floridana"). Natureserve recognizes three subspecies of eastern woodrat: *Neotoma floridana attwateri*, *Neotoma floridana baileyi*, and *Neotoma floridana campestris*.  Neither GBIF nor ITIS recognize any of these subspecies but they both recognize the speices *Neotoma floridana*.  Because we use the scientific name, varieity or subspecies that NatureServe recognizes, we must recognize all three of these subspecies.  However, if we were to link other qualifying lists and occurrence records with the taxon_id provided by GBIF we would use the same ID for occurrence records of all three subspecies and the species.  Additionally, if we have no automated way to link the species or subspecies together there is no way to build an automated report as all steps are automated by referencing the `taxon_id`. 
 
 #### Add in Species with Local Concern
 
+Unit specialists may have species that they are locally concerned about.  Species with local concern are eligible for SCC evaluation if they are native and known to occur on the unit. These species should be added to the eligible list prior to running any further steps. As with every other species species taxonomies should be acquired using the get_taxonomies() function.  
 
-#### Get user feedback
+One unfortunate part of this step is that it requires that some steps above be rerun. Species do not need any of the rankings above to be considered for this step but all steps should be run to get the status of each local concern species. These steps can rely on the same functionality as those above, but they should be appended prior to running any automated reporting steps.   
+
 #### Use user feedback to refine list
+
 Based on manual checks remove species that are:
-* Determined to not be native and known. 
-* Determined to be accidental or transients
-* ! Determined to be of local concern by the unit
+
+* Determined to not be native and known to occur within the unit. 
+* Determined to be accidental or transients on the unit
+
+Add species that were identified as having local concern by the unit. 
 
 ## Retrieve External Data for Automating Reports
 
 ### Get Synonyms
+For each species we retrieve all recognized synonyms from GBIF for any given taxon_id. 
 
 ### Get Data for Making Automated Maps
 
