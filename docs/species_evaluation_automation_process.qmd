@@ -259,7 +259,8 @@ Add species that were identified as having local concern by the unit.
 ## Retrieve External Data for Automating Reports
 
 ### Get Synonyms
-For each species we retrieve all recognized synonyms from GBIF for any given taxon_id. 
+
+For each species we retrieve all recognized synonyms from GBIF for any given taxon_id. We use the function `mpsgSO::get_synonyms()` to query the GBIF Taxonomic Backbone for synonyms. 
 
 ### Get Data for Making Automated Maps
 
