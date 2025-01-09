@@ -29,13 +29,14 @@
 #' ## End(Not run)                     
 get_seinet <- function(dir_path, crs = NULL){
   data_path = file.path(dir_path, "occurrences.csv")
-  date_formats = c("%Y-%m-%d", "%Y-%m", "%Y")
+  date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y")
   #  Read data into R
   dat = readr::read_csv(data_path, show_col_types = FALSE) |> 
     dplyr::filter(taxonRank %in% c('Species', 'Variety', 'Subspecies')) |> 
     dplyr::filter(!is.na(decimalLatitude) | !is.na(decimalLongitude)) |> 
     dplyr::mutate(date = lubridate::parse_date_time(eventDate, 
                                                     orders = date_formats), 
+                  date = ifelse(lubridate::year(date) == 9999, NA, date), 
                   dayOfYear = lubridate::yday(date),
                   year = lubridate::year(date), 
                   source = "SEINet") |> 

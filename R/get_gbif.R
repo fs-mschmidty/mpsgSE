@@ -77,7 +77,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
     file.path(t_path, paste0(gbif_key, ".zip"))
   } else(NULL)
   # Date formats
-  date_formats = c("%Y-%m-%d", "%y-%m-%d", "%y-%m", "%y")
+  date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y")
   
   #-- Pull GBIF Data
   if(gbif_key == "new"){
@@ -117,6 +117,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
         scientific_name = trimws(scientific_name),
         # Parse date formats, day of year, and year
         date = lubridate::parse_date_time(eventDate, date_formats),
+        date = ifelse(lubridate::year(date) == 9999, NA, date), 
         dayOfYear = lubridate::yday(date),
         year = lubridate::year(date), 
         source = "GBIF"
