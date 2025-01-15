@@ -260,22 +260,28 @@ Add species that were identified as having local concern by the unit.
 
 ### Get Synonyms
 
-For each species we retrieve all recognized synonyms from GBIF for any given taxon_id. We use the function `mpsgSO::get_synonyms()` to query the GBIF Taxonomic Backbone for synonyms. 
+For each species we retrieve all recognized synonyms from GBIF for any given taxon_id. We use the function `mpsgSO::get_synonyms()` to query the GBIF Taxonomic Backbone for synonyms. The function takes a vector of taxon_ids and returns a table with all synonmyms associated with each taxon_id. The function relies on the function `rbgif::name_usage(..., data="synonyms")`. This dataset is a stand alone table. 
 
 ### Get Data for Making Automated Maps
 
-#### Load Occurrence Spatial Data
+#### Subset Occurrence Spatial Data to Include on Unit and Eligible Species
 
-GBIF data are acquired using the [`mpsgSE::get_gbif()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_gibif.R) function. This function submits a record request, and downloads and read the data into R when the request if complete. 
-The data are then summarized using the [`mpsgSE::gbif_spp()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/gbif_spp.R) function and a list of species recorded in the plan area and 1-km buffer of the plan area is created using the [`mpsgSE::compile_gbif_list()`](https://github.com/fs-mschmidty/mpsgSE/blob/main/R/compile_gbif_list.R) function.
-The resulting data are saved in an *.RData file, a data format specific to the R coding language, and loaded back into R when the automated reports are created.
-
-Currently, SEINet, State NHP EO, and IMBCR data are read into R and summarized using individual R scripts that follow similar workflows as the GBIF data. 
-These scripts will be converted to R functions and included in the `mpsgSE` package in the near future.
+Occurrence datasets are typically quite large.  So that they can more efficiently be loaded into automated reports it is helpful to take the eligible list and subset it to just those species that are on the eligible list and those records that occur on the unit.  This step simply filters any given list to those species on the eligible list and then clips the occurrence records to the unit.  At the moment it returns a list of two objects, one with all eligible and one with all eligible on the unit identified as `eligible` and `eligible_unit`. 
 
 #### Load Species Distribution Models
 
-* IUCN
+Species distribution models are needed to understand the context of a species range to any given planning units location.  We use a variety of sources of species distribution models to get this information. 
+
+##### IUCN
+
+The IUCN provides a variety of species distribution maps for a variety of groups. These maps must be downloaded as shapefiles and then queried for species by taxonomic group (i.e Mammals, Amphibians, Fish, etc). At the moment we use IUCN for all Taxa groups except Birds and Plants. Of all the data sources used for species distribution maps, this is the least efficient source. At the moment, the steps for using these data are:  
+
+* download the data for each taxa group from the IUCN data website [https://www.iucnredlist.org/resources/spatial-data-download](https://www.iucnredlist.org/resources/spatial-data-download)
+* then get the taxonomies off all species in the shapefile with `mpsgSE::get_taxonomies()`.
+* filter the shapefile converted to a table by the species on the eligible lists comparing the taxon_id from each source. We complete this step because filtering a shapefile takes a lot longer (we may want to revise this step).
+* return a list of species with available maps from that data source. 
+* if the source has at least one species on the eligible list we then subset the shapefile by those species. 
+* For each taxa group we return a shapefile and then those shapefiles are combined. 
 * BIEN Plant Maps
 * Ebird Maps
 
@@ -299,6 +305,7 @@ These scripts will be converted to R functions and included in the `mpsgSE` pack
 
 ## Automate Reports
 <!-- Look at the qmd and write out each section.  (Maybe should wait until we finish revamping the reports) -->
+# References
 
 
 

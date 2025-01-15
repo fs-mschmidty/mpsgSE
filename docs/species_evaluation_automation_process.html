@@ -110,7 +110,7 @@ div.csl-indent {
 <section id="taxonomy" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomy">Taxonomy</h3>
 <p>Automation would not be possible without first automating taxonomic classification of species names. The process developed at the MPSG to produce species evaluations relies on dozens of external resources for information. Many of those resources have their own methods for resolving taxonomy, but almost all of them differ in some way on how they define and classify species. This is problematic for automating species evaluations because almost every part of the process relies on reliably cross referencing information. For example, for occurrence records we rely on SEINet, GBIF and State EO polygons. It could be possible that for the grass blue grama (<em>Bouteloua gracilis</em>) one uses <em>Bouteloua gracilis</em> and another uses a recognized synonym <em>Chondrosum gracile</em> we need a way to recognize both as the same plant. To resolve this, we needed a way to algorithmically link like species referred to by different names. It is important that it could be done algorythmically because some unit database pulls returned hundreds of thousands of records. Manual resolution of taxonomic classification would not be possible.</p>
-<p>A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the <a href="https://github.com/ropensci/taxize"><code>taxize</code></a> <span class="citation" data-cites="scottchamberlainTaxizeTaxonomicInformation2020">(<a href="#ref-scottchamberlainTaxizeTaxonomicInformation2020" role="doc-biblioref">Scott Chamberlain et al. 2020</a>)</span> R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name. ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names. NatureServe search returned incorrect names too frequently. USDA plants was also considered but they do not provide an APIfor name resolution.</p>
+<p>A variety of resources were evaluated as potential solutions taxanomic classification, but ultimately landed on using the <a href="https://github.com/ropensci/taxize"><code>taxize</code></a> <span class="citation" data-cites="scottchamberlainTaxizeTaxonomicInformation2020">(<a href="#ref-scottchamberlainTaxizeTaxonomicInformation2020" role="doc-biblioref">Scott Chamberlain et al. 2020</a>)</span> R package to access the GBIF Backbone Taxonomy. NatureServe, ITIS, and USDA plants were all tried before we ultimately decided on GBIF. GBIF was chosen because it reliably returned the correct name. ITIS was a close second, but it was routinely down and would fail when trying to resolve long lists of names. NatureServe search returned incorrect names too frequently. USDA plants was also considered but they do not provide an API for name resolution.</p>
 <p>Often when a name is searched in GBIF, the name that is returned does not match the name in the NatureServe database. The Forest Service Assessment Handbook (<span class="citation" data-cites="usdaforestserviceHandbook190912Land2015">USDA Forest Service (<a href="#ref-usdaforestserviceHandbook190912Land2015" role="doc-biblioref">2015</a>)</span>) directs the use of NatureServe in species consideration lists. Therfore, scientific names provided by Naturserve for are used for species evaluations. The taxomic process we developed is agnostic to the scientific name source. It instead relies on the a taxon_id that is associated with names associated with a variety of synonyms. When we combine lists or data sources we rely on the Taxonomic Identifier and not the names for list joining.</p>
 <p>While the system works well, it is not perfect, and occasionally many scientific names recognized by NatureServe will resolve to the same species in the GBIF Backbone Taxonomy. In this case manual resolution of names is necessary and species evaluations must be completed manually. This is necessary because without matching taxonomic identifiers we have no way of telling if we are using the correct occurrence records or federal and state rankings. It may be possible to resolve this in the future with internal identification but for now these species much be manually completed.</p>
 <p>The process for resolving taxonomy is codified in a function in the <a href="https://github.com/fs-mschmidty/mpsgSE">mpsgSE</a> package called <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_taxonomies.R"><code>get_taxonomies()</code></a>. Essentially the function takes a table of species names or spatial data and classifies each species name returning full taxonomy and a taxon_id field added on to the table that was originally input. It takes one parameter which identifies the field with the scientific name.</p>
@@ -219,17 +219,22 @@ Do we want to a include data limitations section?
 <h4 class="anchored" data-anchor-id="a-note-about-tribal-species-of-concern">A Note About Tribal Species of Concern</h4>
 <p>The MPSG is still developing procedures to incorporate species recognized by “federally recognized Tribes”. Those species will be included in the future.</p>
 </section>
-<section id="data-cleaning-and-encorporation" class="level4">
-<h4 class="anchored" data-anchor-id="data-cleaning-and-encorporation">Data Cleaning and Encorporation</h4>
+<section id="data-cleaning-and-incorporation" class="level4">
+<h4 class="anchored" data-anchor-id="data-cleaning-and-incorporation">Data Cleaning and Incorporation</h4>
 <p>Most commonly these lists come in PDF form but can also come in csv or Excel formats. They typically require extensive cleaning and/or conversion from their original format. To aid in the parsing of these lists the MPSG has developed standardized variables for each species based on multiple ranks. These values are as follows:</p>
 <ul>
 <li><code>status_area</code>: the area the ranking applies to (i.e.&nbsp;Colorado, North Dakota, United States)</li>
-<li><code>status_type</code>: the type of ranking</li>
+<li><code>status_type</code>: the type of ranking (i.e.&nbsp;SWAP, State T and E, or Sensitive Species)</li>
+<li><code>status_autority</code>: who made the conservation ranking (i.e.&nbsp;USFWS, USFS, CPW, etc. )</li>
+<li><code>status_all</code>: the entire ranking with type and agency (i.e.&nbsp;USFS R2 Sensitive Species, Colorado Threatened, Colorado SWAP Tier 1, etc.)</li>
+<li><code>status_simple</code>: just the ranking itself (i.e.&nbsp;Tier 1, Sensitive Species, Threatened, etc)</li>
 </ul>
+<p>The current list can be found at the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/conservation_lists.R">mpsgSE package</a>.</p>
 </section>
 </section>
 <section id="make-preliminary-eligible-list" class="level3">
 <h3 class="anchored" data-anchor-id="make-preliminary-eligible-list">Make Preliminary Eligible List</h3>
+<p>Making the preliminary eligible lists consists of combining all of the lists we have listed above. These steps are as follows.</p>
 <ul>
 <li>To the NatureServe State List, which already includes global, state and USFWS ranks, full_join (so that if species is not on one list it does not get dropped) by taxon_id:
 <ul>
@@ -250,10 +255,12 @@ Do we want to a include data limitations section?
 <li>Join all occurrence lists to all potential species eligible filtered list</li>
 <li>Filter by those species that have one occurrence record in the planning unit.</li>
 </ul>
+<p>The result is a list of species with at least one occurrence record inside the planning area the meats at least one qualifying criteria for consideration as SCC. This list is preliminary because we recognize that his process does not perfectly capture all species that should be considered for SCC and that user input and manual vetting of the list could lead to the addition or subtraction of species.</p>
 </section>
 <section id="manually-check-and-automated-checks-accidental-transients-native-and-known-and-local-concern-to-produce-final-scc-eligible-list" class="level3">
 <h3 class="anchored" data-anchor-id="manually-check-and-automated-checks-accidental-transients-native-and-known-and-local-concern-to-produce-final-scc-eligible-list">Manually Check and Automated Checks: Accidental Transients, Native and Known, and Local Concern, to Produce Final SCC Eligible List</h3>
 <!-- I think we should add into this process the Units local concern species -->
+<!-- One thing I'm unclear on is if this step leads to shorter evaluations or no evaluation at all.  -->
 <section id="transient-bird-list" class="level4">
 <h4 class="anchored" data-anchor-id="transient-bird-list">Transient Bird List</h4>
 <p>Per the 2012 planning rule only species that are native to a planning area and not transients or accidental are required to be considered for species evaluation for SCC consideration. As such species must be checked to determine if they are indeed native and not occurring accidentally or due to migration. For many groups of species we can assume that if they are detected and if they have a state ranking or some other ranking that they are likely not accidental nor transients on the plan area. However for migratory birds, some verification should be performed to remove birds that are accidental or transient, including those with detection during migration.</p>
@@ -281,18 +288,22 @@ Do we want to a include data limitations section?
 </section>
 <section id="species-with-uncertain-taxonomic-determinations" class="level4">
 <h4 class="anchored" data-anchor-id="species-with-uncertain-taxonomic-determinations">Species with uncertain taxonomic determinations</h4>
-<p>Multiple species may be taxonomically identified as the same species with <code>get_taxonomies()</code>. Becuase we cannot determine their taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted and we cannot produce automated reports.</p>
+<p>Multiple species may be taxonomically identified as the same species with <code>get_taxonomies()</code>. Because we cannot determine the taxonomic status programatically, we cannot join them to occurrence lists or status lists. Therefore they must be manually vetted. Additionally, for those species with ambiguous taxonomy we cannot produce automated evaluations.</p>
 <p>An example of a species or group of species with ambiguous taxonomic status is the eastern woodrat (<em>Neotoma floridana”). Natureserve recognizes three subspecies of eastern woodrat: </em>Neotoma floridana attwateri<em>, </em>Neotoma floridana baileyi<em>, and </em>Neotoma floridana campestris<em>. Neither GBIF nor ITIS recognize any of these subspecies but they both recognize the speices </em>Neotoma floridana*. Because we use the scientific name, varieity or subspecies that NatureServe recognizes, we must recognize all three of these subspecies. However, if we were to link other qualifying lists and occurrence records with the taxon_id provided by GBIF we would use the same ID for occurrence records of all three subspecies and the species. Additionally, if we have no automated way to link the species or subspecies together there is no way to build an automated report as all steps are automated by referencing the <code>taxon_id</code>.</p>
 </section>
 <section id="add-in-species-with-local-concern" class="level4">
 <h4 class="anchored" data-anchor-id="add-in-species-with-local-concern">Add in Species with Local Concern</h4>
-</section>
-<section id="get-user-feedback" class="level4">
-<h4 class="anchored" data-anchor-id="get-user-feedback">Get user feedback</h4>
+<p>Unit specialists may have species that they are locally concerned about. Species with local concern are eligible for SCC evaluation if they are native and known to occur on the unit. These species should be added to the eligible list prior to running any further steps. As with every other species species taxonomies should be acquired using the get_taxonomies() function.</p>
+<p>One unfortunate part of this step is that it requires that some steps above be rerun. Species do not need any of the rankings above to be considered for this step but all steps should be run to get the status of each local concern species. These steps can rely on the same functionality as those above, but they should be appended prior to running any automated reporting steps.</p>
 </section>
 <section id="use-user-feedback-to-refine-list" class="level4">
 <h4 class="anchored" data-anchor-id="use-user-feedback-to-refine-list">Use user feedback to refine list</h4>
-<p>Based on manual checks remove species that are: * Determined to not be native and known. * Determined to be accidental or transients * ! Determined to be of local concern by the unit</p>
+<p>Based on manual checks remove species that are:</p>
+<ul>
+<li>Determined to not be native and known to occur within the unit.</li>
+<li>Determined to be accidental or transients on the unit</li>
+</ul>
+<p>Add species that were identified as having local concern by the unit.</p>
 </section>
 </section>
 </section>
@@ -300,21 +311,31 @@ Do we want to a include data limitations section?
 <h2 class="anchored" data-anchor-id="retrieve-external-data-for-automating-reports">Retrieve External Data for Automating Reports</h2>
 <section id="get-synonyms" class="level3">
 <h3 class="anchored" data-anchor-id="get-synonyms">Get Synonyms</h3>
+<p>For each species we retrieve all recognized synonyms from GBIF for any given taxon_id. We use the function <code>mpsgSO::get_synonyms()</code> to query the GBIF Taxonomic Backbone for synonyms. The function takes a vector of taxon_ids and returns a table with all synonmyms associated with each taxon_id. The function relies on the function <code>rbgif::name_usage(..., data="synonyms")</code>. This dataset is a stand alone table.</p>
 </section>
 <section id="get-data-for-making-automated-maps" class="level3">
 <h3 class="anchored" data-anchor-id="get-data-for-making-automated-maps">Get Data for Making Automated Maps</h3>
-<section id="load-occurrence-spatial-data" class="level4">
-<h4 class="anchored" data-anchor-id="load-occurrence-spatial-data">Load Occurrence Spatial Data</h4>
-<p>GBIF data are acquired using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/get_gibif.R"><code>mpsgSE::get_gbif()</code></a> function. This function submits a record request, and downloads and read the data into R when the request if complete. The data are then summarized using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/gbif_spp.R"><code>mpsgSE::gbif_spp()</code></a> function and a list of species recorded in the plan area and 1-km buffer of the plan area is created using the <a href="https://github.com/fs-mschmidty/mpsgSE/blob/main/R/compile_gbif_list.R"><code>mpsgSE::compile_gbif_list()</code></a> function. The resulting data are saved in an *.RData file, a data format specific to the R coding language, and loaded back into R when the automated reports are created.</p>
-<p>Currently, SEINet, State NHP EO, and IMBCR data are read into R and summarized using individual R scripts that follow similar workflows as the GBIF data. These scripts will be converted to R functions and included in the <code>mpsgSE</code> package in the near future.</p>
+<section id="subset-occurrence-spatial-data-to-include-on-unit-and-eligible-species" class="level4">
+<h4 class="anchored" data-anchor-id="subset-occurrence-spatial-data-to-include-on-unit-and-eligible-species">Subset Occurrence Spatial Data to Include on Unit and Eligible Species</h4>
+<p>Occurrence datasets are typically quite large. So that they can more efficiently be loaded into automated reports it is helpful to take the eligible list and subset it to just those species that are on the eligible list and those records that occur on the unit. This step simply filters any given list to those species on the eligible list and then clips the occurrence records to the unit. At the moment it returns a list of two objects, one with all eligible and one with all eligible on the unit identified as <code>eligible</code> and <code>eligible_unit</code>.</p>
 </section>
 <section id="load-species-distribution-models" class="level4">
 <h4 class="anchored" data-anchor-id="load-species-distribution-models">Load Species Distribution Models</h4>
+<p>Species distribution models are needed to understand the context of a species range to any given planning units location. We use a variety of sources of species distribution models to get this information.</p>
+<section id="iucn" class="level5">
+<h5 class="anchored" data-anchor-id="iucn">IUCN</h5>
+<p>The IUCN provides a variety of species distribution maps for a variety of groups. These maps must be downloaded as shapefiles and then queried for species by taxonomic group (i.e Mammals, Amphibians, Fish, etc). At the moment we use IUCN for all Taxa groups except Birds and Plants. Of all the data sources used for species distribution maps, this is the least efficient source. At the moment, the steps for using these data are:</p>
 <ul>
-<li>IUCN</li>
+<li>download the data for each taxa group from the IUCN data website <a href="https://www.iucnredlist.org/resources/spatial-data-download">https://www.iucnredlist.org/resources/spatial-data-download</a></li>
+<li>then get the taxonomies off all species in the shapefile with <code>mpsgSE::get_taxonomies()</code>.</li>
+<li>filter the shapefile converted to a table by the species on the eligible lists comparing the taxon_id from each source. We complete this step because filtering a shapefile takes a lot longer (we may want to revise this step).</li>
+<li>return a list of species with available maps from that data source.</li>
+<li>if the source has at least one species on the eligible list we then subset the shapefile by those species.</li>
+<li>For each taxa group we return a shapefile and then those shapefiles are combined.</li>
 <li>BIEN Plant Maps</li>
 <li>Ebird Maps</li>
 </ul>
+</section>
 </section>
 <section id="get-other-base-map-information" class="level4">
 <h4 class="anchored" data-anchor-id="get-other-base-map-information">Get Other Base Map Information</h4>
@@ -344,13 +365,16 @@ Do we want to a include data limitations section?
 </section>
 </section>
 <section id="automate-reports" class="level2">
-
+<h2 class="anchored" data-anchor-id="automate-reports">Automate Reports</h2>
 <!-- Look at the qmd and write out each section.  (Maybe should wait until we finish revamping the reports) -->
-
 </section>
 </section>
+<section id="references" class="level1 unnumbered">
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Automate Reports</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-chamberlainNatservNatureServeInterface2024" class="csl-entry" role="listitem">
 Chamberlain, Scott, and Christopher Tracey. 2024. <span>“Natserv: ’NatureServe’ Interface.”</span> <a href="https://docs.ropensci.org/natserv/">https://docs.ropensci.org/natserv/</a>.
 </div>
