@@ -16,7 +16,8 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
       stringr::str_replace_all("\\(|\\)", "")
   }
 
-  export <- natserv::ns_export(location = list(nation = "US", subnation = state), format = "xlsx")
+  export <- natserv::ns_export(location = list(nation = "US", subnation = state), 
+                               format = "xlsx")
   res <- natserv::ns_export_status(export)
 
   while (res$state != "Finished") {
@@ -30,7 +31,7 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
     janitor::clean_names() |>
     dplyr::filter(!is.na(nature_serve_global_rank)) |>
     dplyr::mutate(
-      source = glue("{state} Natureserve Export")
+      source = glue::glue("{state} Natureserve Export")
     ) |>
     dplyr::rowwise() |>
     dplyr::mutate("{state}_sRank" := get_state_rank(distribution, state)) |>
@@ -38,7 +39,7 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
 
   if (taxonomy) {
     sss <- sss |>
-      get_taxonomies()
+      mpsgSE::get_taxonomies()
   }
 
   l <- list()
