@@ -28,9 +28,7 @@
 read_fc <- function(lyr, dsn, crs = NULL){
   fc = sf::read_sf(layer = lyr, dsn = dsn) |> 
     sf::st_make_valid()
-  if(!is.null(crs)){
-    if(sf::st_crs(fc) != crs) fc = sf::st_transform(fc, crs = crs)
-  }
+  if(!is.null(crs)){fc = sf::st_transform(fc, crs = crs)}
   return(fc)
 }
 
