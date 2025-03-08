@@ -161,7 +161,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #'                      t_path = file.path(t_path, "data"))
 #' 
 #' # Summarize species
-#' gbif_list <- gbif_spp(gbif_sf)
+#' gbif_list <- gbif_spp(gbif_dat)
 #' 
 #' ## End(Not run)                     
 gbif_spp <- function(gbif_data){
@@ -239,7 +239,8 @@ compile_gbif_list <- function(gbif_unit, gbif_buff){
 
 #' Create a well-known text string (WTK) string
 #' 
-#' Creates a well-known text string from a polygon (`sf` object).
+#' Creates a well-known text string from a polygon (`sf` object). This function 
+#'     transforms the input polygon to WGS84 prior to calculating the wkt string. 
 #'
 #' @param my_polygon An `sf` polygon object.
 #' 
@@ -261,7 +262,9 @@ compile_gbif_list <- function(gbif_unit, gbif_buff){
 #' 
 #' ## End (Not run)
 wkt_string <- function(my_polygon){
-  sf::st_bbox(my_polygon) |> 
+  fc = sf::st_transform(my_polygon, crs ="WGS84" )
+  wkt = sf::st_bbox(fc) |> 
     sf::st_as_sfc() |> 
     sf::st_as_text()
+  return(wkt)
 }
