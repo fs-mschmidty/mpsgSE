@@ -13,7 +13,8 @@ wkt_string(my_polygon)
 A vector.
 }
 \description{
-Creates a well-known text string from a polygon (\code{sf} object).
+Creates a well-known text string from a polygon (\code{sf} object). This function
+transforms the input polygon to WGS84 prior to calculating the wkt string.
 }
 \examples{
 ## Not run:

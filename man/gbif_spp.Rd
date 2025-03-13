@@ -34,7 +34,7 @@ gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
                      t_path = file.path(t_path, "data"))
 
 # Summarize species
-gbif_list <- gbif_spp(gbif_sf)
+gbif_list <- gbif_spp(gbif_dat)
 
 ## End(Not run)                     
 }

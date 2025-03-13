@@ -4,12 +4,10 @@
 \alias{get_synonyms}
 \title{This function takes in a dataframe of species with assigned taxon_ids and outputs a list of potential synonyms from the GBIF Backbone taxonomy.  If more than one species has a taxon_id assigned to it it will only returns synonyms for one species. This returns many fields, however only the cananical name is used.}
 \usage{
-get_synonyms(x, taxon_id_field = "taxon_id")
+get_synonyms(x)
 }
 \arguments{
-\item{x}{a data frame}
-
-\item{taxon_id_field}{GBIF taxon_id provided by get_taxonomies.}
+\item{x}{a vector of unique taxon_ids from get_taxonomies}
 }
 \description{
 This function takes in a dataframe of species with assigned taxon_ids and outputs a list of potential synonyms from the GBIF Backbone taxonomy.  If more than one species has a taxon_id assigned to it it will only returns synonyms for one species. This returns many fields, however only the cananical name is used.
