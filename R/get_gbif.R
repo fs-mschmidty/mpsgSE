@@ -116,7 +116,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
                                  scientific_name), 
         scientific_name = trimws(scientific_name),
         # Parse date formats, day of year, and year
-        date = lubridate::parse_date_time(eventDate, date_formats),
+        date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
         date = ifelse(lubridate::year(date) == 9999, NA, date), 
         dayOfYear = lubridate::yday(date),
         year = lubridate::year(date), 
