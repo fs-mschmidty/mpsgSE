@@ -77,7 +77,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
     file.path(t_path, paste0(gbif_key, ".zip"))
   } else(NULL)
   # Date formats
-  date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", , "ymd HMS", 
+  date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS", 
                    "ymd", "ymd HM")
   
   #-- Pull GBIF Data
