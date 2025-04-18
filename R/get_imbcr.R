@@ -34,38 +34,18 @@
 #' get_imbcr(mgmt_units)
 #' 
 #' ## End(Not run)                     
-get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL, 
-                      imbcr_file = NULL, ebird_file = NULL){
+get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL){
   # Define file path
   if(is.null(dir_path)){
-    dir_path = file.path("T:/FS/NFS/PSO/MPSG/Data/ExternalData", 
+    dir_path = file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species", 
                          "2023_IMBCR_USFSdata")
   }
-  if(is.null(imbcr_file)) imbcr_file = 'USFS bird data.csv'
-  if(is.null(ebird_file)){
-    ebird_file = 'ebird-Clements-v2022-integrated-checklist-October-2022.csv'
-    }
-  
-  # eBird Taxa List ----
-  message("Reading eBird taxa list")
-  ebird_list = readr::read_csv(file.path(dir_path, ebird_file),  
-                                show_col_types = FALSE) |> 
-    tibble::tibble(.name_repair = function(x)tolower(x)) |> 
-    dplyr::rename("common_name" = primary_com_name, 
-                  "scientific_name" = sci_name, 
-                  "order" = order1) |> 
-    dplyr::select(-report_as)
-  
-  # Load and filter data
+
   # IMBCR Data ----
   message("Reading IMBCR data")
-  dat = readr::read_csv(file.path(dir_path, imbcr_file),
-                               show_col_types = FALSE) |>
+  dat = readRDS(file.path(dir_path, "imbcr_data.RDS")) |>
     dplyr::filter(MgmtUnit %in% mgmt_unit) |> 
-    dplyr::filter(!stringr::str_detect(Species, "Unknown")) |> 
-    dplyr::left_join(ebird_list, 
-                     by = dplyr::join_by("Species" == "common_name")) |> 
-    sf::st_as_sf(coords = c("PointLongitude", "PointLatitude"), crs = "NAD83")
+    dplyr::filter(!stringr::str_detect(Species, "Unknown"))
   
   # Re-project CRS
   if(!is.null(crs)){
@@ -103,10 +83,10 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL,
 #' ## End(Not run)                     
 see_imbcr_mgmt_units <- function(file_path = NULL){
   if(is.null(file_path)){
-    file_path = file.path(file.path("T:/FS/NFS/PSO/MPSG/Data/ExternalData", 
-                                    "2023_IMBCR_USFSdata/imbcr_mgmt_units.rda"))
+    rda_path = file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species",
+                         "2023_IMBCR_USFSdata/imbcr_mgmt_units.RDS")
   }
-  load(file_path)
+  load(rda_path)
   message("---------- IMBCR Management Units on Forest Service Land ----------")
   print(imbcr_mgmt_units)
 }
@@ -148,17 +128,13 @@ imbcr_spp <- function(imbcr_data){
     dplyr::rename("common_name_IMBCR" = Species, 
                   "order_eBird" = order, 
                   "family_eBird" = family, 
-                  "IMBCR_locale" = locale)
+                  "locale" = locale)
   spp_stats = sf::st_drop_geometry(imbcr_data) |>
     dplyr::select(rec_ID, scientific_name, Year) |> 
     dplyr::group_by(scientific_name) |> 
-    dplyr::summarize(IMBCR_nObs = dplyr::n(), 
-                     IMBCR_minYear = min(Year, na.rm = TRUE), 
-                     IMBCR_maxYear = max(Year, na.rm = TRUE), 
-                     IMBCR_recID = ifelse(IMBCR_nObs <= 6, 
-                                          stringr::str_c(unique(rec_ID),
-                                                         collapse = ", "), 
-                                          NA),
+    dplyr::summarize(nObs = dplyr::n(), 
+                     minYear = min(Year, na.rm = TRUE), 
+                     maxYear = max(Year, na.rm = TRUE), 
                      .groups = "drop")
   dat = dplyr::left_join(spp_stats, taxa_dat, by = "scientific_name") |> 
     dplyr::mutate(source = "IMBCR") |> 
