@@ -1,8 +1,8 @@
 #' Read IMBCR Data into R.
 #' 
-#' This function reads IMBCR data into R. The data are stored in an *.rda file
-#'    on the T-drive. The user can specify a file path if using a copy of the 
-#'    *.rda file on your local machine.
+#' This function reads IMBCR data into R. The data are stored in an *.RDS file
+#'    on the T-drive. The user can specify a directory path if using a copy of 
+#'    the *.rda file on your local machine.
 #'
 #' @param mgmt_unit The IMBCR management unit. Use `see_imbcr_mgmt_units()` to 
 #'                      see management unit names.
@@ -12,10 +12,6 @@
 #'                resulting sf object CRS will be NAD83.
 #' @param dir_path Path to the IMBCR data folder. Default is NULL. If NULL, data 
 #'                     will be read from the MPSG T-drive folder.
-#' @param imbcr_file Name of IMBCR data file. Default is NULL. If NULL, the file 
-#'                       name in the MPSG T-drive will be used.
-#' @param ebird_file Name of eBird taxa list file. Default is NULL. If NULL, the 
-#'                       file name in the MPSG T-drive will be used.
 #'
 #' @return An [sf] class object.
 #' 
@@ -86,7 +82,7 @@ see_imbcr_mgmt_units <- function(file_path = NULL){
     rda_path = file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species",
                          "2023_IMBCR_USFSdata/imbcr_mgmt_units.RDS")
   }
-  load(rda_path)
+  readRDS(rda_path)
   message("---------- IMBCR Management Units on Forest Service Land ----------")
   print(imbcr_mgmt_units)
 }
