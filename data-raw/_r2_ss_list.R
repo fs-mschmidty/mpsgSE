@@ -17,5 +17,6 @@ r2_ss_list <- read_excel("data-raw/data/fs/2023_R2_RegionalForestersSensitiveSpp
   get_taxonomies()
 
 r2_ss_list |>
-  select(taxon_id, scientific_name, common_name, status_area, status_authority, status_all, status_simple, status_type) |>
+  select(taxon_id, scientific_name, common_name, status_area, status_authority, 
+         status_all, status_simple, status_type) |>
   write_csv("data-raw/output/species_lists/r2_ss_list.csv")
