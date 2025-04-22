@@ -86,11 +86,11 @@ seinet_spp <- function(seinet_data){
     dplyr::rename("scientific_name" = scientificName) |>
     dplyr::distinct() |> 
     dplyr::group_by(scientific_name) |> 
-    dplyr::summarize(SEI_nObs = dplyr::n(), 
-                     SEI_minYear = min(lubridate::year(date), na.rm = TRUE), 
-                     SEI_maxYear = max(lubridate::year(date), na.rm = TRUE), 
-                     SEI_taxonID = stringr::str_c(taxonID, collapse = ", "),
-                     SEI_occID = ifelse(SEI_nObs <= 6, 
+    dplyr::summarize(nObs = dplyr::n(), 
+                     minYear = min(lubridate::year(date), na.rm = TRUE), 
+                     maxYear = max(lubridate::year(date), na.rm = TRUE), 
+                     taxonID = stringr::str_c(taxonID, collapse = ", "),
+                     occID = ifelse(SEI_nObs <= 6, 
                                         stringr::str_c(unique(occurrenceID), 
                                                        collapse = ", "),
                                         NA), 

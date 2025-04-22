@@ -171,15 +171,15 @@ gbif_spp <- function(gbif_data){
     dplyr::select(scientific_name, taxonKey, occurrenceID, year) |> 
     dplyr::distinct() |>
     dplyr::group_by(scientific_name) |> 
-    dplyr::summarize(GBIF_nObs = dplyr::n(), 
-                     GBIF_minYear = min(year, na.rm = TRUE), 
-                     GBIF_maxYear = max(year, na.rm = TRUE), 
-                     GBIF_occID = ifelse(GBIF_nObs <= 6, 
-                                         stringr::str_c(unique(occurrenceID), 
-                                                        collapse = "; "),
-                                         NA),
+    dplyr::summarize(nObs = dplyr::n(), 
+                     minYear = min(year, na.rm = TRUE), 
+                     maxYear = max(year, na.rm = TRUE), 
+                     occID = ifelse(GBIF_nObs <= 6,
+                                    stringr::str_c(unique(occurrenceID),
+                                                   collapse = "; "),
+                                    NA),
                      .groups = "drop") |> 
-    dplyr::mutate(GBIF_locale = locale, source = "GBIF") |> 
+    dplyr::mutate(locale = locale, source = "GBIF") |> 
     dplyr::distinct(scientific_name, .keep_all = TRUE) |> 
     mpsgSE::get_taxonomies(query_field = "scientific_name") |> 
     dplyr::arrange(kingdom, phylum, class, order, family, genus, 
