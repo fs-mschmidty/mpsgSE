@@ -73,4 +73,11 @@ readr::write_csv(rfss,
 readr::write_csv(rfss_taxonomy, 
                  file.path("data-raw/output/species_lists/fs_rfss_taxonomy.csv"))
 
+# rfss <- readr::read_csv(
+#   file.path("data-raw/output/species_lists/fs_rfss_lists.csv")
+#   )
+# rfss_taxonomy <- readr::read_csv(
+#   file.path("data-raw/output/species_lists/fs_rfss_taxonomy.csv")
+# )
+usethis::use_data(rfss, rfss_taxonomy, overwrite = TRUE)
 

@@ -4,13 +4,7 @@
 \alias{get_imbcr}
 \title{Read IMBCR Data into R.}
 \usage{
-get_imbcr(
-  mgmt_unit,
-  crs = NULL,
-  dir_path = NULL,
-  imbcr_file = NULL,
-  ebird_file = NULL
-)
+get_imbcr(mgmt_unit, crs = NULL, dir_path = NULL)
 }
 \arguments{
 \item{mgmt_unit}{The IMBCR management unit. Use \code{see_imbcr_mgmt_units()} to
@@ -23,20 +17,14 @@ resulting sf object CRS will be NAD83.}
 
 \item{dir_path}{Path to the IMBCR data folder. Default is NULL. If NULL, data
 will be read from the MPSG T-drive folder.}
-
-\item{imbcr_file}{Name of IMBCR data file. Default is NULL. If NULL, the file
-name in the MPSG T-drive will be used.}
-
-\item{ebird_file}{Name of eBird taxa list file. Default is NULL. If NULL, the
-file name in the MPSG T-drive will be used.}
 }
 \value{
 An \link{sf} class object.
 }
 \description{
-This function reads IMBCR data into R. The data are stored in an *.rda file
-on the T-drive. The user can specify a file path if using a copy of the
-*.rda file on your local machine.
+This function reads IMBCR data into R. The data are stored in an *.RDS file
+on the T-drive. The user can specify a directory path if using a copy of
+the *.rda file on your local machine.
 }
 \details{
 You must be connected to the T-drive, e.g., through VPN, to use this function

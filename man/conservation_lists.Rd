@@ -3,7 +3,8 @@
 \docType{data}
 \name{conservation_lists}
 \alias{conservation_lists}
-\title{Conservation lists in standardised format.  All lists have a taxon_id based on the GBIF accepted taxonomy. Lists so far included are:
+\title{Conservation lists in standardized format.  All lists have a taxon_id based
+on the GBIF accepted taxonomy. Lists so far included are:
 \itemize{
 \item Colorado SWAP
 \item Colorado T and E
@@ -16,7 +17,8 @@ An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, 
 conservation_lists
 }
 \description{
-Conservation lists in standardised format.  All lists have a taxon_id based on the GBIF accepted taxonomy. Lists so far included are:
+Conservation lists in standardized format.  All lists have a taxon_id based
+on the GBIF accepted taxonomy. Lists so far included are:
 \itemize{
 \item Colorado SWAP
 \item Colorado T and E
