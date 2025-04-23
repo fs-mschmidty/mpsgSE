@@ -174,7 +174,7 @@ gbif_spp <- function(gbif_data){
     dplyr::summarize(nObs = dplyr::n(), 
                      minYear = min(year, na.rm = TRUE), 
                      maxYear = max(year, na.rm = TRUE), 
-                     occID = ifelse(GBIF_nObs <= 6,
+                     occID = ifelse(nObs <= 6,
                                     stringr::str_c(unique(occurrenceID),
                                                    collapse = "; "),
                                     NA),
