@@ -5,7 +5,7 @@ Authors@R:
     c(person("Mike", "Schmidt", , "Michael.Schmidt4@usda.gov",
              role = c("aut", "cre"), comment = c(ORCID = "YOUR-ORCID-ID")),
       person("Matthew", "Van Scoyoc", , "matthew.vanscoyoc@usda.gov",
-             role = c("aut", "cre"), comment = c(ORCID = "YOUR-ORCID-ID")))
+             role = c("ctb", "cre"), comment = c(ORCID = "YOUR-ORCID-ID")))
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
