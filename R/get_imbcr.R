@@ -126,7 +126,7 @@ imbcr_spp <- function(imbcr_data){
                   "family_eBird" = family, 
                   "locale" = locale)
   spp_stats = sf::st_drop_geometry(imbcr_data) |>
-    dplyr::select(rec_ID, scientific_name, Year) |> 
+    dplyr::select(scientific_name, Year) |> 
     dplyr::group_by(scientific_name) |> 
     dplyr::summarize(nObs = dplyr::n(), 
                      minYear = min(Year, na.rm = TRUE), 
