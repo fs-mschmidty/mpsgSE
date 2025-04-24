@@ -90,10 +90,10 @@ seinet_spp <- function(seinet_data){
                      minYear = min(lubridate::year(date), na.rm = TRUE), 
                      maxYear = max(lubridate::year(date), na.rm = TRUE), 
                      taxonID = stringr::str_c(taxonID, collapse = ", "),
-                     occID = ifelse(SEI_nObs <= 6, 
-                                        stringr::str_c(unique(occurrenceID), 
-                                                       collapse = ", "),
-                                        NA), 
+                     occID = ifelse(nObs <= 6, 
+                                    stringr::str_c(unique(occurrenceID),
+                                                   collapse = ", "),
+                                    NA), 
                      .groups = "drop") |> 
     dplyr::mutate(SEI_locale = locale, source = "SEINet") |> 
     dplyr::filter(!scientific_name == "") |> 
