@@ -95,7 +95,7 @@ seinet_spp <- function(seinet_data){
                                                    collapse = ", "),
                                     NA), 
                      .groups = "drop") |> 
-    dplyr::mutate(SEI_locale = locale, source = "SEINet") |> 
+    dplyr::mutate(locale = locale, source = "SEINet") |> 
     dplyr::filter(!scientific_name == "") |> 
     dplyr::distinct(scientific_name, .keep_all = TRUE) |> 
     mpsgSE::get_taxonomies(query_field = "scientific_name") |> 
