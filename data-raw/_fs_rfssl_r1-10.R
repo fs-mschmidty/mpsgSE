@@ -1,20 +1,15 @@
 #' ---
-#' title: "Taxonomy Analysis for NOGA BA"
+#' title: "Taxonomy and Taxon ID's for Regional Foresters Sensitive Species Lists"
 #' author:
 #'   - name: "Matthew Van Scoyoc" 
 #'     affiliation: |
 #'       | Mountain Planning Service Group, Regions 1-4
 #'       | Information Management Group
 #'       | Forest Service, USDA
-#'    - name: "Jared Scott"
-#'     affiliation: |
-#'       | Mountain Planning Service Group, Regions 1-4
-#'       | Information Management Group
-#'       | Forest Service, USDA
-#' date: 16 May, 2024
+#' date: 22 April, 2025
 #' 
-#' This script queries taxonomy from ITIS and global and state conservation 
-#'     status from NatureServe.
+#' This script queries taxonomy and taxon IDs using the `get_taxonomies()` 
+#' function.
 #'-----------------------------------------------------------------------------
 
 

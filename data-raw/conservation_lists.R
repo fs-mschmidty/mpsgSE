@@ -2,6 +2,7 @@
 library(tidyverse)
 library(devtools)
 
-conservation_lists <- read_csv(list.files("data-raw/output/species_lists", full.names = T))
+conservation_lists <- read_csv(list.files("data-raw/output/species_lists", 
+                                          full.names = T))
 
 use_data(conservation_lists, overwrite = T)
