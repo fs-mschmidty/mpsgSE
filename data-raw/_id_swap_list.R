@@ -1,5 +1,5 @@
 #' ---
-#' title: "Taxonomy and Taxon ID's for the USFWS Birds of Conservation Concern List"
+#' title: "Taxonomy and Taxon ID's for the Idah SWAP List"
 #' author:
 #'   - name: "Matthew Van Scoyoc" 
 #'     affiliation: |
@@ -36,19 +36,21 @@ if (any(inst_pkgs == FALSE)) {
 # Load packages
 invisible(lapply(pkgs, library, character.only = TRUE))
 
-# data ----
-bcc_file <- file.path("data-raw/data", "BirdsOfConservationConcern_2024.xlsx")
 
-bcc_list <- readxl::read_excel(path = bcc_file, sheet = "Table001 (Page 1-4)", 
-                               skip = 1, col_names = TRUE) |> 
-  janitor::clean_names() |> 
-  mpsgSE::get_taxonomies('scientific_name')
+# data ----
+id_swap_file <- file.path("data-raw/data", "IDSWAP2023Spp_v20250506.xlsx")
+
+id_swap <- readxl::read_excel(id_swap_file, sheet = "SWAPSpecies", 
+                              col_names = TRUE) |> 
+  dplyr::select(taxonID, scientificName, sPrimaryCommonName, synonymName, 
+                SWAP2015, SWAP2023, SWAP2023designation, lastUpdated, 
+                taxonomyNotes, comments) |> 
+  dplyr::rename("ID_taxonID" = taxonID) |> 
+  mpsgSE::get_taxonomies('scientificName')
 
 
 # save ----
-readr::write_csv(bcc_list,
-                 file.path("data-raw/output/species_lists/bcc_list.csv"))
-usethis::use_data(bcc_list, overwrite = TRUE)
-
-
+readr::write_csv(id_swap,
+                 file.path("data-raw/output/species_lists/id_swap.csv"))
+usethis::use_data(id_swap, overwrite = TRUE)
 

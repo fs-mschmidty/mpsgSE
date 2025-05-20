@@ -1,5 +1,5 @@
 #' ---
-#' title: "Taxonomy and Taxon ID's for the USFWS Birds of Conservation Concern List"
+#' title: "Taxonomy and Taxon ID's for the Montana SWAP List"
 #' author:
 #'   - name: "Matthew Van Scoyoc" 
 #'     affiliation: |
@@ -36,19 +36,20 @@ if (any(inst_pkgs == FALSE)) {
 # Load packages
 invisible(lapply(pkgs, library, character.only = TRUE))
 
-# data ----
-bcc_file <- file.path("data-raw/data", "BirdsOfConservationConcern_2024.xlsx")
 
-bcc_list <- readxl::read_excel(path = bcc_file, sheet = "Table001 (Page 1-4)", 
-                               skip = 1, col_names = TRUE) |> 
+# data ----
+mt_swap_file <- file.path("data-raw/data", "Montana_SGCN_SWAPSpecies.xlsx")
+
+mt_swap <- readxl::read_excel(mt_swap_file, sheet = "Combined List", 
+                              col_names = TRUE, skip = 4) |>  
   janitor::clean_names() |> 
+  dplyr::select(group, scientific_name, common_name) |> 
+  dplyr::filter(!is.na(scientific_name)) |> 
   mpsgSE::get_taxonomies('scientific_name')
 
 
 # save ----
-readr::write_csv(bcc_list,
-                 file.path("data-raw/output/species_lists/bcc_list.csv"))
-usethis::use_data(bcc_list, overwrite = TRUE)
-
-
+readr::write_csv(mt_swap,
+                 file.path("data-raw/output/species_lists/mt_swap.csv"))
+usethis::use_data(mt_swap, overwrite = TRUE)
 
