@@ -84,7 +84,7 @@ get_seinet <- function(dir_path, crs = NULL){
 seinet_spp <- function(seinet_data){
   locale = stringr::str_c(unique(seinet_data$locale), collapse = ", ")
   dat = sf::st_drop_geometry(seinet_data) |> 
-    dplyr::select(occurrenceID, scientificName, taxonID, date) |> 
+    dplyr::select(occurrenceID, taxonID, scientificName, date) |> 
     dplyr::rename("scientific_name" = scientificName) |>
     dplyr::distinct() |> 
     dplyr::group_by(scientific_name) |> 

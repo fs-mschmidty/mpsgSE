@@ -4,15 +4,15 @@
 \alias{clip_fc}
 \title{Clip feature class to polygon}
 \usage{
-clip_fc(sf_lyr, sf_clip, locale)
+clip_fc(sf_lyr, sf_clip, locale = NULL)
 }
 \arguments{
 \item{sf_lyr}{Spatial (\code{sf}) object to be clipped.}
 
-\item{sf_clip}{Polygon (\code{sf}) object used to clip by.}
+\item{sf_clip}{Polygon (\code{sf}) object used to clip.}
 
-\item{locale}{Short description of clipped layer, usually the location
-(e.g., forest acronym or "Buffer").}
+\item{locale}{Optional. Short description of clipped layer, usually the
+location (e.g., forest acronym or "Buffer").}
 }
 \value{
 sf object
@@ -21,9 +21,8 @@ sf object
 This function clips a \code{sf} object using \code{sf::st_intersection()}. First, this
 function checks that the coordinate reference system (CRS) of the input
 object is the same as the clipping object. If it is not, this function
-transforms the input object to CRS of the clipping object using
-\code{sf::st_transform()}before clipping. The output CRS is that of the clipping
-object.
+transforms the clipping object to CRS of the input object using
+\code{sf::st_transform()}before clipping. The output CRS is not changed.
 }
 \examples{
 ## Not run:
@@ -33,8 +32,7 @@ library("mpsgSE")
 # Read spatial data into R
 t_path <- file.path("T:/path/to/project/directory")
 gdb_path <- file.path(t_path, "GIS_Data.gdb")
-sf_fs <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
-sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
+sf_plan_area <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
 
 # Pull data from existing GBIF query
 gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
@@ -44,7 +42,7 @@ gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
 gbif_sf <- gbif_spatial(gbif_dat, "NAD83")
 
 # Clip to extents
-unit_gbif <- clip_fc(gbif_sf, sf_fs)
+unit_gbif <- clip_fc(gbif_sf, sf_plan_area)
 
 ## End (Not run)
 }

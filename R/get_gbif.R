@@ -168,7 +168,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 gbif_spp <- function(gbif_data){
   locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
   dat = sf::st_drop_geometry(gbif_data) |>
-    dplyr::select(scientific_name, taxonKey, occurrenceID, year) |> 
+    dplyr::select(taxonKey, scientific_name, occurrenceID, year) |> 
     dplyr::distinct() |>
     dplyr::group_by(scientific_name) |> 
     dplyr::summarize(nObs = dplyr::n(), 
