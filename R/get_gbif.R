@@ -120,7 +120,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
         date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
         date = ifelse(lubridate::year(date) == 9999, NA, date), 
         dayOfYear = lubridate::yday(date),
-        year = lubridate::year(date), 
+        # year = lubridate::year(date), 
         source = "GBIF"
       ) |>
       dplyr::mutate_if(is.character, trimws)

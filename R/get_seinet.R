@@ -39,7 +39,7 @@ get_seinet <- function(dir_path, crs = NULL){
       date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(), 
       date = ifelse(lubridate::year(date) == 9999, NA, date),
       dayOfYear = lubridate::yday(date),
-      year = lubridate::year(date),
+      # year = lubridate::year(date),
       source = "SEINet"
       ) |> 
     sf::st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
