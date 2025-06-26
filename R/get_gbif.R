@@ -117,9 +117,9 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
                                  scientific_name), 
         scientific_name = trimws(scientific_name),
         # Parse date formats, day of year, and year
-        date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
-        date = ifelse(lubridate::year(date) == 9999, NA, date), 
-        dayOfYear = lubridate::yday(date),
+        # date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
+        # date = ifelse(lubridate::year(date) == 9999, NA, date), 
+        # dayOfYear = lubridate::yday(date),
         # year = lubridate::year(date), 
         source = "GBIF"
       ) |>
@@ -165,10 +165,22 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #' gbif_list <- gbif_spp(gbif_dat)
 #' 
 #' ## End(Not run)                     
-gbif_spp <- function(gbif_data){
-  locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
+gbif_spp <- function(gbif_data, locale = TRUE){
+  # Date formats
+  date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS", 
+                   "ymd", "ymd HM")
+  # Locale
+  if(isTRUE(locale)){
+    locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
+  }
+  
+  # Summarize data
   dat = sf::st_drop_geometry(gbif_data) |>
-    dplyr::select(taxonKey, scientific_name, occurrenceID, year) |> 
+    dplyr::select(taxonKey, occurrenceID, scientific_name, eventDate)  |> 
+    dplyr::mutate(
+      date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
+      year = lubridate::year(date)
+      ) |> 
     dplyr::distinct() |>
     dplyr::group_by(scientific_name) |> 
     dplyr::summarize(nObs = dplyr::n(), 

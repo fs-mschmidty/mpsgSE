@@ -36,9 +36,9 @@ get_seinet <- function(dir_path, crs = NULL){
     dplyr::filter(taxonRank %in% c('Species', 'Variety', 'Subspecies')) |> 
     dplyr::filter(!is.na(decimalLatitude) | !is.na(decimalLongitude)) |> 
     dplyr::mutate(
-      date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(), 
-      date = ifelse(lubridate::year(date) == 9999, NA, date),
-      dayOfYear = lubridate::yday(date),
+      # date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(), 
+      # date = ifelse(lubridate::year(date) == 9999, NA, date),
+      # dayOfYear = lubridate::yday(date),
       # year = lubridate::year(date),
       source = "SEINet"
       ) |> 
@@ -81,10 +81,22 @@ get_seinet <- function(dir_path, crs = NULL){
 #' spp_list <- seinet_spp(sei_dat)
 #' 
 #' ## End(Not run)                     
-seinet_spp <- function(seinet_data){
-  locale = stringr::str_c(unique(seinet_data$locale), collapse = ", ")
+seinet_spp <- function(seinet_data, locale = TRUE){
+  # Date formats
+  date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS", 
+                   "ymd", "ymd HM")
+  # Locale
+  if(isTRUE(locale)){
+    locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
+  }
+  
+  # Summarize data
   dat = sf::st_drop_geometry(seinet_data) |> 
-    dplyr::select(occurrenceID, taxonID, scientificName, date) |> 
+    dplyr::select(taxonID, occurrenceID, scientificName, eventDate) |> 
+    dplyr::mutate(
+      date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
+      year = lubridate::year(date)
+    ) |> 
     dplyr::rename("scientific_name" = scientificName) |>
     dplyr::distinct() |> 
     dplyr::group_by(scientific_name) |> 

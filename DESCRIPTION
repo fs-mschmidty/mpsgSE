@@ -3,9 +3,9 @@ Title: Functions for Creating Species Evalutaions for the Mountain States Planni
 Version: 0.0.1
 Authors@R: 
     c(person("Mike", "Schmidt", , "Michael.Schmidt4@usda.gov",
-             role = c("aut", "cre"), comment = c(ORCID = "YOUR-ORCID-ID")),
+             role = c("aut", "cre")),
       person("Matthew", "Van Scoyoc", , "matthew.vanscoyoc@usda.gov",
-             role = c("ctb", "aut"), comment = c(ORCID = "YOUR-ORCID-ID")))
+             role = c("ctb", "aut"), comment = c(ORCID = "0000-0001-6821-4476")))
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
