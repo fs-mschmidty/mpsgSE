@@ -87,7 +87,7 @@ seinet_spp <- function(seinet_data, locale = TRUE){
                    "ymd", "ymd HM")
   # Locale
   if(isTRUE(locale)){
-    locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
+    locale = stringr::str_c(unique(seinet_data$locale), collapse = ", ")
   }
   
   # Summarize data
