@@ -4,7 +4,7 @@
 \alias{seinet_spp}
 \title{Summarize SEINet data by species}
 \usage{
-seinet_spp(seinet_data)
+seinet_spp(seinet_data, locale = TRUE)
 }
 \arguments{
 \item{seinet_data}{Spatial SEINet data from \code{get_seinet()}.}

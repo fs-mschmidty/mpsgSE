@@ -36,10 +36,10 @@ get_seinet <- function(dir_path, crs = NULL){
     dplyr::filter(taxonRank %in% c('Species', 'Variety', 'Subspecies')) |> 
     dplyr::filter(!is.na(decimalLatitude) | !is.na(decimalLongitude)) |> 
     dplyr::mutate(
-      # date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(), 
-      # date = ifelse(lubridate::year(date) == 9999, NA, date),
-      # dayOfYear = lubridate::yday(date),
-      # year = lubridate::year(date),
+      date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
+      date = ifelse(lubridate::year(date) == 9999, NA, date),
+      dayOfYear = lubridate::yday(date),
+      year = lubridate::year(date),
       source = "SEINet"
       ) |> 
     sf::st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
@@ -117,54 +117,3 @@ seinet_spp <- function(seinet_data, locale = TRUE){
                    species, scientific_name)
   return(dat)
 }
-
-
-#' Compile SEINet list
-#' 
-#' Compile a comprehensive species list from SEINet occurrence records on Forest 
-#'     Service (FS) land and a 1-km buffer of FS land. This function uses the 
-#'     `seinet_spp()` function on two clipped spatial objects from 
-#'     `get_seinet()`.
-#'
-#' @param seinet_unit Spatial SEINet data from `get_seinet()` clipped to FS land.
-#' @param seinet_buff Spatial SEINet data from `get_seinet()` clipped to the 1-km 
-#'                    buffer of FS land.
-#'
-#' @return A tibble.
-#' @seealso [get_seinet()], [seinet_spp()], [clip_fc()]
-#' @export
-#'
-#' @examples
-#' ## Not run:
-#' 
-#' library("mpsgSE")
-#' 
-#' # Read spatial data into R
-#' t_path <- file.path("T:/path/to/project/directory")
-#' gdb_path <- file.path(t_path, "GIS_Data.gdb")
-#' sf_fs <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
-#' sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
-#' 
-#' # Pull data from existing SEINet query
-#' sei_dat <- get_seinet(file.path(t_path, "data/SEINet"), crs = "NAD83")
-#' 
-#' # Clip to extents
-#' unit_sei <- clip_fc(sei_dat, sf_fs)
-#' buff_sei <- clip_fc(sei_dat, sf_buff)
-#' 
-#' # Summarize species
-#' spp_list <- compile_seinet_list(unit_sei, buff_sei)
-#' 
-#' ## End(Not run)                     
-compile_seinet_list <- function(seinet_unit, seinet_buff){
-  message("Processing unit species data")
-  unit_list = seinet_spp(seinet_unit)
-  message("Processing buffer species data")
-  buff_list = seinet_spp(seinet_buff)
-  message("Compiling species list")
-  comp_list = rbind(add_cols(unit_list, buff_list),
-                     dplyr::filter(add_cols(buff_list, unit_list), 
-                                   !taxon_id %in% unit_list$taxon_id))
-  return(comp_list)
-  }
-

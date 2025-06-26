@@ -117,10 +117,10 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
                                  scientific_name), 
         scientific_name = trimws(scientific_name),
         # Parse date formats, day of year, and year
-        # date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
-        # date = ifelse(lubridate::year(date) == 9999, NA, date), 
-        # dayOfYear = lubridate::yday(date),
-        # year = lubridate::year(date), 
+        date = lubridate::parse_date_time(eventDate, date_formats) |> as.Date(),
+        date = ifelse(lubridate::year(date) == 9999, NA, date),
+        dayOfYear = lubridate::yday(date),
+        year = lubridate::year(date),
         source = "GBIF"
       ) |>
       dplyr::mutate_if(is.character, trimws)
@@ -197,56 +197,6 @@ gbif_spp <- function(gbif_data, locale = TRUE){
     dplyr::arrange(kingdom, phylum, class, order, family, genus, 
                    species, scientific_name)
   return(dat)
-}
-
-
-#' Compile GBIF list
-#' 
-#' Compile a comprehensive species list from GBIF occurrence records on Forest 
-#'     Service (FS) land and a 1-km buffer of FS land. This function uses the 
-#'     `gbif_spp()` function on two clipped spatial objects from `get_gbif()`.
-#'
-#' @param gbif_unit Spatial GBIF data from `get_gbif()` clipped to FS land.
-#' @param gbif_buff Spatial GBIF data from `get_gbif()` clipped to the 1-km 
-#'                    buffer of FS land.
-#'
-#' @return A tibble.
-#' @seealso [get_gbif()], [gbif_spp()], [clip_fc()]
-#' @export
-#'
-#' @examples
-#' ## Not run:
-#' 
-#' library("mpsgSE")
-#' 
-#' # Read spatial data into R
-#' t_path <- file.path("T:/path/to/project/directory")
-#' gdb_path <- file.path(t_path, "GIS_Data.gdb")
-#' sf_fs <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
-#' sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
-#'                      t_path = file.path(t_path, "data"))
-#' 
-#' # Clip to extents
-#' unit_gbif <- clip_fc(gbif_sf, sf_fs)
-#' buff_gbif <- clip_fc(gbif_sf, sf_buff)
-#' 
-#' # Summarize species
-#' gbif_list <- compile_gbif_list(unit_gbif, buff_gbif)
-#' 
-#' ## End(Not run)                     
-compile_gbif_list <- function(gbif_unit, gbif_buff){
-  message("Processing unit species data")
-  unit_list = gbif_spp(gbif_unit)
-  message("Processing buffer species data")
-  buff_list = gbif_spp(gbif_buff)
-  message("Compiling species list")
-  comp_list = rbind(add_cols(unit_list, buff_list),
-                     dplyr::filter(add_cols(buff_list, unit_list), 
-                                   !taxon_id %in% unit_list$taxon_id))
-  return(comp_list)
 }
 
 

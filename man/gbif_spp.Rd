@@ -4,7 +4,7 @@
 \alias{gbif_spp}
 \title{Summarize GBIF data by species}
 \usage{
-gbif_spp(gbif_data)
+gbif_spp(gbif_data, locale = TRUE)
 }
 \arguments{
 \item{gbif_data}{Spatial GBIF data from \code{get_gbif()}.}

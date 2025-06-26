@@ -5,6 +5,52 @@
 # -----------------------------------------------------------------------------
 
 
+#' Combine Species Lists
+#' 
+#' Create a comprehensive species list from occurrence records on Forest Service 
+#'     (FS) land and the 1-km buffer of FS land.
+#'
+#' @param fs_unit_list Species list for FS Unit.
+#' @param gbif_buff Species list for 1-km Buffer.
+#'
+#' @return A tibble.
+#' @seealso [gbif_spp()], [seinet_spp()], [imbcr_spp()]
+#' @export
+#'
+#' @examples
+#' ## Not run:
+#' 
+#' library("mpsgSE")
+#' 
+#' # Read spatial data into R
+#' t_path <- file.path("T:/path/to/project/directory")
+#' gdb_path <- file.path(t_path, "GIS_Data.gdb")
+#' sf_fs <- read_fc(lyr = "PlanArea", dsn = gdb_path, crs = "NAD83")
+#' sf_buff <- read_fc(lyr = "PlanArea_1kmBuffer", dsn = gdb_path, crs = "NAD83")
+#' 
+#' # Pull data from existing GBIF query
+#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
+#'                      t_path = file.path(t_path, "data"))
+#' 
+#' # Clip to extents
+# unit_gbif <- clip_fc(gbif_sf, sf_fs) |>
+#   gbif_spp()
+# buff_gbif <- clip_fc(gbif_sf, sf_buff) |>
+#   gbif_spp()
+# 
+#' # Summarize species
+#' gbif_list <- compile_spp_list(unit_gbif, buff_gbif)
+#' 
+#' ## End(Not run)                     
+compile_spp_list <- function(fs_unit_list, buffer_list){
+  unit_list = add_cols(fs_unit_list, buffer_list)
+  buff_list = add_cols(buffer_list, fs_unit_list) |> 
+    dplyr::filter(!taxon_id %in% unit_list$taxon_id)
+  comp_list = rbind(unit_list, buff_list)
+  return(comp_list)
+}
+
+
 #' Add Missing Columns
 #' This function adds missing columns to one data frame that are     
 #' @param df1 First data frame
