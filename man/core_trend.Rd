@@ -3,7 +3,7 @@
 \docType{data}
 \name{core_trend}
 \alias{core_trend}
-\title{Core Trend Data from the Breeding Bird Survey (USGS) 1966-2022}
+\title{Core Trend Data from the Breeding Bird Survey (USGS) 1966-2023}
 \format{
 \subsection{\code{core_trend}}{
 }
@@ -12,6 +12,6 @@
 core_trend
 }
 \description{
-Core Trend Data from the Breeding Bird Survey (USGS) 1966-2022
+Core Trend Data from the Breeding Bird Survey (USGS) 1966-2023
 }
 \keyword{datasets}

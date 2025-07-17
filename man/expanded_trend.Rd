@@ -3,7 +3,7 @@
 \docType{data}
 \name{expanded_trend}
 \alias{expanded_trend}
-\title{Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2022}
+\title{Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2023}
 \format{
 \subsection{\code{expanded_trend}}{
 }
@@ -12,6 +12,6 @@
 expanded_trend
 }
 \description{
-Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2022
+Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2023
 }
 \keyword{datasets}

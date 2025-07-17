@@ -1,5 +1,5 @@
 #' ---
-#' title: "Taxonomy and Taxon ID's for the Idah SWAP List"
+#' title: "Taxonomy and Taxon ID's for the Idaho SWAP List"
 #' author:
 #'   - name: "Matthew Van Scoyoc" 
 #'     affiliation: |

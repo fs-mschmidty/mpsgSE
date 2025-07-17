@@ -1,0 +1,192 @@
+taxon_id,gbif_taxonID,scientific_name,common_name,blm_status,kingdom,phylum,class,order,family,genus,species,subspecies,variety
+4056689,4056689,Aliciella caespitosa,Rabbit Valley gilia,S,Plantae,Tracheophyta,Magnoliopsida,Ericales,Polemoniaceae,Aliciella,Aliciella caespitosa,NA,NA
+4056457,4056457,Aliciella tenuis,Mussentuchit gilia,S,Plantae,Tracheophyta,Magnoliopsida,Ericales,Polemoniaceae,Aliciella,Aliciella tenuis,NA,NA
+3921415,3921415,Aquilegia atwoodii,Atwood’s columbine,S,Plantae,Tracheophyta,Magnoliopsida,Ranunculales,Ranunculaceae,Aquilegia,Aquilegia atwoodii,NA,NA
+3931374,3931374,Aquilegia desolaticola,Desolation Canyon columbine,S,Plantae,Tracheophyta,Magnoliopsida,Ranunculales,Ranunculaceae,Aquilegia,Aquilegia desolaticola,NA,NA
+3929772,3929772,Aquilegia scopulorum var goodrichii,Goodrich’s columbine,S,Plantae,Tracheophyta,Magnoliopsida,Ranunculales,Ranunculaceae,Aquilegia,Aquilegia scopulorum,NA,Aquilegia scopulorum goodrichii
+3043434,5373995,Arabis goodrichii,Goodrich eared rockcress,S,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,Boechera,Boechera goodrichii,NA,NA
+3043225,5373864,Arabis vivariensis,Park rockcress,S,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,Boechera,Boechera fernaldiana,NA,NA
+5343087,5343087,Astragalus ampullarius,Gumbo milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus ampullarius,NA,NA
+5345744,5345744,Astragalus anserinus,Goose Creek milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus anserinus,NA,NA
+5343531,5343531,Astragalus cronquistii,Cronquist's milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus cronquistii,NA,NA
+5344803,5345993,Astragalus equisolensis,Horseshoe milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus desperatus,NA,NA
+5346732,5346732,Astragalus hamiltonii,Hamilton's milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus hamiltonii,NA,NA
+5346510,5346510,Astragalus iselyi,Isely's milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus iselyi,NA,NA
+5344824,5344824,Astragalus lentiginosus var pohlii,Pohl's milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus lentiginosus,NA,Astragalus lentiginosus pohlii
+5344448,5344448,Astragalus loanus,Loa milkvetch; Glenwood milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus loanus,NA,NA
+5346115,5346115,Astragalus oophorus var lonchocalyx,Pink egg milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus oophorus,NA,Astragalus oophorus lonchocalyx
+5343529,5343529,Astragalus pubentissimus var peabodianus,Peabody's milkvetch; Green River milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus pubentissimus,NA,Astragalus pubentissimus peabodianus
+7258892,7258892,Astragalus sabulosus var sabulosus,Cisco milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus sabulosus,NA,Astragalus sabulosus sabulosus
+5613308,5613308,Astragalus sabulosus var vehiculus,Stage milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus sabulosus,NA,Astragalus sabulosus vehiculus
+5344960,5344960,Astragalus striatiflorus,Escarpment milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus striatiflorus,NA,NA
+5346221,5346221,Astragalus welshii,Welsh's milkvetch; Loa milkvetch,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Astragalus,Astragalus welshii,NA,NA
+3755849,3755849,Atriplex canescens var gigantea,Dunes four-wing saltbush,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Amaranthaceae,Atriplex,Atriplex canescens,NA,Atriplex canescens gigantea
+9379108,3189036,Camissonia bairdii,Baird's camissonia,S,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Onagraceae,Chylismia,Chylismia scapoidea,NA,NA
+7161471,3667673,Camissonia bolanderi,Bolander's camissonia,S,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Onagraceae,Chylismia,Chylismia walkeri,NA,NA
+5545085,3189021,Camissonia gouldii,Gould's camissonia,S,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Onagraceae,Eremothera,Eremothera gouldii,NA,NA
+3112917,3112920,Cirsium virginense,Virgin thistle,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Cirsium,Cirsium mohavense,NA,NA
+3872224,3872224,Cleomella hillmanii var goodrichii,Goodrich's stickweed,S,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Cleomaceae,Cleomella,Cleomella hillmanii,NA,Cleomella hillmanii goodrichii
+7459090,2926197,Cryptantha barnebyi,Barneby's cryptanth; Oilshale cryptantha,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Boraginaceae,Oreocarya,Oreocarya barnebyi,NA,NA
+8058370,2926248,Cryptantha compacta,Mound cryptanth,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Boraginaceae,Oreocarya,Oreocarya compacta,NA,NA
+8361933,2926295,Cryptantha creutzfeldtii,Creutzfeldt-flower,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Boraginaceae,Oreocarya,Oreocarya creutzfeldtii,NA,NA
+9653924,3034475,Cymopterus beckii,Pinnate spring-parsley,S,Plantae,Tracheophyta,Magnoliopsida,Apiales,Apiaceae,Pseudocymopterus,Pseudocymopterus beckii,NA,NA
+5353242,5353242,Dalea flavescens var epica,Hole-in-the-rock prairie-clover,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Dalea,Dalea flavescens,NA,Dalea flavescens epica
+3189178,3189178,Epilobium nevadense,Nevada willowherb,S,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Onagraceae,Epilobium,Epilobium nevadense,NA,NA
+3102944,3102944,Ericameria crispa,Pine Valley goldenbush,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Ericameria,Ericameria crispa,NA,NA
+3103030,3103030,Ericameria lignumviridis,Greenwood's goldenbush,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Ericameria,Ericameria lignumviridis,NA,NA
+3147057,3147057,Erigeron kachinensis,Kachina daisy,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Erigeron,Erigeron kachinensis,NA,NA
+3147332,3147332,Erigeron maguirei,Maguire's daisy,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Erigeron,Erigeron maguirei,NA,NA
+3147185,3147185,Erigeron untermannii,Untermann's daisy,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Erigeron,Erigeron untermannii,NA,NA
+2889445,2889445,Eriogonum ammophilum,Ibex buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum ammophilum,NA,NA
+4032905,4032905,Eriogonum artificis,Kaye H. Thorne's buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum artificis,NA,NA
+4038507,4038507,Eriogonum brevicaule var mitophyllum,Lost Creek wild buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum brevicaule,NA,Eriogonum brevicaule mitophyllum
+2889521,2889521,Eriogonum corymbosum var smithii,Flat Top buckwheat; Smith's wild buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum smithii,NA,Eriogonum corymbosum smithii
+2889488,2889488,Eriogonum cronquistii,Cronquist's buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum cronquistii,NA,NA
+4035419,4035419,Eriogonum pharnaceoides var cervinum,Wirestem buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum pharnaceoides,NA,Eriogonum pharnaceoides cervinum
+7983280,4035403,Eriogonum phoeniceum,Scarlet buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum microtheca,NA,NA
+4034718,4034718,Eriogonum racemosum var nobilis,Bluff buckwheat,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum zionis,NA,Eriogonum racemosum nobilis
+2889655,2889655,Eriogonum soredium,Frisco buckwheat,S; C,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Polygonaceae,Eriogonum,Eriogonum soredium,NA,NA
+3066621,3066621,Euphorbia nephradenia,Utah spurge,S,Plantae,Tracheophyta,Magnoliopsida,Malpighiales,Euphorbiaceae,Euphorbia,Euphorbia nephradenia,NA,NA
+8057351,8057351,Frasera ackermaniae,Ackerman's green gentian,S,Plantae,Tracheophyta,Magnoliopsida,Gentianales,Gentianaceae,Frasera,Frasera ackermaniae,NA,NA
+3169985,3169985,Frasera gypsicola,White River swertia,S,Plantae,Tracheophyta,Magnoliopsida,Gentianales,Gentianaceae,Frasera,Frasera gypsicola,NA,NA
+3112407,3112410,Hymenoxys lapidicola,Rock hymenoxys,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Tetraneuris,Tetraneuris torreyana,NA,NA
+5370072,5370072,Ivesia shockleyi var ostleri,Ostler's ivesia; Wah Wah ivesia,S,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Potentilla,Potentilla shockleyi,NA,Ivesia shockleyi ostleri
+5362088,5362088,Jamesia tetrapetala,Four-petal jamesia; Basin jamesia,S,Plantae,Tracheophyta,Magnoliopsida,Cornales,Hydrangeaceae,Jamesia,Jamesia tetrapetala,NA,NA
+5376990,5376990,Lepidium huberi,Huber's pepperplant,S,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,Lepidium,Lepidium huberi,NA,NA
+5376463,5376463,Lepidium ostleri,Ostler pepperplant,S; C,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,Lepidium,Lepidium ostleri,NA,NA
+3034357,3034357,Lomatium latilobum,Canyonlands lomatium,S,Plantae,Tracheophyta,Magnoliopsida,Apiales,Apiaceae,Lomatium,Lomatium latilobum,NA,NA
+7225172,7225172,Lupinus caudatus var cutleri,Cutler's spurred lupine,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Lupinus,Lupinus caudatus,NA,Lupinus caudatus cutleri
+4237757,4237757,Lygodesmia grandiflora var entrada,Entrada rushpink,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Lygodesmia,Lygodesmia grandiflora,NA,Lygodesmia grandiflora entrada
+5331407,5331407,Mentzelia argillosa,Arapien stickleaf; Arapien blazingstar,S,Plantae,Tracheophyta,Magnoliopsida,Cornales,Loasaceae,Mentzelia,Mentzelia argillosa,NA,NA
+5331433,5331433,Mentzelia goodrichii,Goodrich's blazingstar,S,Plantae,Tracheophyta,Magnoliopsida,Cornales,Loasaceae,Mentzelia,Mentzelia goodrichii,NA,NA
+5646444,5646444,Mentzelia multicaulis var librina,Horse Canyon stickleaf,S,Plantae,Tracheophyta,Magnoliopsida,Cornales,Loasaceae,Mentzelia,Mentzelia librina,NA,Mentzelia multicaulis librina
+5331509,5331509,Mentzelia shultziorum,Shultz' stickleaf,S,Plantae,Tracheophyta,Magnoliopsida,Cornales,Loasaceae,Mentzelia,Mentzelia shultziorum,NA,NA
+3188872,3188872,Oenothera acutissima,Large yellow evening primrose; Flaming Gorge evening primrose,S,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Onagraceae,Oenothera,Oenothera acutissima,NA,NA
+3188930,3667842,Oenothera murdockii,Murdock's evening primrose,S,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Onagraceae,Oenothera,Oenothera flava,NA,NA
+3034375,3034375,Oreoxis trotteri,Trotter's oreoxis,S,Plantae,Tracheophyta,Magnoliopsida,Apiales,Apiaceae,Oreoxis,Oreoxis trotteri,NA,NA
+3909953,3909953,Pediomelum aromaticum var barnebyi,Barneby's breadroot,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Pediomelum,Pediomelum aromaticum,NA,Pediomelum aromaticum barnebyi
+2959982,2959982,Pediomelum aromaticum var tuhyi,Tuhy's breadroot,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Pediomelum,Pediomelum aromaticum,NA,Pediomelum aromaticum tuhyi
+2959968,2959976,Pediomelum epipsilum,Kane breadroot,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Pediomelum,Pediomelum megalanthum,NA,NA
+3171457,3171457,Penstemon acaulis var acaulis,Stemless penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon acaulis,NA,NA
+3737357,3737357,Penstemon angustifolius var dulcis,Neese narrowleaf penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon angustifolius,NA,Penstemon angustifolius dulcis
+3171347,3171347,Penstemon franklinii,Franklin's penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon franklinii,NA,NA
+3171597,3171597,Penstemon gibbensii,Gibben's penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon gibbensii,NA,NA
+3171448,3171448,Penstemon goodrichii,Goodrich's penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon goodrichii,NA,NA
+3171394,3171394,Penstemon grahamii,Graham's beardtongue,S; P,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon grahamii,NA,NA
+3171313,3171313,Penstemon idahoensis,Idaho penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon idahoensis,NA,NA
+3171466,3171466,Penstemon pinorum,Pinyon penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon pinorum,NA,NA
+3730682,3730682,Penstemon scariosus var albifluvis,White River beardtongue,S; P,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon scariosus,NA,Penstemon scariosus albifluvis
+3171566,3171566,Penstemon wardii,Ward's penstemon,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Plantaginaceae,Penstemon,Penstemon wardii,NA,NA
+3146462,3146462,Perityle specuicola,Alcove rock-daisy,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Perityle,Perityle specuicola,NA,NA
+2874839,2874839,Petalonyx parryii,Parry's petalonyx,S,Plantae,Tracheophyta,Magnoliopsida,Cornales,Loasaceae,Petalonyx,NA,NA,NA
+3612027,3612027,Phacelia argylensis,Argyle Canyon phacelia,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Hydrophyllaceae,Phacelia,Phacelia argylensis,NA,NA
+2928084,2928084,Phacelia cronquistiana,Cronquist's phacelia,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Hydrophyllaceae,Phacelia,Phacelia cronquistiana,NA,NA
+2928110,2928110,Phacelia indecora,Bluff phacelia,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Hydrophyllaceae,Phacelia,Phacelia indecora,NA,NA
+3612211,3612211,Phacelia pulchella var atwoodii,Atwood's pretty phacelia,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Hydrophyllaceae,Phacelia,Phacelia pulchella,NA,Phacelia pulchella atwoodii
+2928137,2928137,Phacelia utahensis,Utah phacelia,S,Plantae,Tracheophyta,Magnoliopsida,Boraginales,Hydrophyllaceae,Phacelia,Phacelia utahensis,NA,NA
+4022476,4022476,Phemeranthus thompsonii,Thompson's talinum; Cedar Mountain fameflower,S,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Montiaceae,Phemeranthus,Phemeranthus thompsonii,NA,NA
+5367455,5367455,Potentilla cottamii,Cottam's cinquefoil,S,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Potentilla,Potentilla cottamii,NA,NA
+6390384,6390384,Primula cusickiana var domensis,House Range primrose,S,Plantae,Tracheophyta,Magnoliopsida,Ericales,Primulaceae,Primula,Primula domensis,NA,Primula cusickiana domensis
+2940434,2940434,Psorothamnus polydenius var jonesii,Jones indigo bush; Jones' dalea,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Psorothamnus,Psorothamnus polydenius,NA,Psorothamnus polydenius jonesii
+7715255,7715255,Sphaeralcea caespitosa var caespitosa,Jones globemallow; Tufted globemallow,S,Plantae,Tracheophyta,Magnoliopsida,Malvales,Malvaceae,Sphaeralcea,Sphaeralcea caespitosa,NA,Sphaeralcea caespitosa caespitosa
+3905478,3905478,Salvia columbariae var argillacea,Chinle chia,S,Plantae,Tracheophyta,Magnoliopsida,Lamiales,Lamiaceae,Salvia,Salvia columbariae,NA,Salvia columbariae argillacea
+3938625,3938625,Sphaeralcea grossulariifolia var fumariensis,Smoky Mt. globemallow,S,Plantae,Tracheophyta,Magnoliopsida,Malvales,Malvaceae,Sphaeralcea,Sphaeralcea fumariensis,NA,Sphaeralcea grossulariifolia fumariensis
+3152471,3152444,Sphaeralcea janeae,Jane's globemallow,S,Plantae,Tracheophyta,Magnoliopsida,Malvales,Malvaceae,Sphaeralcea,Sphaeralcea leptophylla,NA,NA
+3152463,3152463,Sphaeralcea psoraloides,Psorlea globemallow,S,Plantae,Tracheophyta,Magnoliopsida,Malvales,Malvaceae,Sphaeralcea,Sphaeralcea psoraloides,NA,NA
+10756465,10756465,Stephanomeria occultata,Hidden wirelettuce; Disguised wirelettuce,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Stephanomeria,Stephanomeria occultata,NA,NA
+10755746,10755746,Terraria haydenii,Hayden's mustard,S,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,Terraria,Terraria haydenii,NA,NA
+3095925,3095926,Thelesperma caespitosum,Low greenthread,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Thelesperma,Thelesperma subnudum,NA,NA
+4216698,4216698,Thelesperma subnudum var alpinum,Alpine greenthread,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Thelesperma,Thelesperma subnudum,NA,Thelesperma subnudum alpinum
+3053898,3053898,Thelypodiopsis ambigua var erecta,Kanab thelyplody,S,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,Thelypodiopsis,Thelypodiopsis ambigua,NA,Thelypodiopsis ambigua erecta
+5693557,5693557,Townsendia beamanii,Beaman's townsendia,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Townsendia,Townsendia beamanii,NA,NA
+5693523,5693523,Townsendia jonesii var lutea,Sevier townsendia,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Townsendia,Townsendia aprica,NA,Townsendia jonesii lutea
+5693489,5693489,Townsendia strigosa var prolixa,Strigose townsendia,S,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Townsendia,Townsendia strigosa,NA,Townsendia strigosa prolixa
+5611371,5611371,Trifolium friscanum,Frisco clover,S; C,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Trifolium,Trifolium friscanum,NA,NA
+5613000,5613000,Trifolium variegatum var parunuweapensis,Sand seep clover; Kane white-tip clover,S,Plantae,Tracheophyta,Magnoliopsida,Fabales,Fabaceae,Trifolium,Trifolium wormskioldii,NA,Trifolium variegatum parunuweapensis
+3723270,3723270,Yucca sterilis,Sterile yucca,S,Plantae,Tracheophyta,Liliopsida,Asparagales,Asparagaceae,Yucca,Yucca sterilis,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+2137316,4663154,Status: S – Sensitive; C – Candidate; P - Proposed,NA,NA,Animalia,Arthropoda,Arachnida,Araneae,Linyphiidae,Entelecara,NA,NA,NA
+4286866,4286866,Catostomus discobolus,Bluehead sucker,CA,Animalia,Chordata,NA,Cypriniformes,Catostomidae,Catostomus,Catostomus discobolus,NA,NA
+5711989,5711989,Oncorhynchus clarkii utah,Bonneville cutthroat trout,CA,Animalia,Chordata,NA,Salmoniformes,Salmonidae,Oncorhynchus,Oncorhynchus clarkii,Oncorhynchus clarkii utah,NA
+5853893,5853893,Oncorhynchus clarkii pleuriticus,Colorado River cutthroat trout,CA,Animalia,Chordata,NA,Salmoniformes,Salmonidae,Oncorhynchus,Oncorhynchus clarkii,Oncorhynchus clarki pleuriticus,NA
+2359050,2359050,Catostomus clarkii,Desert sucker,SS,Animalia,Chordata,NA,Cypriniformes,Catostomidae,Catostomus,Catostomus clarkii,NA,NA
+2359036,2359036,Catostomus latipinnis,Flannelmouth sucker,CA,Animalia,Chordata,NA,Cypriniformes,Catostomidae,Catostomus,Catostomus latipinnis,NA,NA
+2362727,2362727,Iotichthys phlegethontis,Least chub,CA,Animalia,Chordata,NA,Cypriniformes,Cyprinidae,Iotichthys,Iotichthys phlegethontis,NA,NA
+2361899,2361899,Lepidomeda copei,Northern leatherside chub,CA,Animalia,Chordata,NA,Cypriniformes,Cyprinidae,Lepidomeda,Lepidomeda copei,NA,NA
+2360128,2360128,Gila robusta,Roundtail chub,CA,Animalia,Chordata,NA,Cypriniformes,Cyprinidae,Gila,Gila robusta,NA,NA
+2361903,2361903,Lepidomeda aliciae,Southern leatherside chub,CA,Animalia,Chordata,NA,Cypriniformes,Cyprinidae,Lepidomeda,Lepidomeda aliciae,NA,NA
+6166781,6166781,Lepidomeda mollispinis mollispinis,Virgin spinedace,CA,Animalia,Chordata,NA,Cypriniformes,Cyprinidae,Lepidomeda,Lepidomeda mollispinis,Lepidomeda mollispinis mollispinis,NA
+5722956,5722956,Oncorhynchus clarkii bouvieri,Yellowstone cutthroat trout,CA,Animalia,Chordata,NA,Salmoniformes,Salmonidae,Oncorhynchus,Oncorhynchus clarkii,Oncorhynchus clarki bouvieri,NA
+2422911,2422911,Anaxyrus microscaphus,Arizona toad,SS,Animalia,Chordata,Amphibia,Anura,Bufonidae,Anaxyrus,Anaxyrus microscaphus,NA,NA
+2426785,2426785,Rana luteiventris,Columbia spotted frog,CA,Animalia,Chordata,Amphibia,Anura,Ranidae,Rana,Rana luteiventris,NA,NA
+2422882,2422882,Anaxyrus cognatus,Great Plains toad,SS,Animalia,Chordata,Amphibia,Anura,Bufonidae,Anaxyrus,Anaxyrus cognatus,NA,NA
+2422924,2422924,Anaxyrus boreas,Western (boreal) toad,SS,Animalia,Chordata,Amphibia,Anura,Bufonidae,Anaxyrus,Anaxyrus boreas,NA,NA
+2459705,2459705,Sauromalus ater,Common chuckwalla,SS,Animalia,Chordata,Squamata,NA,Iguanidae,Sauromalus,Sauromalus ater,NA,NA
+2455615,7707269,Elaphe guttata,Cornsnake,SS,Animalia,Chordata,Squamata,NA,Colubridae,Pantherophis,Pantherophis guttatus,NA,NA
+2459646,2459646,Dipsosaurus dorsalis,Desert iguana,SS,Animalia,Chordata,Squamata,NA,Iguanidae,Dipsosaurus,Dipsosaurus dorsalis,NA,NA
+2451726,2451726,Xantusia vigilis,Desert night lizard,SS,Animalia,Chordata,Squamata,NA,Xantusiidae,Xantusia,Xantusia vigilis,NA,NA
+2460817,2460817,Heloderma suspectum,Gila monster,SS,Animalia,Chordata,Squamata,NA,Helodermatidae,Heloderma,Heloderma suspectum,NA,NA
+2444480,2444480,Crotalus scutulatus,Mojave rattlesnake,SS,Animalia,Chordata,Squamata,NA,Viperidae,Crotalus,Crotalus scutulatus,NA,NA
+2444360,2444360,Crotalus cerastes,Sidewinder,SS,Animalia,Chordata,Squamata,NA,Viperidae,Crotalus,Crotalus cerastes,NA,NA
+2458587,2458587,Opheodrys vernalis,Smooth Green snake,SS,Animalia,Chordata,Squamata,NA,Colubridae,Opheodrys,Opheodrys vernalis,NA,NA
+2444376,2444376,Crotalus mitchellii,Speckled rattlesnake,SS,Animalia,Chordata,Squamata,NA,Viperidae,Crotalus,Crotalus mitchellii,NA,NA
+2447244,2447244,Coleonyx variegatus,Western banded gecko,SS,Animalia,Chordata,Squamata,NA,Eublepharidae,Coleonyx,Coleonyx variegatus,NA,NA
+5221791,2448527,Leptotyphlops humilis,Western threadsnake,SS,Animalia,Chordata,Squamata,NA,Leptotyphlopidae,Rena,Rena humilis,NA,NA
+2451459,2451459,Callisaurus draconoides,Zebra-tailed lizard,SS,Animalia,Chordata,Squamata,NA,Phrynosomatidae,Callisaurus,Callisaurus draconoides,NA,NA
+9543753,9543753,Picoides dorsalis,American Three-toed woodpecker,SS,Animalia,Chordata,Aves,Piciformes,Picidae,Picoides,Picoides dorsalis,NA,NA
+5229155,5229155,Pelecanus erythrorhynchos,American white pelican,SS,Animalia,Chordata,Aves,Pelecaniformes,Pelecanidae,Pelecanus,Pelecanus erythrorhynchos,NA,NA
+2480446,2480446,Haliaeetus leucocephalus,Bald eagle,SS,Animalia,Chordata,Aves,Accipitriformes,Accipitridae,Haliaeetus,Haliaeetus leucocephalus,NA,NA
+2477282,2477282,Cypseloides niger,Black swift,SS,Animalia,Chordata,Aves,Apodiformes,Apodidae,Cypseloides,Cypseloides niger,NA,NA
+2484417,2484417,Dolichonyx oryzivorous,Bobolink,SS,Animalia,Chordata,Aves,Passeriformes,Icteridae,Dolichonyx,Dolichonyx oryzivorus,NA,NA
+2497240,2497240,Athene cunicularia,Burrowing owl,SS,Animalia,Chordata,Aves,Strigiformes,Strigidae,Athene,Athene cunicularia,NA,NA
+6180028,6180028,Tympanuchus phasianellus columbianus,Columbian Sharp-tailed grouse,SS,Animalia,Chordata,Aves,Galliformes,Phasianidae,Tympanuchus,Tympanuchus phasianellus,Tympanuchus phasianellus columbianus,NA
+2480566,2480566,Buteo regalis,Ferruginous hawk,SS,Animalia,Chordata,Aves,Accipitriformes,Accipitridae,Buteo,Buteo regalis,NA,NA
+2480506,2480506,Aquila chrysaetos,Golden eagle,SS,Animalia,Chordata,Aves,Accipitriformes,Accipitridae,Aquila,Aquila chrysaetos,NA,NA
+2491123,2491123,Ammodramus savannarum,Grasshopper sparrow,SS,Animalia,Chordata,Aves,Passeriformes,Passerellidae,Ammodramus,Ammodramus savannarum,NA,NA
+5959240,5959240,Centrocercus urophasianus,Greater sage-grouse,SS,Animalia,Chordata,Aves,Galliformes,Phasianidae,Centrocercus,Centrocercus urophasianus,NA,NA
+2478142,2478142,Melanerpes lewis,Lewis’s woodpecker,SS,Animalia,Chordata,Aves,Piciformes,Picidae,Melanerpes,Melanerpes lewis,NA,NA
+2481794,2481794,Numenius americanus,Long-billed curlew,SS,Animalia,Chordata,Aves,Charadriiformes,Scolopacidae,Numenius,Numenius americanus,NA,NA
+2480292,2480292,Charadrius montanus,Mountain Plover,SS,Animalia,Chordata,Aves,Charadriiformes,Charadriidae,Charadrius,Charadrius montanus,NA,NA
+2480589,2480589,Accipiter gentilis,Northern goshawk,CA,Animalia,Chordata,Aves,Accipitriformes,Accipitridae,Accipiter,Accipiter gentilis,NA,NA
+2497295,2497295,Asio flammeus,Short-eared owl,SS,Animalia,Chordata,Aves,Strigiformes,Strigidae,Asio,Asio flammeus,NA,NA
+6065879,6065879,Charadrius nivosus,Snowy plover,SS*,Animalia,Chordata,Aves,Charadriiformes,Charadriidae,Charadrius,Charadrius nivosus,NA,NA
+9110250,9110250,Pyrgulopsis peculiaris,Bifid duct pyrg,CA,Animalia,Mollusca,Gastropoda,Littorinimorpha,Hydrobiidae,Pyrgulopsis,Pyrgulopsis peculiaris,NA,NA
+2287936,2287936,Anodonta californiensis,California floater,CA,Animalia,Mollusca,Bivalvia,Unionida,Unionidae,Anodonta,Anodonta californiensis,NA,NA
+11317631,11317631,Physa megalochlamys,Cloaked physa,CA,Animalia,Mollusca,Gastropoda,NA,Physidae,Physa,Physa megalochlamys,NA,NA
+2293921,2293921,Oreohelix eurekensis,Eureka mountainsnail,CA,Animalia,Mollusca,Gastropoda,Stylommatophora,Oreohelicidae,Oreohelix,Oreohelix eurekensis,NA,NA
+7990253,5189892,Stagnicola bonnevillensis,Fat-whorled pondsnail,CA,Animalia,Mollusca,Gastropoda,NA,Lymnaeidae,Ladislavella,Ladislavella bonnevillensis,NA,NA
+8788114,8788114,Pyrgulopsis hamlinensis,Hamlin Valley pyrg,CA,Animalia,Mollusca,Gastropoda,Littorinimorpha,Hydrobiidae,Pyrgulopsis,Pyrgulopsis hamlinensis,NA,NA
+9056414,9056414,Pyrgulopsis anguina,Longitudinal gland pyrg,CA,Animalia,Mollusca,Gastropoda,Littorinimorpha,Hydrobiidae,Pyrgulopsis,Pyrgulopsis anguina,NA,NA
+2293937,2293937,Oreohelix haydeni,Lyrate mountainsnail,CA,Animalia,Mollusca,Gastropoda,Stylommatophora,Oreohelicidae,Oreohelix,Oreohelix haydeni,NA,NA
+8906127,8906127,Pyrgulopsis variegata,Northwest Bonneville pyrg,CA,Animalia,Mollusca,Gastropoda,Littorinimorpha,Hydrobiidae,Pyrgulopsis,Pyrgulopsis variegata,NA,NA
+8805165,8805165,Pyrgulopsis transversa,Southern Bonneville pyrg,CA,Animalia,Mollusca,Gastropoda,Littorinimorpha,Hydrobiidae,Pyrgulopsis,Pyrgulopsis transversa,NA,NA
+9026807,9026807,Pyrgulopsis saxatilis,Sub-globose snake pyrg,CA,Animalia,Mollusca,Gastropoda,Littorinimorpha,Hydrobiidae,Pyrgulopsis,Pyrgulopsis saxatilis,NA,NA
+5189787,5189787,Physella utaensis,Utah physa,CA,Animalia,Mollusca,Gastropoda,NA,Physidae,Physella,Physella utahensis,NA,NA
+1034905,1034905,Cicindela albissima,Coral Pink Sand Dunes Tiger Beetle,CA,Animalia,Arthropoda,Insecta,Coleoptera,Carabidae,Cicindela,Cicindela albissima,NA,NA
+5133088,5133088,Danaus plexippus,Monarch Butterfly,SS*,Animalia,Arthropoda,Insecta,Lepidoptera,Nymphalidae,Danaus,Danaus plexippus,NA,NA
+1340429,1340429,Bombus occidentalis,Western Bumble Bee,SS*,Animalia,Arthropoda,Insecta,Hymenoptera,Apidae,Bombus,Bombus occidentalis,NA,NA
+2432525,2432525,Idionycteris phyllotis,Allen’s big-eared bat,SS,Animalia,Chordata,Mammalia,Chiroptera,Vespertilionidae,Idionycteris,Idionycteris phyllotis,NA,NA
+2433062,2433062,Nyctinomops macrotis,Big free-tailed bat,SS,Animalia,Chordata,Mammalia,Chiroptera,Molossidae,Nyctinomops,Nyctinomops macrotis,NA,NA
+2439502,2439502,Microdipodops megacephalus,Dark kangaroo mouse,SS,Animalia,Chordata,Mammalia,Rodentia,Heteromyidae,Microdipodops,Microdipodops megacephalus,NA,NA
+2432399,2432399,Myotis thysanodes,Fringed myotis,SS,Animalia,Chordata,Mammalia,Chiroptera,Vespertilionidae,Myotis,Myotis thysanodes,NA,NA
+2437236,2437236,Cynomys gunnisoni,Gunnison prairie dog,SS,Animalia,Chordata,Mammalia,Rodentia,Sciuridae,Cynomys,Cynomys gunnisoni,NA,NA
+5219311,5219311,Vulpes macrotis,Kit fox,SS,Animalia,Chordata,Mammalia,Carnivora,Canidae,Vulpes,Vulpes macrotis,NA,NA
+2435996,2435996,Sorex preblei,Preble’s shrew,SS,Animalia,Chordata,Mammalia,Soricomorpha,Soricidae,Sorex,Sorex preblei,NA,NA
+2436688,2436688,Brachylagus idahoensis,Pygmy rabbit,SS,Animalia,Chordata,Mammalia,Lagomorpha,Leporidae,Brachylagus,Brachylagus idahoensis,NA,NA
+2439566,2439566,Perognathus flavus,Silky pocket mouse,SS,Animalia,Chordata,Mammalia,Rodentia,Heteromyidae,Perognathus,Perognathus flavus,NA,NA
+2432579,2432579,Euderma maculatum,Spotted bat,SS,Animalia,Chordata,Mammalia,Chiroptera,Vespertilionidae,Euderma,Euderma maculatum,NA,NA
+2432479,2432479,Corynorhinus townsendii,Townsend’s big-eared bat,SS,Animalia,Chordata,Mammalia,Chiroptera,Vespertilionidae,Corynorhinus,Corynorhinus townsendii,NA,NA
+5218548,5218548,Lasiurus blossevillii,Western red bat,SS,Animalia,Chordata,Mammalia,Chiroptera,Vespertilionidae,Lasiurus,Lasiurus blossevillii,NA,NA
+2437233,2437233,Cynomys leucurus,White-tailed prairie dog,SS,Animalia,Chordata,Mammalia,Rodentia,Sciuridae,Cynomys,Cynomys leucurus,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,NA,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA
+7762811,7762811,NA,SS-Sensitive species; SS*-Sensitive species not on UDWR list; CA-Conservation Agreement species; CN-Candidate species,NA,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Marinifilaceae,Marinifilum,NA,NA,NA

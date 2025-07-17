@@ -12,6 +12,6 @@ rfss
 }
 \description{
 \code{rfss} is a comprehensive master list from 2024.
-\code{rfss_taxonomy} is the taxonomic classificaions returned form GBIF.
+\code{rfss_taxonomy} is the taxonomic classifications returned form GBIF.
 }
 \keyword{datasets}

@@ -3,7 +3,7 @@
 \docType{data}
 \name{core_index}
 \alias{core_index}
-\title{Core Index data from the Breeding Bird Survey (USGS) 1966-2022}
+\title{Core Index data from the Breeding Bird Survey (USGS) 1966-2023}
 \format{
 \subsection{\code{core_index}}{
 }
@@ -12,6 +12,6 @@
 core_index
 }
 \description{
-Core Index data from the Breeding Bird Survey (USGS) 1966-2022
+Core Index data from the Breeding Bird Survey (USGS) 1966-2023
 }
 \keyword{datasets}

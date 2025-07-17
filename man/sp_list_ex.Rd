@@ -3,7 +3,8 @@
 \docType{data}
 \name{sp_list_ex}
 \alias{sp_list_ex}
-\title{An example dataset to test functions that consists of a list of species with common_name and scientific_name.}
+\title{An example dataset to test functions that consists of a list of species with
+common_name and scientific_name.}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 427 rows and 2 columns.
 }
@@ -11,6 +12,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 sp_list_ex
 }
 \description{
-An example dataset to test functions that consists of a list of species with common_name and scientific_name.
+An example dataset to test functions that consists of a list of species with
+common_name and scientific_name.
 }
 \keyword{datasets}
