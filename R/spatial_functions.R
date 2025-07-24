@@ -1,38 +1,3 @@
-#' Read feature class into R.
-#' 
-#' This function uses the `sf` package to read a feature class into R from a 
-#'   geodatabase using the `sf::read_sf()` function. It then checks that the 
-#'   feature class is in the target coordinate reference system (CRS) and will 
-#'   transform the feature to the target CRS if it is not.
-#'
-#' @param lyr Feature class name.
-#' @param dsn Path to geodatabase that holds the feature class.
-#' @param crs Target coordinate reference system (CRS). Either and 
-#'   `sf::st_crs()` object or accepted input string for `sf::st_crs()` (e.g. 
-#'   "WGS84" or "NAD83"). See `sf::st_crs()` for more details. Default is NULL. 
-#'   If NULL, resulting sf object will not be transformed.
-#'
-#' @return sf object
-#' @seealso [sf::read_sf()], [sf::st_crs()]
-#' @export
-#' 
-#' @examples
-#' ## Not run:
-#' 
-#' library("mpsgSE")
-#' 
-#' read_fc(lyr = "feature_name", dsn = file.path("T:/path/to/geodatabase"), 
-#'         crs = "NAD83")
-#' 
-#' ## End (Not run)
-read_fc <- function(lyr, dsn, crs = NULL){
-  fc = sf::read_sf(layer = lyr, dsn = dsn) |> 
-    sf::st_make_valid()
-  if(!is.null(crs)){fc = sf::st_transform(fc, crs = crs)}
-  return(fc)
-}
-
-
 #' Clip feature class to polygon
 #' 
 #' This function clips a `sf` object using `sf::st_intersection()`. First, this 
@@ -89,3 +54,176 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
   
   return(sf_lyr)
 }
+
+
+#' Get base map data
+#' 
+#' This function pull spatial base map data for North and South America, the 
+#'     lower 48 US states, and a user specified National Forest. Continental and 
+#'     national scale data are acquired uisng the [rnaturalearth] package and 
+#'     Forest Serivce data are acquired from Forest Service EDW Rest Services
+#'     (https://apps.fs.usda.gov/arcx/rest/services/EDW) using [arcgislayers] 
+#'     package. Roads data are acquired using the [osmdata] package.
+#'
+#' @param states A list of state names or abbreviations.
+#' @param region_number The Forest Service Region number
+#' @param forest_number The Forest Service Forest number.
+#' @param forest_name The Name of the National Forest.
+#' @param crs The target coordinate reference system. The default is EPSG:26912
+#'                (NAD83 UTM Zone 12).
+#'
+#' @returns A list.
+#' 
+#' @export
+#'
+#' @examples
+#' library(mpsgSE)
+#' states <- c("Utah", "Nevada", "New Mexico")
+#' region_number <- "04"
+#' forest_number <- "07"
+#' forest_name <- "Dixie National Forest"
+#' basemap_data <- get_basemap_data(states, region_number, forest_number, 
+#'                                  forest_name)
+get_basemap_data = function(states, region_number, forest_number, forest_name,
+                            crs = "EPSG:26912"){
+  
+  # states <- c("Utah", "Nevada", "New Mexico")
+  # region_number <- "04"; forest_number <- "07"
+  # forest_name <- "Dixie National Forest"
+  # states <- c("UT", "NM", "NV"); crs <- "EPSG:26912"
+  
+  message("North America")
+  north_america_c = rnaturalearth::ne_countries(
+    scale = "medium", continent = "North America", returnclass = "sf"
+  ) |>
+    dplyr::select(name) |>
+    dplyr::filter(name != "United States of America")
+  north_america_s = rnaturalearth::ne_states(
+    country = c("United States of America", "Canada", "Mexico"), 
+    returnclass = "sf"
+  ) |>
+    dplyr::filter(name != "Hawaii") |>
+    dplyr::select(name = name_en)
+  north_america = dplyr::bind_rows(north_america_c, north_america_s) |>
+    sf::st_transform(crs = 5070)
+  
+  message("Lower 48 states")
+  l_48 = rnaturalearth::ne_states(country = c("United States of America")) |>
+    sf::st_as_sf() |>
+    dplyr::filter(name != "Hawaii", name != "Alaska") |>
+    sf::st_transform(crs = 5070)
+  
+  message("Western hemisphere")
+  americas = rnaturalearth::ne_countries(scale = "medium",
+                                         continent = c("North America",
+                                                       "South America"),
+                                         returnclass = "sf") |>
+    dplyr::filter(name != "Hawaii") |>
+    sf::st_transform(crs = 5070)
+  
+  message("FS Boundaries")
+  # Administrative Boundary
+  admin_bndry = read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
+    dplyr::filter(region == region_number & forestnumber == forest_number)
+  # Plan Area (Forest Service Land)
+  plan_area = read_edw_lyr("EDW_BasicOwnership_02") |> 
+    dplyr::filter(region == region_number & forestname == forest_name) |>
+    dplyr::filter(ownerclassification != "NON-FS")
+  # Ranger Districts
+  districts = read_edw_lyr("EDW_RangerDistricts_03", layer = 1) |> 
+    dplyr::filter(region == region_number & forestnumber == forest_number)
+  
+  #-- Roads
+  message("Roads")
+  # Area of Analysis
+  aoa = sf::st_buffer(admin_bndry, 1000000) |> sf::st_bbox()
+  # Roads
+  roads = lapply(states, function(state){
+    osm_dat = osmdata::getbb(state) |> 
+      osmdata::opq() |>
+      osmdata::add_osm_feature("highway", 
+                               value = c("motorway", "trunk", "primary")) |>
+      osmdata::osmdata_sf()
+    return(osm_dat$osm_lines)
+  }) |> 
+    dplyr::bind_rows() |>
+    sf::st_transform(crs) |> 
+    sf::st_crop(aoa) |> 
+    suppressWarnings()
+  
+  dat = tibble::lst(americas, north_america, l_48, admin_bndry, plan_area, 
+                    districts, roads)
+  return(dat)
+}
+
+
+#' Read spatial data from the Forest Service ArcGIS REST Services directory
+#' 
+#' This function reads features from the Forest Service ArcGIS REST Services 
+#'     Directory, https://apps.fs.usda.gov/arcx/rest/services/EDW, using the 
+#'     [arcgislayers] package.
+#'     
+#'
+#' @param map_name Character. Name of map layer.
+#' @param layer Integer. Number of layer to read. Default is  zero (0).
+#' @param crs Coordinate reference system (crs). Default is EPSG:26912 (NAD83 
+#'                UTM Zone 12).
+#'
+#' @return An [sf] object or raster.
+#' 
+#' @export
+#' 
+#' @examples
+#' library(mpsgSE)
+#' 
+#' # Administrative Boundary for the Dixie National Forest
+#' admin_bndry <- read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
+#'   dplyr::filter(forestname == "Dixie National Forest")
+#' 
+read_edw_lyr <- function(map_name, layer = 0, crs = "EPSG:26912"){
+  # map_name = "EDW_ForestSystemBoundaries_01"
+  # layer = 1
+  edw_rest <- "https://apps.fs.usda.gov/arcx/rest/services/EDW/"
+  arcgislayers::arc_read(
+    glue::glue(edw_rest, "{map_name}/MapServer/{layer}")
+  ) |>
+    janitor::clean_names() |> 
+    sf::st_transform(crs)
+}
+
+
+#' Read feature class into R.
+#' 
+#' This function uses the `sf` package to read a feature class into R from a 
+#'   geodatabase using the `sf::read_sf()` function. It then checks that the 
+#'   feature class is in the target coordinate reference system (CRS) and will 
+#'   transform the feature to the target CRS if it is not.
+#'
+#' @param lyr Feature class name.
+#' @param dsn Path to geodatabase that holds the feature class.
+#' @param crs Target coordinate reference system (CRS). Either and 
+#'   `sf::st_crs()` object or accepted input string for `sf::st_crs()` (e.g. 
+#'   "WGS84" or "NAD83"). See `sf::st_crs()` for more details. Default is NULL. 
+#'   If NULL, resulting sf object will not be transformed.
+#'
+#' @return sf object
+#' @seealso [sf::read_sf()], [sf::st_crs()]
+#' @export
+#' 
+#' @examples
+#' ## Not run:
+#' 
+#' library("mpsgSE")
+#' 
+#' read_fc(lyr = "feature_name", dsn = file.path("T:/path/to/geodatabase"), 
+#'         crs = "NAD83")
+#' 
+#' ## End (Not run)
+read_fc <- function(lyr, dsn, crs = NULL){
+  fc = sf::read_sf(layer = lyr, dsn = dsn) |> 
+    sf::st_make_valid()
+  if(!is.null(crs)){fc = sf::st_transform(fc, crs = crs)}
+  return(fc)
+}
+
+
