@@ -9,21 +9,21 @@ read_fc(lyr, dsn, crs = NULL)
 \arguments{
 \item{lyr}{Feature class name.}
 
-\item{dsn}{Path to geodatabase that holds the feature class.}
+\item{dsn}{Path to geodatabase that holds \code{lyr}.}
 
 \item{crs}{Target coordinate reference system (CRS). Either and
 \code{sf::st_crs()} object or accepted input string for \code{sf::st_crs()} (e.g.
-"WGS84" or "NAD83"). See \code{sf::st_crs()} for more details. Default is NULL.
-If NULL, resulting sf object will not be transformed.}
+"WGS84" or "NAD83"). See \code{\link[sf:st_crs]{sf::st_crs()}} for more details. Default is NULL.
+If NULL, resulting \link{sf} object will not be transformed.}
 }
 \value{
 sf object
 }
 \description{
 This function uses the \code{sf} package to read a feature class into R from a
-geodatabase using the \code{sf::read_sf()} function. It then checks that the
-feature class is in the target coordinate reference system (CRS) and will
-transform the feature to the target CRS if it is not.
+geodatabase (*.gdb) using the \code{sf::read_sf()} function. It then checks that
+the feature class is in the target coordinate reference system (CRS) and
+will transform the feature to the target CRS if it is not.
 }
 \examples{
 ## Not run:

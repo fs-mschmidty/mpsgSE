@@ -2,7 +2,7 @@
 % Please edit documentation in R/spatial_functions.R
 \name{read_edw_lyr}
 \alias{read_edw_lyr}
-\title{Read spatial data from the Forest Service ArcGIS REST Services directory}
+\title{Read spatial data from Forest Service ArcGIS REST Services}
 \usage{
 read_edw_lyr(map_name, layer = 0, crs = "EPSG:26912")
 }
@@ -15,10 +15,10 @@ read_edw_lyr(map_name, layer = 0, crs = "EPSG:26912")
 UTM Zone 12).}
 }
 \value{
-An \link{sf} object or raster.
+An \link{sf} object or \link[terra:SpatRaster-class]{terra::SpatRaster}.
 }
 \description{
-This function reads features from the Forest Service ArcGIS REST Services
+read_edw_lyr reads features from the Forest Service ArcGIS REST Services
 Directory, https://apps.fs.usda.gov/arcx/rest/services/EDW, using the
 \link{arcgislayers} package.
 }
@@ -29,4 +29,7 @@ library(mpsgSE)
 admin_bndry <- read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
   dplyr::filter(forestname == "Dixie National Forest")
 
+}
+\seealso{
+\code{\link[arcgislayers:arc_read]{arcgislayers::arc_read()}}, \code{\link[sf:st_transform]{sf::st_transform()}}
 }

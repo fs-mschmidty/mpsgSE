@@ -25,15 +25,35 @@ get_basemap_data(
 (NAD83 UTM Zone 12).}
 }
 \value{
-A list.
+A list of \link{sf} objects.
 }
 \description{
-This function pull spatial base map data for North and South America, the
-lower 48 US states, and a user specified National Forest. Continental and
-national scale data are acquired uisng the \link{rnaturalearth} package and
-Forest Serivce data are acquired from Forest Service EDW Rest Services
+Pull spatial base map data for North and South America, the lower 48 US
+states, and a user specified National Forest. Continental and national
+scale data are acquired using the \link{rnaturalearth} package and Forest
+Service data are acquired from Forest Service EDW Rest Services
 (https://apps.fs.usda.gov/arcx/rest/services/EDW) using \link{arcgislayers}
 package. Roads data are acquired using the \link{osmdata} package.
+}
+\details{
+\code{get_basemap_data} returns a list of spatial features used to produce
+automated species evaluations.
+
+Continental-scale data include 'americas', 'north_america', and 'l_48'. These
+data are acquired using \code{\link[rnaturalearth:ne_countries]{rnaturalearth::ne_countries()}} and
+\code{\link[rnaturalearth:ne_states]{rnaturalearth::ne_states()}} functions. These data are in the NAD83 CONUS
+Albers (EPSG:5070).
+
+National Forest-scale data include 'admin_bndry', 'plan_area', 'districts',
+'buffer', and 'aoa_bbox.' 'admin_bndry', 'plan_area', and 'districts' are
+acquired using \code{\link[=read_edw_lyr]{read_edw_lyr()}}. 'buffer' and 'aoa_bbox' are derived
+using the \link{sf} package. These data are returned in the coordinate
+reference system provided by the \code{crs} parameter.
+
+Roads data include 'roads'. These data are acquired using the \link{osmdata}
+package, primarily \code{\link[osmdata:getbb]{osmdata::getbb()}}, \code{\link[osmdata:opq]{osmdata::opq()}}, and
+\code{\link[osmdata:osmdata_sf]{osmdata::osmdata_sf()}}. These data are returned in the coordinate
+reference system provided by the \code{crs} parameter.
 }
 \examples{
 library(mpsgSE)
@@ -43,4 +63,8 @@ forest_number <- "07"
 forest_name <- "Dixie National Forest"
 basemap_data <- get_basemap_data(states, region_number, forest_number, 
                                  forest_name)
+}
+\seealso{
+\code{\link[=read_edw_lyr]{read_edw_lyr()}}, \code{\link[rnaturalearth:ne_countries]{rnaturalearth::ne_countries()}},
+\link[rnaturalearth:ne_states]{rnaturalearth::ne_states}, \code{\link[osmdata:osmdata_sf]{osmdata::osmdata_sf()}}
 }

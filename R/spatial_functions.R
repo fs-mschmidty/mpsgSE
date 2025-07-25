@@ -11,7 +11,7 @@
 #' @param locale  Optional. Short description of clipped layer, usually the 
 #'                    location (e.g., forest acronym or "Buffer").
 #'
-#' @return sf object
+#' @return An [sf] object
 #' @seealso [sf::st_intersection()], [sf::st_transform()]
 #' @export
 #' 
@@ -58,10 +58,11 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 
 #' Get base map data
 #' 
-#' This function pull spatial base map data for North and South America, the 
-#'     lower 48 US states, and a user specified National Forest. Continental and 
-#'     national scale data are acquired uisng the [rnaturalearth] package and 
-#'     Forest Serivce data are acquired from Forest Service EDW Rest Services
+#' @description
+#' Pull spatial base map data for North and South America, the lower 48 US 
+#'     states, and a user specified National Forest. Continental and national 
+#'     scale data are acquired using the [rnaturalearth] package and Forest 
+#'     Service data are acquired from Forest Service EDW Rest Services
 #'     (https://apps.fs.usda.gov/arcx/rest/services/EDW) using [arcgislayers] 
 #'     package. Roads data are acquired using the [osmdata] package.
 #'
@@ -72,8 +73,28 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #' @param crs The target coordinate reference system. The default is EPSG:26912
 #'                (NAD83 UTM Zone 12).
 #'
-#' @returns A list.
-#' 
+#' @details
+#' `get_basemap_data` returns a list of spatial features used to produce 
+#'     automated species evaluations.
+#' @details
+#' Continental-scale data include 'americas', 'north_america', and 'l_48'. These 
+#'     data are acquired using [rnaturalearth::ne_countries()] and 
+#'     [rnaturalearth::ne_states()] functions. These data are in the NAD83 CONUS 
+#'     Albers (EPSG:5070).
+#' @details
+#' National Forest-scale data include 'admin_bndry', 'plan_area', 'districts', 
+#'     'buffer', and 'aoa_bbox.' 'admin_bndry', 'plan_area', and 'districts' are 
+#'     acquired using [read_edw_lyr()]. 'buffer' and 'aoa_bbox' are derived 
+#'     using the [sf] package. These data are returned in the coordinate 
+#'     reference system provided by the `crs` parameter.
+#' @details
+#' Roads data include 'roads'. These data are acquired using the [osmdata] 
+#'     package, primarily [osmdata::getbb()], [osmdata::opq()], and 
+#'     [osmdata::osmdata_sf()]. These data are returned in the coordinate 
+#'     reference system provided by the `crs` parameter.
+#' @returns A list of [sf] objects.
+#' @seealso [read_edw_lyr()], [rnaturalearth::ne_countries()], 
+#'          [rnaturalearth::ne_states], [osmdata::osmdata_sf()]
 #' @export
 #'
 #' @examples
@@ -87,10 +108,13 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 get_basemap_data = function(states, region_number, forest_number, forest_name,
                             crs = "EPSG:26912"){
   
-  # states <- c("Utah", "Nevada", "New Mexico")
-  # region_number <- "04"; forest_number <- "07"
-  # forest_name <- "Dixie National Forest"
-  # states <- c("UT", "NM", "NV"); crs <- "EPSG:26912"
+  message("Western hemisphere")
+  americas = rnaturalearth::ne_countries(scale = "medium",
+                                         continent = c("North America",
+                                                       "South America"),
+                                         returnclass = "sf") |>
+    dplyr::filter(name != "Hawaii") |>
+    sf::st_transform(crs = 5070)
   
   message("North America")
   north_america_c = rnaturalearth::ne_countries(
@@ -113,26 +137,27 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
     dplyr::filter(name != "Hawaii", name != "Alaska") |>
     sf::st_transform(crs = 5070)
   
-  message("Western hemisphere")
-  americas = rnaturalearth::ne_countries(scale = "medium",
-                                         continent = c("North America",
-                                                       "South America"),
-                                         returnclass = "sf") |>
-    dplyr::filter(name != "Hawaii") |>
-    sf::st_transform(crs = 5070)
-  
   message("FS Boundaries")
   # Administrative Boundary
   admin_bndry = read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
-    dplyr::filter(region == region_number & forestnumber == forest_number)
+    dplyr::filter(region == region_number & forestnumber == forest_number) |>
+    sf::st_transform(crs) 
   # Plan Area (Forest Service Land)
   plan_area = read_edw_lyr("EDW_BasicOwnership_02") |> 
     dplyr::filter(region == region_number & forestname == forest_name) |>
-    dplyr::filter(ownerclassification != "NON-FS")
+    dplyr::filter(ownerclassification != "NON-FS") |>
+    sf::st_transform(crs) 
   # Ranger Districts
   districts = read_edw_lyr("EDW_RangerDistricts_03", layer = 1) |> 
-    dplyr::filter(region == region_number & forestnumber == forest_number)
-  
+    dplyr::filter(region == region_number & forestnumber == forest_number) |>
+    sf::st_transform(crs) 
+  # Buffer
+  buffer = sf::st_buffer(admin_bndry, 1000) |> sf::st_difference(admin_bndry) |>
+    sf::st_transform(crs) 
+  # Area of Analysis
+  aoa_bbox = buffer |> sf::st_bbox() |>
+    sf::st_transform(crs) 
+
   #-- Roads
   message("Roads")
   # Area of Analysis
@@ -152,14 +177,14 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
     suppressWarnings()
   
   dat = tibble::lst(americas, north_america, l_48, admin_bndry, plan_area, 
-                    districts, roads)
+                    districts, buffer, aoa_bbox, roads)
   return(dat)
 }
 
 
-#' Read spatial data from the Forest Service ArcGIS REST Services directory
+#' Read spatial data from Forest Service ArcGIS REST Services
 #' 
-#' This function reads features from the Forest Service ArcGIS REST Services 
+#' read_edw_lyr reads features from the Forest Service ArcGIS REST Services 
 #'     Directory, https://apps.fs.usda.gov/arcx/rest/services/EDW, using the 
 #'     [arcgislayers] package.
 #'     
@@ -169,8 +194,8 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
 #' @param crs Coordinate reference system (crs). Default is EPSG:26912 (NAD83 
 #'                UTM Zone 12).
 #'
-#' @return An [sf] object or raster.
-#' 
+#' @return An [sf] object or [terra::SpatRaster-class].
+#' @seealso [arcgislayers::arc_read()], [sf::st_transform()]
 #' @export
 #' 
 #' @examples
@@ -184,27 +209,28 @@ read_edw_lyr <- function(map_name, layer = 0, crs = "EPSG:26912"){
   # map_name = "EDW_ForestSystemBoundaries_01"
   # layer = 1
   edw_rest <- "https://apps.fs.usda.gov/arcx/rest/services/EDW/"
-  arcgislayers::arc_read(
+  lyr = arcgislayers::arc_read(
     glue::glue(edw_rest, "{map_name}/MapServer/{layer}")
   ) |>
     janitor::clean_names() |> 
     sf::st_transform(crs)
+  return(lyr)
 }
 
 
 #' Read feature class into R.
 #' 
 #' This function uses the `sf` package to read a feature class into R from a 
-#'   geodatabase using the `sf::read_sf()` function. It then checks that the 
-#'   feature class is in the target coordinate reference system (CRS) and will 
-#'   transform the feature to the target CRS if it is not.
+#'   geodatabase (*.gdb) using the `sf::read_sf()` function. It then checks that 
+#'   the feature class is in the target coordinate reference system (CRS) and 
+#'   will transform the feature to the target CRS if it is not.
 #'
 #' @param lyr Feature class name.
-#' @param dsn Path to geodatabase that holds the feature class.
+#' @param dsn Path to geodatabase that holds `lyr`.
 #' @param crs Target coordinate reference system (CRS). Either and 
 #'   `sf::st_crs()` object or accepted input string for `sf::st_crs()` (e.g. 
-#'   "WGS84" or "NAD83"). See `sf::st_crs()` for more details. Default is NULL. 
-#'   If NULL, resulting sf object will not be transformed.
+#'   "WGS84" or "NAD83"). See [sf::st_crs()] for more details. Default is NULL. 
+#'   If NULL, resulting [sf] object will not be transformed.
 #'
 #' @return sf object
 #' @seealso [sf::read_sf()], [sf::st_crs()]
@@ -220,10 +246,8 @@ read_edw_lyr <- function(map_name, layer = 0, crs = "EPSG:26912"){
 #' 
 #' ## End (Not run)
 read_fc <- function(lyr, dsn, crs = NULL){
-  fc = sf::read_sf(layer = lyr, dsn = dsn) |> 
-    sf::st_make_valid()
+  fc = sf::read_sf(layer = lyr, dsn = dsn) |> sf::st_make_valid()
   if(!is.null(crs)){fc = sf::st_transform(fc, crs = crs)}
   return(fc)
 }
-
 
