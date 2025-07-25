@@ -92,6 +92,12 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #'     package, primarily [osmdata::getbb()], [osmdata::opq()], and 
 #'     [osmdata::osmdata_sf()]. These data are returned in the coordinate 
 #'     reference system provided by the `crs` parameter.
+#' @note
+#' Sometimes the connection to the Forest Service REST Service or [osmdata] 
+#'     fails. This will throw the following error message: "**Error:** 
+#'     tar_make() Status code: 500. Error: json". In most instances, the 
+#'     function can simply be executed again to retrieve the data. Check the 
+#'     data servers if the error is persistent. 
 #' @returns A list of [sf] objects.
 #' @seealso [read_edw_lyr()], [rnaturalearth::ne_countries()], 
 #'          [rnaturalearth::ne_states], [osmdata::osmdata_sf()]

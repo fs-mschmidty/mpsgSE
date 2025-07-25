@@ -55,6 +55,13 @@ package, primarily \code{\link[osmdata:getbb]{osmdata::getbb()}}, \code{\link[os
 \code{\link[osmdata:osmdata_sf]{osmdata::osmdata_sf()}}. These data are returned in the coordinate
 reference system provided by the \code{crs} parameter.
 }
+\note{
+Sometimes the connection to the Forest Service REST Service or \link{osmdata}
+fails. This will throw the following error message: "\strong{Error:}
+tar_make() Status code: 500. Error: json". In most instances, the
+function can simply be executed again to retrieve the data. Check the
+data servers if the error is persistent.
+}
 \examples{
 library(mpsgSE)
 states <- c("Utah", "Nevada", "New Mexico")
