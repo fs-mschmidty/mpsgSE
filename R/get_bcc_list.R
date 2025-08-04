@@ -1,25 +1,33 @@
-#' Get USGS Birds of Conservation Concern (BCC) breeding bird list for a given 
-#'    Bird Conservation Region.
+#' Get USGS Birds of Conservation Concern (BCC) breeding bird list for National 
+#'     Forest or Grassland.
 #' 
-#' This function reads the [mpsgSE::bcc_list] data set and filters the list by a 
-#'     given Bird Conservation Region.
+#' This function returns a data frame of bird species that occur in the Birds of 
+#'     Conservation Regions a National Forest or Grassland overlaps.
 #'
-#' @param bcc_region The numeric BCC region code wrapped in quotes.
+#' @param sf_lyr An `sf` object of the Administrative Boundary of a Natioal 
+#'                   Forest or Grassland.
 #'
 #' @returns A data frame.
 #' @export
 #'
 #' @examples
-#' install.packages(mpsgSE)
-#' bcc_9 <- get_bcc_list(9)
-get_bcc_list <- function(bcc_region){
-  mpsgSE::bcc_list
-  bcc_list[grepl(paste0("\\b", bcc_region, "\\b"), 
-                 bcc_list$bc_rs_for_bcc_listing_breeding), ]
+#' # Pull the Administrative Boundary for the Dixie National Forest
+#' adm_bdy = mpsgSE::read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |>
+#'   dplyr::filter(region == "04" & forestnumber == "07")
+#' 
+#' # Get list of birds of conservation concern
+#' mpsgSE::get_bcc_list(adm_bdy)
+get_bcc_list <- function(sf_lyr){
+  bcrs = mpsgSE::get_bcc_regions(sf_lyr) |> dplyr::pull(bcr_label)
+  bcc = mpsgSE::bcc_list
+  
+  get_list = function(bcr_code){
+    bcc[grepl(paste0("\\b", bcr_code, "\\b"), bcc$bc_rs_for_bcc_listing_breeding), ]
+    }
+  
+  bcr_list = lapply(bcrs, get_list) |> dplyr::bind_rows() |> dplyr::distinct()
+  return(bcr_list)
   }
-
-
-
 
 
 #' Clip Birds of Conservation Regions to a polygon
@@ -43,6 +51,6 @@ get_bcc_regions <- function(sf_lyr){
     ) |>
     sf::st_drop_geometry() |> 
     dplyr::select(-dplyr::contains("shape") & -dplyr::contains("Shape") & 
-                    -dplyr::contains("SHAPE") & -dplyr::contains("gis"))
+                    -dplyr::contains("SHAPE") & -dplyr::contains("gis")) |> 
     suppressWarnings()
 }

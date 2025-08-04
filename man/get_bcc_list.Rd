@@ -2,22 +2,27 @@
 % Please edit documentation in R/get_bcc_list.R
 \name{get_bcc_list}
 \alias{get_bcc_list}
-\title{Get USGS Birds of Conservation Concern (BCC) breeding bird list for a given
-Bird Conservation Region.}
+\title{Get USGS Birds of Conservation Concern (BCC) breeding bird list for National
+Forest or Grassland.}
 \usage{
-get_bcc_list(bcc_region)
+get_bcc_list(sf_lyr)
 }
 \arguments{
-\item{bcc_region}{The numeric BCC region code wrapped in quotes.}
+\item{sf_lyr}{An \code{sf} object of the Administrative Boundary of a Natioal
+Forest or Grassland.}
 }
 \value{
 A data frame.
 }
 \description{
-This function reads the \link{bcc_list} data set and filters the list by a
-given Bird Conservation Region.
+This function returns a data frame of bird species that occur in the Birds of
+Conservation Regions a National Forest or Grassland overlaps.
 }
 \examples{
-install.packages(mpsgSE)
-bcc_9 <- get_bcc_list(9)
+# Pull the Administrative Boundary for the Dixie National Forest
+adm_bdy = mpsgSE::read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |>
+  dplyr::filter(region == "04" & forestnumber == "07")
+
+# Get list of birds of conservation concern
+mpsgSE::get_bcc_list(adm_bdy)
 }
