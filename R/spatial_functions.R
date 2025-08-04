@@ -219,6 +219,7 @@ read_edw_lyr <- function(map_name, layer = 0, crs = "EPSG:26912"){
     glue::glue(edw_rest, "{map_name}/MapServer/{layer}")
   ) |>
     janitor::clean_names() |> 
+    sf::st_make_valid() |> 
     sf::st_transform(crs)
   return(lyr)
 }

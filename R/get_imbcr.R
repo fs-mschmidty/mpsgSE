@@ -55,11 +55,11 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL){
 
 #' View IMBCR Management Units
 #'
-#' This function reads IMBCR data into R. The data are stored in an *.rda file
-#'    on the T-drive. The user can specify a file path if using a copy of the 
-#'    *.rda file on your local machine.
+#' This function lists the IMBCR Forest Service where the IMBCR has collected
+#'     data.
 #'    
-#' @param file_path Path to *.rda file.
+#' @param file_path Path to *.rda file. Default is NULL. IF NULL theis function
+#'                      reads the data from the MPSG T-drive folder.
 #'
 #' @return A vector.
 #' 
@@ -74,17 +74,16 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL){
 #' 
 #' library("mpsgSE")
 #' 
-#' see_imbcr_mgmt_units()
+#' imbcr_mgmt_units()
 #' 
 #' ## End(Not run)                     
-see_imbcr_mgmt_units <- function(file_path = NULL){
+imbcr_mgmt_units <- function(file_path = NULL){
   if(is.null(file_path)){
     rda_path = file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species",
                          "2023_IMBCR_USFSdata/imbcr_mgmt_units.RDS")
   }
-  readRDS(rda_path)
   message("---------- IMBCR Management Units on Forest Service Land ----------")
-  print(imbcr_mgmt_units)
+  print(readRDS(rda_path))
 }
 
 
