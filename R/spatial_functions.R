@@ -70,8 +70,8 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #' @param region_number The Forest Service Region number
 #' @param forest_number The Forest Service Forest number.
 #' @param forest_name The Name of the National Forest.
-#' @param crs The target coordinate reference system. The default is EPSG:26912
-#'                (NAD83 UTM Zone 12).
+#' @param crs The target coordinate reference system. The default is EPSG:4326
+#'                (WGS 84).
 #'
 #' @details
 #' `get_basemap_data` returns a list of spatial features used to produce 
@@ -112,7 +112,7 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #' basemap_data <- get_basemap_data(states, region_number, forest_number, 
 #'                                  forest_name)
 get_basemap_data = function(states, region_number, forest_number, forest_name,
-                            crs = "EPSG:26912"){
+                            crs = "EPSG:4326"){
   
   message("Western hemisphere")
   americas = rnaturalearth::ne_countries(scale = "medium",

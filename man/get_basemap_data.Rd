@@ -9,7 +9,7 @@ get_basemap_data(
   region_number,
   forest_number,
   forest_name,
-  crs = "EPSG:26912"
+  crs = "EPSG:4326"
 )
 }
 \arguments{
@@ -21,8 +21,8 @@ get_basemap_data(
 
 \item{forest_name}{The Name of the National Forest.}
 
-\item{crs}{The target coordinate reference system. The default is EPSG:26912
-(NAD83 UTM Zone 12).}
+\item{crs}{The target coordinate reference system. The default is EPSG:4326
+(WGS 84).}
 }
 \value{
 A list of \link{sf} objects.
