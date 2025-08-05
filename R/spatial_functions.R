@@ -86,6 +86,10 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #'     'aoa', 'aoa_bbox', and 'plan_area_doughnut'. 'admin_bndry', 'plan_area', 
 #'     and 'districts' are acquired using [read_edw_lyr()]. 'buffer', 'aoa', 
 #'     'aoa_bbox', and 'plan_area_doughnut' are derived using the [sf] package. 
+#'     'aoa', or area of analysis, is a 4828 meter (3 mile) buffer of 
+#'     'admin_bndry' using [sf::st_buffer()]. 'aoa_bbox' is a bounding box of 
+#'     'aoa' using [sf::st_bbox()]. 'plan_area_doughnut' is a 1000 meter buffer 
+#'     of 'plan_area' with 'plan_area' erased using [sf::st_difference()]. 
 #'     These data are returned in the coordinate reference system provided by 
 #'     the `crs` parameter.
 #' @details
@@ -148,29 +152,34 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
   # Administrative Boundary
   admin_bndry = read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
     dplyr::filter(region == region_number & forestnumber == forest_number) |>
-    sf::st_transform(crs) 
+    sf::st_transform(crs) |> 
+    sf::st_make_valid()
   # Plan Area (Forest Service Land)
   plan_area = read_edw_lyr("EDW_BasicOwnership_02") |> 
     dplyr::filter(region == region_number & forestname == forest_name) |>
     dplyr::filter(ownerclassification != "NON-FS") |>
-    sf::st_transform(crs) 
+    sf::st_transform(crs) |> 
+    sf::st_make_valid()
   # Ranger Districts
   districts = read_edw_lyr("EDW_RangerDistricts_03", layer = 1) |> 
     dplyr::filter(region == region_number & forestnumber == forest_number) |>
-    sf::st_transform(crs) 
+    sf::st_transform(crs) |> 
+    sf::st_make_valid()
   # Buffer
-  aoa = sf::st_buffer(admin_bndry, 1000) |> sf::st_transform(crs) 
+  aoa = sf::st_buffer(admin_bndry, 4828) |> sf::st_transform(crs) |> 
+    sf::st_make_valid()
   # Area of Analysis
-  aoa_bbox = buffer |> sf::st_bbox() |>
-    sf::st_transform(crs)
+  aoa_bbox = aoa |> sf::st_bbox() |> sf::st_transform(crs)
   plan_area_doughnut = sf::st_buffer(plan_area, 1000) |> 
     sf::st_difference(plan_area) |> 
-    sf::st_transform(crs)
+    sf::st_transform(crs) |> 
+    sf::st_make_valid() |> 
+    suppressWarnings()
 
   #-- Roads
   message("Roads")
   # Area of Analysis
-  aoa = sf::st_buffer(admin_bndry, 1000000) |> sf::st_bbox()
+  roads_aoa = sf::st_buffer(admin_bndry, 1000000) |> sf::st_bbox()
   # Roads
   roads = lapply(states, function(state){
     osm_dat = osmdata::getbb(state) |> 
@@ -182,11 +191,11 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
   }) |> 
     dplyr::bind_rows() |>
     sf::st_transform(crs) |> 
-    sf::st_crop(aoa) |> 
+    sf::st_crop(roads_aoa) |> 
     suppressWarnings()
   
-  dat = tibble::lst(americas, north_america, l_48, admin_bndry, plan_area, 
-                    districts, aoa, aoa_bbox, plan_area_doughnut, roads)
+  dat = tibble::lst(americas, north_america, l_48, aoa, aoa_bbox, admin_bndry, 
+                    plan_area, districts, plan_area_doughnut, roads)
   return(dat)
 }
 

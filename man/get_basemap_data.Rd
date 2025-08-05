@@ -48,6 +48,10 @@ National Forest-scale data include 'admin_bndry', 'plan_area', 'districts',
 'aoa', 'aoa_bbox', and 'plan_area_doughnut'. 'admin_bndry', 'plan_area',
 and 'districts' are acquired using \code{\link[=read_edw_lyr]{read_edw_lyr()}}. 'buffer', 'aoa',
 'aoa_bbox', and 'plan_area_doughnut' are derived using the \link{sf} package.
+'aoa', or area of analysis, is a 4828 meter (3 mile) buffer of
+'admin_bndry' using \code{\link[sf:geos_unary]{sf::st_buffer()}}. 'aoa_bbox' is a bounding box of
+'aoa' using \code{\link[sf:st_bbox]{sf::st_bbox()}}. 'plan_area_doughnut' is a 1000 meter buffer
+of 'plan_area' with 'plan_area' erased using \code{\link[sf:geos_binary_ops]{sf::st_difference()}}.
 These data are returned in the coordinate reference system provided by
 the \code{crs} parameter.
 
