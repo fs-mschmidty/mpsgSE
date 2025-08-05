@@ -83,10 +83,11 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #'     Albers (EPSG:5070).
 #' @details
 #' National Forest-scale data include 'admin_bndry', 'plan_area', 'districts', 
-#'     'buffer', and 'aoa_bbox.' 'admin_bndry', 'plan_area', and 'districts' are 
-#'     acquired using [read_edw_lyr()]. 'buffer' and 'aoa_bbox' are derived 
-#'     using the [sf] package. These data are returned in the coordinate 
-#'     reference system provided by the `crs` parameter.
+#'     'aoa', 'aoa_bbox', and 'plan_area_doughnut'. 'admin_bndry', 'plan_area', 
+#'     and 'districts' are acquired using [read_edw_lyr()]. 'buffer', 'aoa', 
+#'     'aoa_bbox', and 'plan_area_doughnut' are derived using the [sf] package. 
+#'     These data are returned in the coordinate reference system provided by 
+#'     the `crs` parameter.
 #' @details
 #' Roads data include 'roads'. These data are acquired using the [osmdata] 
 #'     package, primarily [osmdata::getbb()], [osmdata::opq()], and 
@@ -158,11 +159,13 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
     dplyr::filter(region == region_number & forestnumber == forest_number) |>
     sf::st_transform(crs) 
   # Buffer
-  buffer = sf::st_buffer(admin_bndry, 1000) |> sf::st_difference(admin_bndry) |>
-    sf::st_transform(crs) 
+  aoa = sf::st_buffer(admin_bndry, 1000) |> sf::st_transform(crs) 
   # Area of Analysis
   aoa_bbox = buffer |> sf::st_bbox() |>
-    sf::st_transform(crs) 
+    sf::st_transform(crs)
+  plan_area_doughnut = sf::st_buffer(plan_area, 1000) |> 
+    sf::st_difference(plan_area) |> 
+    sf::st_transform(crs)
 
   #-- Roads
   message("Roads")
@@ -183,7 +186,7 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
     suppressWarnings()
   
   dat = tibble::lst(americas, north_america, l_48, admin_bndry, plan_area, 
-                    districts, buffer, aoa_bbox, roads)
+                    districts, aoa, aoa_bbox, plan_area_doughnut, roads)
   return(dat)
 }
 

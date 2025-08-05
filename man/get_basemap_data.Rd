@@ -45,10 +45,11 @@ data are acquired using \code{\link[rnaturalearth:ne_countries]{rnaturalearth::n
 Albers (EPSG:5070).
 
 National Forest-scale data include 'admin_bndry', 'plan_area', 'districts',
-'buffer', and 'aoa_bbox.' 'admin_bndry', 'plan_area', and 'districts' are
-acquired using \code{\link[=read_edw_lyr]{read_edw_lyr()}}. 'buffer' and 'aoa_bbox' are derived
-using the \link{sf} package. These data are returned in the coordinate
-reference system provided by the \code{crs} parameter.
+'aoa', 'aoa_bbox', and 'plan_area_doughnut'. 'admin_bndry', 'plan_area',
+and 'districts' are acquired using \code{\link[=read_edw_lyr]{read_edw_lyr()}}. 'buffer', 'aoa',
+'aoa_bbox', and 'plan_area_doughnut' are derived using the \link{sf} package.
+These data are returned in the coordinate reference system provided by
+the \code{crs} parameter.
 
 Roads data include 'roads'. These data are acquired using the \link{osmdata}
 package, primarily \code{\link[osmdata:getbb]{osmdata::getbb()}}, \code{\link[osmdata:opq]{osmdata::opq()}}, and
