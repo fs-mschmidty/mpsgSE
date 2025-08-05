@@ -197,8 +197,7 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
 #'
 #' @param map_name Character. Name of map layer.
 #' @param layer Integer. Number of layer to read. Default is  zero (0).
-#' @param crs Coordinate reference system (crs). Default is EPSG:26912 (NAD83 
-#'                UTM Zone 12).
+#' @param crs Coordinate reference system (crs). Default is EPSG:4326 (WGS 84).
 #'
 #' @return An [sf] object or [terra::SpatRaster-class].
 #' @seealso [arcgislayers::arc_read()], [sf::st_transform()]
@@ -211,7 +210,7 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
 #' admin_bndry <- read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
 #'   dplyr::filter(forestname == "Dixie National Forest")
 #' 
-read_edw_lyr <- function(map_name, layer = 0, crs = "EPSG:26912"){
+read_edw_lyr <- function(map_name, layer = 0, crs = "EPSG:4326"){
   # map_name = "EDW_ForestSystemBoundaries_01"
   # layer = 1
   edw_rest <- "https://apps.fs.usda.gov/arcx/rest/services/EDW/"

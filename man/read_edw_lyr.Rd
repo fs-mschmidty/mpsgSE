@@ -4,15 +4,14 @@
 \alias{read_edw_lyr}
 \title{Read spatial data from Forest Service ArcGIS REST Services}
 \usage{
-read_edw_lyr(map_name, layer = 0, crs = "EPSG:26912")
+read_edw_lyr(map_name, layer = 0, crs = "EPSG:4326")
 }
 \arguments{
 \item{map_name}{Character. Name of map layer.}
 
 \item{layer}{Integer. Number of layer to read. Default is  zero (0).}
 
-\item{crs}{Coordinate reference system (crs). Default is EPSG:26912 (NAD83
-UTM Zone 12).}
+\item{crs}{Coordinate reference system (crs). Default is EPSG:4326 (WGS 84).}
 }
 \value{
 An \link{sf} object or \link[terra:SpatRaster-class]{terra::SpatRaster}.
