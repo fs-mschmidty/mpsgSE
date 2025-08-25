@@ -119,6 +119,12 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 get_basemap_data = function(states, region_number, forest_number, forest_name,
                             crs = "EPSG:4326"){
   
+  # states = c("Colorado", "Kansas", "Oklahoma", "New Mexico", "Texas")
+  # region_number = "02"
+  # forest_number = "12"
+  # forest_name = "Pike and San Isabel National Forests"
+  # crs = "EPSG:26913"
+  
   message("Western hemisphere")
   americas = rnaturalearth::ne_countries(scale = "medium",
                                          continent = c("North America",
@@ -150,18 +156,18 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
   
   message("FS Boundaries")
   # Administrative Boundary
-  admin_bndry = read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
+  admin_bndry = mpsgSE::read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
     dplyr::filter(region == region_number & forestnumber == forest_number) |>
     sf::st_transform(crs) |> 
     sf::st_make_valid()
   # Plan Area (Forest Service Land)
-  plan_area = read_edw_lyr("EDW_BasicOwnership_02") |> 
+  plan_area = mpsgSE::read_edw_lyr("EDW_BasicOwnership_02", layer = 0) |> 
     dplyr::filter(region == region_number & forestname == forest_name) |>
     dplyr::filter(ownerclassification != "NON-FS") |>
     sf::st_transform(crs) |> 
     sf::st_make_valid()
   # Ranger Districts
-  districts = read_edw_lyr("EDW_RangerDistricts_03", layer = 1) |> 
+  districts = mpsgSE::read_edw_lyr("EDW_RangerDistricts_03", layer = 1) |> 
     dplyr::filter(region == region_number & forestnumber == forest_number) |>
     sf::st_transform(crs) |> 
     sf::st_make_valid()

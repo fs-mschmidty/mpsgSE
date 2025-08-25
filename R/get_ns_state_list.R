@@ -1,9 +1,11 @@
 #' This function exports all species from a state with NS state rank.
 
-#' @param state a character with state code, exmaple: "CO".
-#' @param taxonomy TRUE of FALSE.  TRUE if you want to return the data with taxonimic information included.  This can take a long time for states with large lists.
+#' @param state A character with state code, exmaple: "CO".
+#' @param taxonomy TRUE of FALSE.  TRUE if you want to return the data with 
+#'                     taxonomic information included.  This can take a long 
+#'                     time for states with large lists.
+#'
 #' @export
-
 get_ns_state_list <- function(state, taxonomy = TRUE) {
   get_state_rank <- function(x, state_code) {
     regex <- paste0(state_code, " \\(([^)]+)\\)")

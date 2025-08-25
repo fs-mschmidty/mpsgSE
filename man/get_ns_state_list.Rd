@@ -7,9 +7,11 @@
 get_ns_state_list(state, taxonomy = TRUE)
 }
 \arguments{
-\item{state}{a character with state code, exmaple: "CO".}
+\item{state}{A character with state code, exmaple: "CO".}
 
-\item{taxonomy}{TRUE of FALSE.  TRUE if you want to return the data with taxonimic information included.  This can take a long time for states with large lists.}
+\item{taxonomy}{TRUE of FALSE.  TRUE if you want to return the data with
+taxonomic information included.  This can take a long
+time for states with large lists.}
 }
 \description{
 This function exports all species from a state with NS state rank.

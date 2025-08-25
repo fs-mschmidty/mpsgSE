@@ -103,7 +103,7 @@ seinet_spp <- function(seinet_data, locale = TRUE){
     dplyr::summarize(nObs = dplyr::n(), 
                      minYear = min(lubridate::year(date), na.rm = TRUE), 
                      maxYear = max(lubridate::year(date), na.rm = TRUE), 
-                     taxonID = stringr::str_c(taxonID, collapse = ", "),
+                     SEINet_taxonID = stringr::str_c(taxonID, collapse = ", "),
                      occID = ifelse(nObs <= 6, 
                                     stringr::str_c(unique(occurrenceID),
                                                    collapse = ", "),
