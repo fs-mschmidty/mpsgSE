@@ -10,12 +10,12 @@ get_seinet(dir_path, crs = NULL)
 \item{dir_path}{Path to SEINet data folder.}
 
 \item{crs}{Target coordinate reference system (CRS). Either and
-\code{sf::st_crs()} object or accepted input string (e.g. "NAD83").
-See \code{sf::st_crs()} for more details. Default is NULL. If NULL,
+\code{\link[sf:st_crs]{sf::st_crs()}} object or accepted input string (e.g. "NAD83").
+See \code{\link[sf:st_crs]{sf::st_crs()}} for more details. Default is NULL. If NULL,
 resulting sf object CRS will be WGS84.}
 }
 \value{
-An sf class object.
+An \code{sf} class object.
 }
 \description{
 This function reads SEINet data in Darwin Core Archive format into R.

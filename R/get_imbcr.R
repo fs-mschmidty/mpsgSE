@@ -1,3 +1,64 @@
+#' Subset eligible species from IMBCR data. 
+#'
+#' @param imbcr_data Spatial IMBCR data from [get_imbcr()].
+#' @param imbcr_list List of IMBCR species from [imbcr_spp()].
+#' @param eligible_list Eligible species list that includes taxon ID from 
+#'                          [get_taxonomies()]. This is the list that is used to
+#'                          subset the spatial data.
+#'
+#' @return An [sf] object.
+#' 
+#' @details
+#' Additional details...
+#' 
+#' @seealso [get_imbcr()], [imbcr_spp()], [get_taxonomies()]
+#' 
+#' @export
+#' 
+#' @examples
+#' ## Not run:
+#' 
+#' library("mpsgSE")
+#' 
+#' # Read IMBCR data into R
+#' mgmt_units <- c("Cimarron National Grassland", "Comanche National Grassland")
+#' imbcr_dat <- get_imbcr(mgmt_units)
+#' # Summarize data by species
+#' spp_list <- imbcr_spp(imbcr_dat)
+#' birds <- dplyr::filter(spp_list, family == "Corvidae")
+#' # Subset spatial data
+#' corvids <- build_imbcr_spatial_data(imbcr_dat, spp_list, birds)
+#' 
+#' ## End(Not run)
+build_imbcr_spatial_data <- function(imbcr_data, imbcr_list, eligible_list){
+  
+  # targets::tar_read(imbcr_data)
+  # targets::tar_load(imbcr_list)
+  # eligible_list = targets::tar_read(unit_list)
+  
+  # Get eligible species taxon ID's
+  t_ids = eligible_list$taxon_id
+  
+  imb_spp = imbcr_list |> 
+    dplyr::select(taxon_id, BirdCode, scientific_name) |> 
+    dplyr::distinct()
+  
+  elig_spp = imb_spp |> 
+    dplyr::select(taxon_id, BirdCode) |> 
+    dplyr::filter(taxon_id %in% t_ids) |> 
+    dplyr::filter(!is.na(taxon_id)) |> 
+    dplyr::pull(BirdCode)
+  
+  # Filter spatial data
+  elig_imbcr = imbcr_data |> 
+    dplyr::filter(BirdCode %in% elig_spp) |> 
+    dplyr::left_join(imb_spp, by = c("BirdCode", "scientific_name"), 
+                     relationship = 'many-to-many')
+  
+  return(elig_imbcr)
+}
+
+
 #' Read IMBCR Data into R.
 #' 
 #' This function reads IMBCR data into R. The data are stored in an *.RDS file
@@ -53,38 +114,10 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL){
 }
 
 
-#' View IMBCR Management Units
+#' List of IMBCR Management Units on National Forests and Grasslands
 #'
-#' This function lists the IMBCR Forest Service where the IMBCR has collected
-#'     data.
-#'    
-#' @param file_path Path to *.rda file. Default is NULL. IF NULL theis function
-#'                      reads the data from the MPSG T-drive folder.
-#'
-#' @return A vector.
-#' 
-#' @details
-#' You must be connected to the T-drive, e.g., through VPN, to use this function
-#'     unless you have the *.rda file on your local machine. 
-#' 
-#' @export
-#'
-#' @examples
-#' ## Not run:
-#' 
-#' library("mpsgSE")
-#' 
-#' imbcr_mgmt_units()
-#' 
-#' ## End(Not run)                     
-imbcr_mgmt_units <- function(file_path = NULL){
-  if(is.null(file_path)){
-    rda_path = file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species",
-                         "2023_IMBCR_USFSdata/imbcr_mgmt_units.RDS")
-  }
-  message("---------- IMBCR Management Units on Forest Service Land ----------")
-  print(readRDS(rda_path))
-}
+#' @format ## `imbcr_mgmt_units`
+"imbcr_mgmt_units"
 
 
 #' Summarize IMBCR data by species
@@ -113,7 +146,7 @@ imbcr_mgmt_units <- function(file_path = NULL){
 #' # Summarize data by species
 #' imbcr_spp(imbcr_dat)
 #' 
-#' ## End(Not run)                     
+#' ## End(Not run)
 imbcr_spp <- function(imbcr_data){
   locale = stringr::str_c(unique(imbcr_data$locale), collapse = ", ")
   taxa_dat = sf::st_drop_geometry(imbcr_data) |>

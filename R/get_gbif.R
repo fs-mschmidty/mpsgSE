@@ -1,3 +1,73 @@
+#' Subset eligible species from GBIF data and reduce variables. 
+#'
+#' @param gbif_data Spatial GBIF data from [get_gbif()].
+#' @param eligible_list Eligible species list that includes taxon ID from 
+#'                          [get_taxonomies()]. This is the list that is used to
+#'                          subset the spatial data.
+#'
+#' @return An [sf] object.
+#' 
+#' @details
+#' Additional details...
+#' 
+#' @seealso [get_gbif()], [gbif_spp()], [get_taxonomies()]
+#' 
+#' @export
+#'
+#' @examples
+#' ## Not run:
+#' 
+#' library("mpsgSE")
+#' 
+#' # Project directory path
+#' t_path <- file.path("T:/path/to/project/directory/data")
+#' 
+#' # Pull data from existing GBIF query
+#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path = t_path)
+#' # Summarize species
+#' gbif_list <- gbif_spp(gbif_dat)
+#' # Subset data
+#' birds <- dplyr::filter(gbif_list, class == "Aves")
+#' # Subset spatial data
+#' gbif_birds <- build_gbif_spatial_data(gbif_dat, birds)
+#' 
+#' ## End(Not run)                     
+build_gbif_spatial_data <- function(gbif_data, eligible_list) {
+  
+  # targets::tar_load(gbif_data)
+  
+  # Get eligible species taxon ID's
+  t_ids <- eligible_list$taxon_id
+  
+  # Variable names to reduce data frame 
+  var_names <- c(
+    "taxon_id", "occurrenceID", "scientificName",
+    "acceptedScientificName", "verbatimScientificName", "vernacularName", 
+    "kingdom", "phylum", "class", "order", "family", "genus", "specificEpithet", 
+    "infraspecificEpithet", "taxonRank", 
+    "basisOfRecord", "eventDate", "countryCode", "stateProvince", "county", 
+    "locality", "verticalDatum",
+    "coordinateUncertaintyInMeters", "coordinatePrecision",
+    "georeferencedBy", "georeferencedDate", "georeferenceProtocol",
+    "georeferenceSources", "georeferenceRemarks", 
+    "publisher", "institutionCode", "collectionCode", "datasetName", 
+    "gbif_occ_url"
+  )
+  
+  # Filter GBIF Data
+  eligible_gbif <- gbif_data |>
+    dplyr::mutate(taxon_id = acceptedTaxonKey) |>
+    dplyr::filter(taxon_id %in% t_ids) |>
+    dplyr::mutate(gbif_id = as.character(gbifID / 1), 
+                  gbif_occ_url = paste("https://www.gbif.org/occurrence",
+                                       gbif_id, sep = "/")) |> 
+    dplyr::select(dplyr::any_of(var_names))
+  
+  # Return final data frame
+  return(eligible_gbif)
+}
+
+
 #' Query GBIF species occurrence records
 #' 
 #' This function queries GBIF for species occurrence records for a given area, 

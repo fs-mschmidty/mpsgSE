@@ -31,7 +31,7 @@ imbcr_dat <- get_imbcr(mgmt_units)
 # Summarize data by species
 imbcr_spp(imbcr_dat)
 
-## End(Not run)                     
+## End(Not run)
 }
 \seealso{
 \code{\link[=get_imbcr]{get_imbcr()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
