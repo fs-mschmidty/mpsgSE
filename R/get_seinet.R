@@ -47,7 +47,8 @@ build_seinet_spatial_data <- function(sei_data, sei_list, elig_list) {
     stringr::str_split(", ") |> 
     unlist()
   
-  sei_tids = dplyr::select(sei_list, SEINet_taxonID, taxon_id)
+  sei_tids = dplyr::select(sei_list, SEINet_taxonID, taxon_id) |> 
+    dplyr::mutate(SEINet_taxonID = as.character(SEINet_taxonID))
   
   var_names = c(
     "taxonID", "occurrenceID", "scientificName", "scientificNameAuthorship",  
@@ -65,6 +66,7 @@ build_seinet_spatial_data <- function(sei_data, sei_list, elig_list) {
   elig_sei = sei_data |> 
     dplyr::select(dplyr::any_of(var_names)) |> 
     dplyr::rename("SEINet_taxonID" = taxonID) |> 
+    dplyr::mutate(SEINet_taxonID = as.character(SEINet_taxonID)) |> 
     dplyr::filter(SEINet_taxonID %in% t_ids) |> 
     dplyr::left_join(sei_tids, by = "SEINet_taxonID", 
                      relationship = 'many-to-many') |> 

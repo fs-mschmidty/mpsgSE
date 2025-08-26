@@ -13,6 +13,9 @@ get_ns_state_list(state, taxonomy = TRUE)
 taxonomic information included.  This can take a long
 time for states with large lists.}
 }
+\value{
+A list()
+}
 \description{
 This function exports all species from a state with NS state rank.
 }
