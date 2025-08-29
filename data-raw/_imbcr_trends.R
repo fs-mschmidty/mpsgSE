@@ -39,7 +39,7 @@ invisible(lapply(pkgs, library, character.only = TRUE))
 
 # data ----
 imbcr_dir <- file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species", 
-                       "IMBCR_USFSdata")
+                       "IMBCR_USFSdata/trends")
 
 ## 2024-01-12 Data
 # imbcr_xlsx <- file.path(imbcr_dir, "CCNG_population_estimates_20240112.xlsx")
