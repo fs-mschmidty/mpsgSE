@@ -36,12 +36,7 @@ if (any(inst_pkgs == FALSE)) {
 # Load packages
 invisible(lapply(pkgs, library, character.only = TRUE))
 
-
-# data ----
-fs_units <- read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
-  sf::st_drop_geometry() |> 
-  dplyr::select(adminforestid, region, forestnumber, forestorgcode, forestname, 
-                gis_acres)
+# OOPS!!!
 
 # save ----
 readr::write_csv(fs_units,
