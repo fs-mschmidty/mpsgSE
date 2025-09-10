@@ -5,10 +5,18 @@
 \alias{fs_units}
 \title{List of Forest Service Units}
 \format{
-A data frame
+A data frame of 114 observations and 6 variables.
+\describe{
+\item{adminforestid}{Administrative forest ID.}
+\item{region}{Forest Service Region code.}
+\item{forestnumber}{Forest number.}
+\item{forestorgcode}{Forest org code.}
+\item{forestname}{Forest name.}
+\item{gis_acres}{Fores acres calsulated by ESRI ArcGIS.}
+}
 }
 \source{
-Forest Service EDW Rest Services, https://apps.fs.usda.gov/arcx/rest/services/EDW.
+Forest Service EDW Rest Services, https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_ForestSystemBoundaries_01/MapServer
 }
 \usage{
 fs_units

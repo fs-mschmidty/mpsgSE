@@ -3,14 +3,40 @@
 \docType{data}
 \name{id_swap}
 \alias{id_swap}
-\title{Idaho SWAP List}
+\title{2023 Idaho SWAP List}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 282 rows and 21 columns.
+A data frame of 282 observations and 21 variables.
+\describe{
+\item{ID_taxonID}{Idaho taxon ID}
+\item{scientificName}{Scientific name of species.}
+\item{sPrimaryCommonName}{Common name of species.}
+\item{synonymName}{Synonyms}
+\item{SWAP2015}{Logical. Species is on the 2015 Idaho SWAP list.}
+\item{SWAP2023}{Logical. Species is on the 2023 Idaho SWAP list.}
+\item{SWAP2023designation}{2023 Idaho SWAP designation.}
+\item{lastUpdated}{Date of last update}
+\item{taxonomyNotes}{Notes about taxonomy.}
+\item{comments}{Additional comments.}
+\item{gbif_taxonID}{GBIF taxon ID}
+\item{kingdom}{Taxonomic Kingdom}
+\item{phylum}{Taxonomic Phylum}
+\item{class}{Taxonomic Class}
+\item{order}{Taxonomic Order}
+\item{family}{Taxonomic Family}
+\item{genus}{Taxonomic Genus}
+\item{species}{Taxonomic Species}
+\item{taxon_id}{MPSG taxon ID.}
+\item{subspecies}{Taxonomic Subspecies}
+\item{variety}{Taxonomic Variety}
+}
+}
+\source{
+description
 }
 \usage{
 id_swap
 }
 \description{
-\code{id_swap} Idaho SWAP list from 2023.
+2023 Idaho SWAP List
 }
 \keyword{datasets}

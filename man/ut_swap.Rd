@@ -3,14 +3,32 @@
 \docType{data}
 \name{ut_swap}
 \alias{ut_swap}
-\title{Utah SWAP List}
+\title{2025 Utah SWAP List}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 169 rows and 16 columns.
+A data frame of 191 observations and 14 variables.
+\describe{
+\item{taxon_id}{MPSG taxon ID.}
+\item{gbif_taxonID}{GBIF taxon ID}
+\item{scientific_name}{Scientific name of species.}
+\item{common_name}{Common name of species.}
+\item{s_rank_1}{State rank.}
+\item{n_rank_2}{Natioanl rank.}
+\item{federal_status}{ESA status code.}
+\item{kingdom}{Taxonomic Kingdom}
+\item{phylum}{Taxonomic Phylum}
+\item{class}{Taxonomic Class}
+\item{order}{Taxonomic Order}
+\item{family}{Taxonomic Family}
+\item{genus}{Taxonomic Genus}
+\item{species}{Taxonomic Species}
+\item{subspecies}{Taxonomic Subspecies}
+\item{variety}{Taxonomic Variety}
+}
 }
 \usage{
 ut_swap
 }
 \description{
-\code{ut_swap} Utah SWAP list from 2025.
+2025 Utah SWAP List
 }
 \keyword{datasets}

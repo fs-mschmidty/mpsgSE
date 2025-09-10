@@ -8,17 +8,14 @@
 #'       | Forest Service, USDA
 #' date: 24 July, 2025
 #' 
-#' This script queries taxonomy and taxon IDs using the `get_taxonomies()` 
-#' function.
 #'-----------------------------------------------------------------------------
 
 
 # setup ----
 pkgs <- c("dplyr",   # data management
-          "janitor", # tidy up data frames
           "mpsgSE",  # taxonomy function
           "readr",   # read/write data
-          "readxl",  # read Excel files
+          "sf",      # spatial data
           "tidyr",   # data management
           "usethis") # package development
 
@@ -36,7 +33,11 @@ if (any(inst_pkgs == FALSE)) {
 # Load packages
 invisible(lapply(pkgs, library, character.only = TRUE))
 
-# OOPS!!!
+# Read data from EDW
+fs_units <- mpsgSE::read_edw_lyr("EDW_ForestSystemBoundaries_01") |> 
+  sf::st_drop_geometry() |> 
+  dplyr::select(adminforestid, region, forestnumber, forestorgcode, 
+                forestname, gis_acres)
 
 # save ----
 readr::write_csv(fs_units,

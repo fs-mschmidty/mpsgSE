@@ -11,7 +11,17 @@ on the GBIF accepted taxonomy. Lists so far included are:
 \item USFS Region 2 Sensitive Species
 }}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 399 rows and 8 columns.
+A data frame of 399 observations and 8 variables.
+\describe{
+\item{taxon_id}{MPSG taxon ID.}
+\item{scientific_name}{Scientific name of species.}
+\item{common_name}{Common name of species.}
+\item{status_area}{Description.}
+\item{status_authority}{Description.}
+\item{status_all}{Description.}
+\item{status_simple}{Description.}
+\item{status_type}{Description.}
+}
 }
 \usage{
 conservation_lists

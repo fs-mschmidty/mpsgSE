@@ -3,15 +3,30 @@
 \docType{data}
 \name{rfss}
 \alias{rfss}
-\title{Regional Forester's Sensitive Species List for Regions 1-10}
+\title{2024 Regional Forester's Sensitive Species List for Forest Service Regions 1-10}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 4152 rows and 11 columns.
+A data frame of 4142 observations and 11 variables.
+\describe{
+\item{taxon_id}{MPSG taxon ID.}
+\item{scientific_name}{Scientific name of species.}
+\item{group_level2}{Taxonomic group}
+\item{region}{Forest Service Region}
+\item{rfssl}{Logical. Is the species on a Regional Forester's Sensitive Species List}
+\item{region_num}{Forest Service Region number.}
+\item{status_area}{Area label.}
+\item{status_authority}{Authority label.}
+\item{status_all}{Complete status label.}
+\item{status_simple}{Simple status description.}
+\item{status_type}{Status type}
+}
+}
+\source{
+Compiled from Regional Forester's Sensitive Species Lists as part of 2024 NOGA effort.
 }
 \usage{
 rfss
 }
 \description{
-\code{rfss} is a comprehensive master list from 2024.
-\code{rfss_taxonomy} is the taxonomic classifications returned form GBIF.
+2024 Regional Forester's Sensitive Species List for Forest Service Regions 1-10
 }
 \keyword{datasets}

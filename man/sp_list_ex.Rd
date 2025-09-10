@@ -3,16 +3,18 @@
 \docType{data}
 \name{sp_list_ex}
 \alias{sp_list_ex}
-\title{An example dataset to test functions that consists of a list of species with
-common_name and scientific_name.}
+\title{An example dataset of common names and scientific names of species.}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 427 rows and 2 columns.
+A data frame of 427 observations and 2 variables.
+\describe{
+\item{common_name}{Common name of species.}
+\item{scientific_name}{Scientific name of species.}
+}
 }
 \usage{
 sp_list_ex
 }
 \description{
-An example dataset to test functions that consists of a list of species with
-common_name and scientific_name.
+An example dataset of common names and scientific names of species.
 }
 \keyword{datasets}

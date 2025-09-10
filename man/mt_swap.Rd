@@ -3,14 +3,31 @@
 \docType{data}
 \name{mt_swap}
 \alias{mt_swap}
-\title{Montana SWAP List}
+\title{2023 Montana SWAP List}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 154 rows and 12 columns.
+A data frame of 154 observations and 12 variables.
+\describe{
+\item{group}{Taxonomic group of species.}
+\item{scientific_name}{Scientific name of species.}
+\item{common_name}{Common name of species.}
+\item{gbif_taxonID}{GBIF taxon ID}
+\item{kingdom}{Taxonomic Kingdom}
+\item{phylum}{Taxonomic Phylum}
+\item{class}{Taxonomic Class}
+\item{order}{Taxonomic Order}
+\item{family}{Taxonomic Family}
+\item{genus}{Taxonomic Genus}
+\item{species}{Taxonomic Species}
+\item{taxon_id}{MPSG taxon ID.}
+}
+}
+\source{
+description
 }
 \usage{
 mt_swap
 }
 \description{
-\code{mt_swap} Montana SWAP list from 2023.
+2023 Montana SWAP List
 }
 \keyword{datasets}
