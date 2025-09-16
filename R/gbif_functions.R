@@ -203,6 +203,40 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 }
 
 
+#' Get Taxonomic Synonyms
+#' 
+#' This function queries synonyms from the GBIF Backbone taxonomy. It will only 
+#'     return synonyms for unique taxon ID's (i.e., duplicated taxon ID's will 
+#'     not be queried).
+#'
+#' @param spp_list Species list with taxon ID's from `get_taxonomies()`.
+#'
+#' @returns A [tibble::tibble()]
+#' @export
+#'
+#' @examples
+#' library(mpsgSE)
+#' spp_data <- mpsgSE::sp_list_ex |>
+#'   get_taxonomies('scientific_name')
+#' get_synonyms(spp_data)
+get_synonyms <- function(spp_list) {
+  
+  # eligible_list = targets::tar_read(elig_list)
+  # u_code = "BRF"
+  
+  t_ids = unique(spp_list$taxon_id)
+  
+  syns = lapply(t_ids, function(x){ 
+    rgbif::name_usage(key = x, data = "synonyms")$data
+  }) |>
+    dplyr::bind_rows() |>
+    dplyr::mutate(taxon_id = acceptedKey) |> 
+    tibble::tibble()
+  
+  return(syns)
+}
+
+
 #' Summarize GBIF data by species
 #' 
 #' This function summarizes the spatial GBIF object from `get_gbif()` by 
