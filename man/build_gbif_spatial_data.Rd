@@ -14,7 +14,7 @@ build_gbif_spatial_data(gbif_data, eligible_list)
 subset the spatial data.}
 }
 \value{
-An \link{sf} object.
+An \link[sf:sf]{sf::sf} object.
 }
 \description{
 Subset eligible species from GBIF data and reduce variables.

@@ -16,7 +16,7 @@ build_imbcr_spatial_data(imbcr_data, imbcr_list, eligible_list)
 subset the spatial data.}
 }
 \value{
-An \link{sf} object.
+An \link[sf:sf]{sf::sf} object.
 }
 \description{
 Subset eligible species from IMBCR data.

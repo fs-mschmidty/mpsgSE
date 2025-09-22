@@ -19,7 +19,7 @@ resulting sf object CRS will be NAD83.}
 will be read from the MPSG T-drive folder.}
 }
 \value{
-An \link{sf} class object.
+An \link[sf:sf]{sf::sf} class object.
 }
 \description{
 This function reads IMBCR data into R. The data are stored in an *.RDS file

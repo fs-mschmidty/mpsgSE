@@ -95,7 +95,7 @@ get_imbcr <- function(mgmt_unit, crs = NULL, dir_path = NULL){
   # Define file path
   if(is.null(dir_path)){
     dir_path = file.path("T:/FS/NFS/PSO/MPSG/MPSG_Restricted/Species", 
-                         "2023_IMBCR_USFSdata")
+                         "IMBCR_USFSdata")
   }
 
   # IMBCR Data ----

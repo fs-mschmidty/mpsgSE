@@ -15,7 +15,7 @@ clip_fc(sf_lyr, sf_clip, locale = NULL)
 location (e.g., forest acronym or "Buffer").}
 }
 \value{
-An \link{sf} object
+An \link[sf:sf]{sf::sf} object
 }
 \description{
 This function clips a \code{sf} object using \code{sf::st_intersection()}. First, this

@@ -14,7 +14,7 @@ read_edw_lyr(map_name, layer = 0, crs = "EPSG:4326")
 \item{crs}{Coordinate reference system (crs). Default is EPSG:4326 (WGS 84).}
 }
 \value{
-An \link{sf} object or \link[terra:SpatRaster-class]{terra::SpatRaster}.
+An \link[sf:sf]{sf::sf} object or \link[terra:SpatRaster-class]{terra::SpatRaster}.
 }
 \description{
 read_edw_lyr reads features from the Forest Service ArcGIS REST Services

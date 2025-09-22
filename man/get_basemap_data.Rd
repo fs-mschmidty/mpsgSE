@@ -25,15 +25,15 @@ get_basemap_data(
 (WGS 84).}
 }
 \value{
-A list of \link{sf} objects.
+A list of \link[sf:sf]{sf::sf} objects.
 }
 \description{
 Pull spatial base map data for North and South America, the lower 48 US
 states, and a user specified National Forest. Continental and national
-scale data are acquired using the \link{rnaturalearth} package and Forest
+scale data are acquired using the \link[rnaturalearth:rnaturalearth-package]{rnaturalearth::rnaturalearth} package and Forest
 Service data are acquired from Forest Service EDW Rest Services
 (https://apps.fs.usda.gov/arcx/rest/services/EDW) using \link{arcgislayers}
-package. Roads data are acquired using the \link{osmdata} package.
+package. Roads data are acquired using the \link[osmdata:osmdata]{osmdata::osmdata} package.
 }
 \details{
 \code{get_basemap_data} returns a list of spatial features used to produce
@@ -47,7 +47,7 @@ Albers (EPSG:5070).
 National Forest-scale data include 'admin_bndry', 'plan_area', 'districts',
 'aoa', 'aoa_bbox', and 'plan_area_doughnut'. 'admin_bndry', 'plan_area',
 and 'districts' are acquired using \code{\link[=read_edw_lyr]{read_edw_lyr()}}. 'buffer', 'aoa',
-'aoa_bbox', and 'plan_area_doughnut' are derived using the \link{sf} package.
+'aoa_bbox', and 'plan_area_doughnut' are derived using the \link[sf:sf]{sf::sf} package.
 'aoa', or area of analysis, is a 4828 meter (3 mile) buffer of
 'admin_bndry' using \code{\link[sf:geos_unary]{sf::st_buffer()}}. 'aoa_bbox' is a bounding box of
 'aoa' using \code{\link[sf:st_bbox]{sf::st_bbox()}}. 'plan_area_doughnut' is a 1000 meter buffer
@@ -55,13 +55,13 @@ of 'plan_area' with 'plan_area' erased using \code{\link[sf:geos_binary_ops]{sf:
 These data are returned in the coordinate reference system provided by
 the \code{crs} parameter.
 
-Roads data include 'roads'. These data are acquired using the \link{osmdata}
+Roads data include 'roads'. These data are acquired using the \link[osmdata:osmdata]{osmdata::osmdata}
 package, primarily \code{\link[osmdata:getbb]{osmdata::getbb()}}, \code{\link[osmdata:opq]{osmdata::opq()}}, and
 \code{\link[osmdata:osmdata_sf]{osmdata::osmdata_sf()}}. These data are returned in the coordinate
 reference system provided by the \code{crs} parameter.
 }
 \note{
-Sometimes the connection to the Forest Service REST Service or \link{osmdata}
+Sometimes the connection to the Forest Service REST Service or \link[osmdata:osmdata]{osmdata::osmdata}
 fails. This will throw the following error message: "\strong{Error:}
 tar_make() Status code: 500. Error: json". In most instances, the
 function can simply be executed again to retrieve the data. Check the
