@@ -16,9 +16,11 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
-    arcgislayers, 
+    arcgislayers,
+    BIEN,
     devtools, 
     dplyr,
+    ebirdst,
     glue,
     httr2,
     janitor,

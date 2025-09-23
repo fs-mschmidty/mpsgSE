@@ -30,10 +30,10 @@ A list of \link[sf:sf]{sf::sf} objects.
 \description{
 Pull spatial base map data for North and South America, the lower 48 US
 states, and a user specified National Forest. Continental and national
-scale data are acquired using the \link[rnaturalearth:rnaturalearth-package]{rnaturalearth::rnaturalearth} package and Forest
+scale data are acquired using the \code{rnaturalearth} package and Forest
 Service data are acquired from Forest Service EDW Rest Services
-(https://apps.fs.usda.gov/arcx/rest/services/EDW) using \link{arcgislayers}
-package. Roads data are acquired using the \link[osmdata:osmdata]{osmdata::osmdata} package.
+(https://apps.fs.usda.gov/arcx/rest/services/EDW) using \code{arcgislayers}
+package. Roads data are acquired using the \code{osmdata} package.
 }
 \details{
 \code{get_basemap_data} returns a list of spatial features used to produce

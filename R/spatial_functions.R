@@ -61,10 +61,10 @@ clip_fc <- function(sf_lyr, sf_clip, locale = NULL){
 #' @description
 #' Pull spatial base map data for North and South America, the lower 48 US 
 #'     states, and a user specified National Forest. Continental and national 
-#'     scale data are acquired using the [rnaturalearth] package and Forest 
+#'     scale data are acquired using the `rnaturalearth` package and Forest 
 #'     Service data are acquired from Forest Service EDW Rest Services
-#'     (https://apps.fs.usda.gov/arcx/rest/services/EDW) using [arcgislayers] 
-#'     package. Roads data are acquired using the [osmdata] package.
+#'     (https://apps.fs.usda.gov/arcx/rest/services/EDW) using `arcgislayers` 
+#'     package. Roads data are acquired using the `osmdata` package.
 #'
 #' @param states A list of state names or abbreviations.
 #' @param region_number The Forest Service Region number
@@ -210,7 +210,7 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
 #' 
 #' read_edw_lyr reads features from the Forest Service ArcGIS REST Services 
 #'     Directory, https://apps.fs.usda.gov/arcx/rest/services/EDW, using the 
-#'     [arcgislayers] package.
+#'     `arcgislayers` package.
 #'     
 #'
 #' @param map_name Character. Name of map layer.

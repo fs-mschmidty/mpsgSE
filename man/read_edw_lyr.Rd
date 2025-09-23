@@ -19,7 +19,7 @@ An \link[sf:sf]{sf::sf} object or \link[terra:SpatRaster-class]{terra::SpatRaste
 \description{
 read_edw_lyr reads features from the Forest Service ArcGIS REST Services
 Directory, https://apps.fs.usda.gov/arcx/rest/services/EDW, using the
-\link{arcgislayers} package.
+\code{arcgislayers} package.
 }
 \examples{
 library(mpsgSE)

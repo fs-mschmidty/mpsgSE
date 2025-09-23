@@ -1,0 +1,38 @@
+#' Download BIEN range maps
+#' 
+#' This function downloads range maps from the Botanical Information and Ecology 
+#'     Network (BIEN; <https://bien.nceas.ucsb.edu/bien/>) API for plants 
+#'     identified as eligible for Species of Conservation Concern.
+#'
+#' @param spp_list List of species with taxonomies from `get_taxonomies()`.
+#' @param output_path Directory path to save range map data to.
+#' 
+#' @seealso [get_taxonomies()]
+#'
+#' @return A [tibble::tibble()]
+#' 
+#' @export
+#' 
+#' @examples
+#' library(mpsgSE)
+#' spp_list <- get_taxonomies(sp_list_ex)
+#' bien_range_maps <- download_bien_range_maps(spp_list,
+#'                                             file.path("data", "bien_maps"))
+download_bien_range_maps <- function(spp_list, output_path) {
+  # subset plants
+  plants = spp_list |>
+    dplyr::filter(kingdom == "Plantae") |>
+    dplyr::select(taxon_id, scientific_name) |> 
+    dplyr::distinct(taxon_id, .keep_all = TRUE)
+  # download range maps
+  BIEN::BIEN_ranges_species_bulk(plants$scientific_name, 
+                                 directory = output_path)
+  # get species list of downloaded range maps
+  bien_spp = tibble::tibble(
+    scientific_name = list.files(file.path(output_path, 1), ".shp") |> 
+      stringr::str_replace(".shp", "") |> 
+      stringr::str_replace("_", " ")
+    ) |> 
+    mpsgSE::get_taxonomies("scientific_name")
+  return(bien_spp)
+  }
