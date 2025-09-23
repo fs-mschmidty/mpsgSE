@@ -12,24 +12,21 @@
 #' @details
 #' Additional details...
 #' 
-#' @seealso [get_gbif()], [gbif_spp()], [get_taxonomies()]
+#' @seealso [get_taxonomies()], [download_ebird_status_maps()]
 #' 
 #' @export
 #'
 #' @examples
 #' ## Not run:
 #' 
-#' library("mpsgSE")
-#' 
-#' # Project directory path
-#' t_path <- file.path("T:/path/to/project/directory/data")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path)
-#' # Summarize species
-#' gbif_list <- gbif_spp(gbif_dat)
-#' # Download range maps
-#' gbif_birds <- download_ebird_range_maps(gbif_list, t_path, "a123b45c67d8")
+#' library(mpsgSE)
+#' spp_list <- get_taxonomies(sp_list_ex)
+#' ebird_status <- download_ebird_status_maps(spp_list, 
+#'                                            output_path = file.path("data/ebirdst"), 
+#'                                            ebird_access_key = ebird_key)
+#' ebird_maps <- download_ebird_range_maps(spp_list,
+#'                                         output_path = file.path("data/ebirdst"),
+#'                                         ebird_access_key = ebird_key)
 #' 
 #' ## End(Not run)                     
 download_ebird_range_maps = function(spp_list, output_path, ebird_access_key){
@@ -78,24 +75,18 @@ download_ebird_range_maps = function(spp_list, output_path, ebird_access_key){
 #' @details
 #' Additional details...
 #' 
-#' @seealso [get_gbif()], [gbif_spp()], [get_taxonomies()]
+#' @seealso [get_taxonomies()]
 #' 
 #' @export
 #'
 #' @examples
 #' ## Not run:
 #' 
-#' library("mpsgSE")
-#' 
-#' # Project directory path
-#' t_path <- file.path("T:/path/to/project/directory/data")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path)
-#' # Summarize species
-#' gbif_list <- gbif_spp(gbif_dat)
-#' # Download status maps
-#' gbif_birds <- download_ebird_status_maps(gbif_list, t_path, "a123b45c67d8")
+#' library(mpsgSE)
+#' spp_list <- get_taxonomies(sp_list_ex)
+#' ebird_status <- download_ebird_status_maps(spp_list, 
+#'                                            output_path = file.path("data/ebirdst"), 
+#'                                            ebird_access_key = ebird_key)
 #' 
 #' ## End(Not run)                     
 download_ebird_status_maps = function(spp_list, output_path, ebird_access_key){
@@ -134,24 +125,21 @@ download_ebird_status_maps = function(spp_list, output_path, ebird_access_key){
 #' @details
 #' Additional details...
 #' 
-#' @seealso [get_gbif()], [gbif_spp()], [get_taxonomies()]
+#' @seealso [get_taxonomies()], [download_ebird_status_maps()]
 #' 
 #' @export
 #'
 #' @examples
 #' ## Not run:
 #' 
-#' library("mpsgSE")
-#' 
-#' # Project directory path
-#' t_path <- file.path("T:/path/to/project/directory/data")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path)
-#' # Summarize species
-#' gbif_list <- gbif_spp(gbif_dat)
-#' # Download status maps
-#' gbif_birds <- download_ebird_trends_maps(gbif_list, t_path, "a123b45c67d8")
+#' library(mpsgSE)
+#' spp_list <- get_taxonomies(sp_list_ex)
+#' ebird_status <- download_ebird_status_maps(spp_list, 
+#'                                            output_path = file.path("data/ebirdst"), 
+#'                                            ebird_access_key = ebird_key)
+#' ebird_maps <- download_ebird_trends_maps(spp_list,
+#'                                          output_path = file.path("data/ebirdst"),
+#'                                          ebird_access_key = ebird_key)
 #' 
 #' ## End(Not run)                     
 download_ebird_trends_maps <- function(spp_list, output_path, ebird_access_key){
@@ -189,24 +177,16 @@ download_ebird_trends_maps <- function(spp_list, output_path, ebird_access_key){
 #' @details
 #' Additional details...
 #' 
-#' @seealso [get_gbif()], [gbif_spp()], [get_taxonomies()]
+#' @seealso [get_taxonomies()], [download_ebird_status_maps()]
 #' 
 #' @export
 #'
 #' @examples
 #' ## Not run:
 #' 
-#' library("mpsgSE")
-#' 
-#' # Project directory path
-#' t_path <- file.path("T:/path/to/project/directory/data")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path)
-#' # Summarize species
-#' gbif_list <- gbif_spp(gbif_dat)
-#' # Download status maps
-#' gbif_birds <- get_ebird_regional_stats(gbif_list, t_path, "a123b45c67d8")
+#' library(mpsgSE)
+#' spp_list <- get_taxonomies(sp_list_ex)
+#' ebird_reg_status <- get_ebird_regional_stats(spp_list, ebird_access_key = ebird_key)
 #' 
 #' ## End(Not run)                     
 get_ebird_regional_stats <- function(spp_list, ebird_access_key){
@@ -260,24 +240,21 @@ get_ebird_regional_stats <- function(spp_list, ebird_access_key){
 #' @details
 #' Additional details...
 #' 
-#' @seealso [get_gbif()], [gbif_spp()], [get_taxonomies()]
+#' @seealso [get_taxonomies()], [download_ebird_status_maps()]
 #' 
 #' @export
 #'
 #' @examples
 #' ## Not run:
 #' 
-#' library("mpsgSE")
-#' 
-#' # Project directory path
-#' t_path <- file.path("T:/path/to/project/directory/data")
-#' 
-#' # Pull data from existing GBIF query
-#' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path)
-#' # Summarize species
-#' gbif_list <- gbif_spp(gbif_dat)
-#' # Download status maps
-#' gbif_birds <- get_ebird_trends(gbif_list, t_path, "a123b45c67d8")
+#' library(mpsgSE)
+#' spp_list <- get_taxonomies(sp_list_ex)
+#' ebird_status <- download_ebird_status_maps(spp_list, 
+#'                                            output_path = file.path("data/ebirdst"), 
+#'                                            ebird_access_key = ebird_key)
+#' ebird_trends <- get_ebird_trends(spp_list,
+#'                                  output_path = file.path("data/ebirdst"),
+#'                                  ebird_access_key = ebird_key)
 #' 
 #' ## End(Not run)                     
 get_ebird_trends <- function(spp_list, output_path, ebird_access_key){

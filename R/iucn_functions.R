@@ -17,10 +17,14 @@
 #' @export
 #' 
 #' @examples
+#' ## Not run:
+#' 
 #' library(mpsgSE)
 #' spp_list <- get_taxonomies(sp_list_ex)
-#' bien_map_paths <- get_iucn_shp_paths(spp_list)
-#' bien_maps <- build_iucn_maps(bien_map_paths)
+#' map_paths <- get_iucn_shp_paths(spp_list)
+#' iucn_maps <- build_iucn_maps(map_paths)
+#' 
+#' ## End(Not run)                     
 build_iucn_maps <- function(iucn_paths) {
   grouped_data = iucn_paths |>
     dplyr::group_by(file_path) |>
@@ -60,9 +64,13 @@ build_iucn_maps <- function(iucn_paths) {
 #' @export
 #' 
 #' @examples
+#' ## Not run:
+#' 
 #' library(mpsgSE)
 #' spp_list <- get_taxonomies(sp_list_ex)
 #' bien_map_paths <- get_iucn_shp_paths(spp_list)
+#' 
+#' ## End(Not run)                     
 get_iucn_shp_paths <- function(eligible_list){
 
   # Read in RDS file and filter to eligible list

@@ -25,20 +25,12 @@ Additional details...
 \examples{
 ## Not run:
 
-library("mpsgSE")
-
-# Project directory path
-t_path <- file.path("T:/path/to/project/directory/data")
-
-# Pull data from existing GBIF query
-gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', t_path)
-# Summarize species
-gbif_list <- gbif_spp(gbif_dat)
-# Download status maps
-gbif_birds <- get_ebird_regional_stats(gbif_list, t_path, "a123b45c67d8")
+library(mpsgSE)
+spp_list <- get_taxonomies(sp_list_ex)
+ebird_reg_status <- get_ebird_regional_stats(spp_list, ebird_access_key = ebird_key)
 
 ## End(Not run)                     
 }
 \seealso{
-\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
+\code{\link[=get_taxonomies]{get_taxonomies()}}, \code{\link[=download_ebird_status_maps]{download_ebird_status_maps()}}
 }

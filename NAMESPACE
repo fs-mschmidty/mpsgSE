@@ -3,6 +3,7 @@
 export(build_gbif_spatial_data)
 export(build_imbcr_spatial_data)
 export(build_iucn_maps)
+export(build_map_source)
 export(build_ns_spp_list)
 export(build_seinet_spatial_data)
 export(clip_fc)

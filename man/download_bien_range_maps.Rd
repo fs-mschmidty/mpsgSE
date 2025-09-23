@@ -20,10 +20,13 @@ Network (BIEN; \url{https://bien.nceas.ucsb.edu/bien/}) API for plants
 identified as eligible for Species of Conservation Concern.
 }
 \examples{
+## Not run:
+
 library(mpsgSE)
 spp_list <- get_taxonomies(sp_list_ex)
-bien_range_maps <- download_bien_range_maps(spp_list,
-                                            file.path("data", "bien_maps"))
+bien_range_maps <- download_bien_range_maps(spp_list, file.path("data", "bien_maps"))
+
+## End(Not run)                     
 }
 \seealso{
 \code{\link[=get_taxonomies]{get_taxonomies()}}

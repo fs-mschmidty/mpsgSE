@@ -22,10 +22,14 @@ if you are not on a FS network or in the FS VDI. Use
 function.
 }
 \examples{
+## Not run:
+
 library(mpsgSE)
 spp_list <- get_taxonomies(sp_list_ex)
-bien_map_paths <- get_iucn_shp_paths(spp_list)
-bien_maps <- build_iucn_maps(bien_map_paths)
+map_paths <- get_iucn_shp_paths(spp_list)
+iucn_maps <- build_iucn_maps(map_paths)
+
+## End(Not run)                     
 }
 \seealso{
 \code{\link[=get_taxonomies]{get_taxonomies()}}, \code{\link[=get_iucn_shp_paths]{get_iucn_shp_paths()}}

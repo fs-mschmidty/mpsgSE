@@ -18,9 +18,13 @@ to the eligible species list. The *.RDS file is on the MPSG T-drive, so
 this function will fail if you are not on a FS network or in the FS VDI.
 }
 \examples{
+## Not run:
+
 library(mpsgSE)
 spp_list <- get_taxonomies(sp_list_ex)
 bien_map_paths <- get_iucn_shp_paths(spp_list)
+
+## End(Not run)                     
 }
 \seealso{
 \code{\link[=get_taxonomies]{get_taxonomies()}}
