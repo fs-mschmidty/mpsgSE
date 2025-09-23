@@ -18,3 +18,12 @@ A \code{\link[tibble:tibble]{tibble::tibble()}}
 This function makes a call to the NatureServe API using the NatureServe State
 List and returns all habitats associated with any given species.
 }
+\examples{
+## Not run:
+
+library("mpsgSE")
+ns_co <- get_ns_state_list("CO")
+habitats <- get_ns_habitat(ns_co)
+
+## End(Not run)                     
+}

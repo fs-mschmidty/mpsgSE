@@ -2,7 +2,7 @@
 % Please edit documentation in R/natureserve_functions.R
 \name{ns_ranks}
 \alias{ns_ranks}
-\title{Generate a dataframe of species names with NatureServe G- and S-ranks}
+\title{DEPRECATED: Generate a species list with NatureServe G- and S-ranks}
 \usage{
 ns_ranks(species_list, states = NULL)
 }
@@ -16,8 +16,12 @@ NULL all US states are returned.}
 A \code{\link[tibble:tibble]{tibble::tibble()}}
 }
 \description{
+This function is deprecated. Use \code{get_ns_state_list()} and
+\code{build_ns_spp_list()} instead.
+}
+\details{
 This function uses the \code{natserv} package to query the NatureServe API
-and read those data into R. This function then convers the JSON
+and read those data into R. This function then converts the JSON
 data returned into a \code{tibble::tibble()}.
 }
 \examples{

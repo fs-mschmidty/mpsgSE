@@ -5,7 +5,8 @@ This package is under active development and changes often with no plans for an
 official release at this time. Function may experience breaking changes at any 
 time and functions are in the early stages of development.
 
-If you find a bugs or have an idea for a feature, please submit an Issue.
+If you find a bugs or have an idea for a feature, please submit an Issue at 
+<https://github.com/fs-mschmidty/mpsgSE/issues>.
 
 ## Installation
 

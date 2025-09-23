@@ -14,13 +14,15 @@ A \code{\link[tibble:tibble]{tibble::tibble()}}
 }
 \description{
 This function builds a species list with global and state NatureServe
-rankings.
+rankings using data returned from \code{get_ns_state_list()}.
 }
 \examples{
 ## Not run:
+
 library("mpsgSE")
 ns_co <- get_ns_state_list("CO")
-ns_co_spp <- build_ns_spp_list(ns_co)
+spp_ranks <- build_ns_spp_list(ns_co)
+
 ## End(Not run)                     
 }
 \seealso{

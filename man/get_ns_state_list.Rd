@@ -2,7 +2,7 @@
 % Please edit documentation in R/natureserve_functions.R
 \name{get_ns_state_list}
 \alias{get_ns_state_list}
-\title{This function exports all species from a state with NS state rank.}
+\title{This function exports all species from a state with NS state rank}
 \usage{
 get_ns_state_list(state, taxonomy = TRUE)
 }
@@ -17,11 +17,13 @@ time for states with large lists.}
 A \code{\link[=list]{list()}}
 }
 \description{
-This function exports all species from a state with NS state rank.
+This function exports all species from a state with NS state rank
 }
 \examples{
 ## Not run:
+
 library("mpsgSE")
-get_ns_state_list("CO")
+co_ns_data <- get_ns_state_list("CO")
+
 ## End(Not run)                     
 }
