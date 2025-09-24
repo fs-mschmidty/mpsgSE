@@ -4,14 +4,13 @@
 \alias{build_gbif_spatial_data}
 \title{Subset eligible species from GBIF data and reduce variables.}
 \usage{
-build_gbif_spatial_data(gbif_data, eligible_list)
+build_gbif_spatial_data(gbif_data, spp_list)
 }
 \arguments{
 \item{gbif_data}{Spatial GBIF data from \code{\link[=get_gbif]{get_gbif()}}.}
 
-\item{eligible_list}{Eligible species list that includes taxon ID from
-\code{\link[=get_taxonomies]{get_taxonomies()}}. This is the list that is used to
-subset the spatial data.}
+\item{spp_list}{Species list that includes taxon ID from \code{\link[=get_taxonomies]{get_taxonomies()}}.
+This is the list that is used to subset the spatial data.}
 }
 \value{
 An \link[sf:sf]{sf::sf} object.

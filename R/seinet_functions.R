@@ -2,9 +2,8 @@
 #'
 #' @param sei_data Spatial SEINet data from [get_seinet()].
 #' @param sei_list Species list from [seinet_spp()]. This list is used to 
-#' @param eligible_list Eligible species list that includes taxon ID from 
-#'                          [get_taxonomies()]. This is the list that is used to
-#'                          subset the spatial data. 
+#' @param spp_list Species list that includes taxon ID from [get_taxonomies()]. 
+#'                     This is the list that is used to subset the spatial data. 
 #'
 #' @return An `sf` class object.
 #' 
@@ -33,7 +32,7 @@
 #' sei_birds <- build_seinet_spatial_data(sei_dat, spp_list, birds)
 #'  
 #' ## End(Not run)                     
-build_seinet_spatial_data <- function(sei_data, sei_list, elig_list) {
+build_seinet_spatial_data <- function(sei_data, sei_list, spp_list) {
   
   # targets::tar_load(sei_data); targets::tar_load(sei_list)
   # targets::tar_load(elig_list)
@@ -42,7 +41,7 @@ build_seinet_spatial_data <- function(sei_data, sei_list, elig_list) {
   t_ids = sei_list |> 
     dplyr::select(SEINet_taxonID, taxon_id) |> 
     dplyr::distinct() |> 
-    dplyr::filter(taxon_id %in% elig_list$taxon_id) |> 
+    dplyr::filter(taxon_id %in% spp_list$taxon_id) |> 
     dplyr::pull(SEINet_taxonID) |> 
     stringr::str_split(", ") |> 
     unlist()
@@ -52,14 +51,15 @@ build_seinet_spatial_data <- function(sei_data, sei_list, elig_list) {
   
   var_names = c(
     "taxonID", "occurrenceID", "scientificName", "scientificNameAuthorship",  
-    "kingdom", "phylum", "class", "order", "family", "genus", "specificEpithet", 
-    "infraspecificEpithet", "taxonRank", 
     "basisOfRecord", "eventDate", "verbatimEventDate", 
+    "institutionCode", "collectionCode", "collectionID", "recordedBy", 
+    "identifiedBy", "occurrenceRemarks", "habitat",  "references", 
     "country", "stateProvince", "county", "locality", 
     "geodeticDatum", "coordinateUncertaintyInMeters", 
     "georeferencedBy", "georeferenceProtocol", "georeferenceProtocol", 
     "georeferenceSources", "georeferenceRemarks", 
-    "institutionCode", "collectionCode", "collectionID"
+    "kingdom", "phylum", "class", "order", "family", "genus", "specificEpithet", 
+    "infraspecificEpithet", "taxonRank"
   )
   
   # Filter spatial data

@@ -4,16 +4,15 @@
 \alias{build_seinet_spatial_data}
 \title{Subset eligible species from SEINet data and reduce variables.}
 \usage{
-build_seinet_spatial_data(sei_data, sei_list, elig_list)
+build_seinet_spatial_data(sei_data, sei_list, spp_list)
 }
 \arguments{
 \item{sei_data}{Spatial SEINet data from \code{\link[=get_seinet]{get_seinet()}}.}
 
 \item{sei_list}{Species list from \code{\link[=seinet_spp]{seinet_spp()}}. This list is used to}
 
-\item{eligible_list}{Eligible species list that includes taxon ID from
-\code{\link[=get_taxonomies]{get_taxonomies()}}. This is the list that is used to
-subset the spatial data.}
+\item{spp_list}{Species list that includes taxon ID from \code{\link[=get_taxonomies]{get_taxonomies()}}.
+This is the list that is used to subset the spatial data.}
 }
 \value{
 An \code{sf} class object.

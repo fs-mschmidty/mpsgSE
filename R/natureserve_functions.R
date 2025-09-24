@@ -109,7 +109,8 @@ count_spp_by_hab <- function(ns_habitats){
   df = ns_habitats |> 
     dplyr::filter(!habitat_category == "comments") |> 
     dplyr::ungroup() |> 
-    dplyr::summarise(n_spp = dplyr::n(), .by = c("habitat_category", "ns_habitat_type")) |> 
+    dplyr::summarise(n_spp = dplyr::n(), 
+                     .by = c("habitat_category", "ns_habitat_type")) |> 
     dplyr::mutate(mpsg_habitat = NA) |> 
     dplyr::arrange(habitat_category, ns_habitat_type)
   return(df)

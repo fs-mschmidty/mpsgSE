@@ -2,9 +2,8 @@
 #'
 #' @param imbcr_data Spatial IMBCR data from [get_imbcr()].
 #' @param imbcr_list List of IMBCR species from [imbcr_spp()].
-#' @param eligible_list Eligible species list that includes taxon ID from 
-#'                          [get_taxonomies()]. This is the list that is used to
-#'                          subset the spatial data.
+#' @param spp_list Species list that includes taxon ID from [get_taxonomies()]. 
+#'                     This is the list that is used to subset the spatial data.
 #'
 #' @return An [sf] object.
 #' 
@@ -30,22 +29,18 @@
 #' corvids <- build_imbcr_spatial_data(imbcr_dat, spp_list, birds)
 #' 
 #' ## End(Not run)
-build_imbcr_spatial_data <- function(imbcr_data, imbcr_list, eligible_list){
+build_imbcr_spatial_data <- function(imbcr_data, imbcr_list, spp_list){
   
   # targets::tar_read(imbcr_data)
   # targets::tar_load(imbcr_list)
-  # eligible_list = targets::tar_read(unit_list)
-  
-  # Get eligible species taxon ID's
-  t_ids = eligible_list$taxon_id
-  
+  # spp_list = targets::tar_read(unit_list)
   imb_spp = imbcr_list |> 
     dplyr::select(taxon_id, BirdCode, scientific_name) |> 
     dplyr::distinct()
   
   elig_spp = imb_spp |> 
     dplyr::select(taxon_id, BirdCode) |> 
-    dplyr::filter(taxon_id %in% t_ids) |> 
+    dplyr::filter(taxon_id %in% spp_list$taxon_id) |> 
     dplyr::filter(!is.na(taxon_id)) |> 
     dplyr::pull(BirdCode)
   

@@ -1,9 +1,8 @@
 #' Subset eligible species from GBIF data and reduce variables. 
 #'
 #' @param gbif_data Spatial GBIF data from [get_gbif()].
-#' @param eligible_list Eligible species list that includes taxon ID from 
-#'                          [get_taxonomies()]. This is the list that is used to
-#'                          subset the spatial data.
+#' @param spp_list Species list that includes taxon ID from [get_taxonomies()]. 
+#'                     This is the list that is used to subset the spatial data.
 #'
 #' @return An [sf] object.
 #' 
@@ -32,16 +31,10 @@
 #' gbif_birds <- build_gbif_spatial_data(gbif_dat, birds)
 #' 
 #' ## End(Not run)                     
-build_gbif_spatial_data <- function(gbif_data, eligible_list) {
-  
-  # targets::tar_load(gbif_data)
-  
-  # Get eligible species taxon ID's
-  t_ids <- eligible_list$taxon_id
-  
+build_gbif_spatial_data <- function(gbif_data, spp_list) {
   # Variable names to reduce data frame 
   var_names <- c(
-    "taxon_id", "occurrenceID", "scientificName",
+    "taxon_id", "gbifID", "occurrenceID", "scientificName",
     "acceptedScientificName", "verbatimScientificName", "vernacularName", 
     "kingdom", "phylum", "class", "order", "family", "genus", "specificEpithet", 
     "infraspecificEpithet", "taxonRank", 
@@ -57,10 +50,9 @@ build_gbif_spatial_data <- function(gbif_data, eligible_list) {
   # Filter GBIF Data
   eligible_gbif <- gbif_data |>
     dplyr::mutate(taxon_id = acceptedTaxonKey) |>
-    dplyr::filter(taxon_id %in% t_ids) |>
-    dplyr::mutate(gbif_id = as.character(gbifID / 1), 
-                  gbif_occ_url = paste("https://www.gbif.org/occurrence",
-                                       gbif_id, sep = "/")) |> 
+    dplyr::filter(taxon_id %in% spp_list$taxon_id) |>
+    dplyr::mutate(gbif_occ_url = paste0("https://www.gbif.org/occurrence/",
+                                        as.character(gbifID / 1))) |> 
     dplyr::select(dplyr::any_of(var_names))
   
   # Return final data frame

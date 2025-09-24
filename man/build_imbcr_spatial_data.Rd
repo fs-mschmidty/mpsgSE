@@ -4,16 +4,15 @@
 \alias{build_imbcr_spatial_data}
 \title{Subset eligible species from IMBCR data.}
 \usage{
-build_imbcr_spatial_data(imbcr_data, imbcr_list, eligible_list)
+build_imbcr_spatial_data(imbcr_data, imbcr_list, spp_list)
 }
 \arguments{
 \item{imbcr_data}{Spatial IMBCR data from \code{\link[=get_imbcr]{get_imbcr()}}.}
 
 \item{imbcr_list}{List of IMBCR species from \code{\link[=imbcr_spp]{imbcr_spp()}}.}
 
-\item{eligible_list}{Eligible species list that includes taxon ID from
-\code{\link[=get_taxonomies]{get_taxonomies()}}. This is the list that is used to
-subset the spatial data.}
+\item{spp_list}{Species list that includes taxon ID from \code{\link[=get_taxonomies]{get_taxonomies()}}.
+This is the list that is used to subset the spatial data.}
 }
 \value{
 An \link[sf:sf]{sf::sf} object.
