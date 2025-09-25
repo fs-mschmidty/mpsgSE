@@ -2,15 +2,30 @@
 % Please edit documentation in R/get_taxonomies.R
 \name{get_taxonomies}
 \alias{get_taxonomies}
-\title{adds taxonomy information from GBIF to any df with scientific names and returns a tibble. Returns gbif_taxonID which is the GBIF ID for the given scientific name and full taxonomy for the accepted taxonomy from the GBIF backbone taxonomies database. taxon_id as the accepted taxonomy ID from GBIF backbone.}
+\title{Get Taxonomies from GBIF}
 \usage{
-get_taxonomies(x, query_field = "scientific_name")
+get_taxonomies(spp_list, query_field = "scientific_name")
 }
 \arguments{
-\item{x}{a dataframe containing at least on column including scientific name in species or subspecies form.}
+\item{spp_list}{A data frame containing valid scientific species names.}
 
-\item{query_field}{the name of the field with scientific names. Defaults to "scientific_name"}
+\item{query_field}{The name of the variable with valid scientific names.}
+}
+\value{
+A \code{\link[tibble:tibble]{tibble::tibble()}}
 }
 \description{
-adds taxonomy information from GBIF to any df with scientific names and returns a tibble. Returns gbif_taxonID which is the GBIF ID for the given scientific name and full taxonomy for the accepted taxonomy from the GBIF backbone taxonomies database. taxon_id as the accepted taxonomy ID from GBIF backbone.
+This function adds taxonomy information from GBIF to any data frame that has
+valid scientific names and returns a tibble. \code{gbif_taxonID} is the GBIF
+ID for the given scientific name and full taxonomy from the GBIF backbone
+taxonomies database. \code{taxon_id} is ID number of the accepted taxonomy
+from the GBIF backbone.
+}
+\examples{
+## Not run:
+
+library(mpsgSE)
+spp_list <- get_taxonomies(sp_list_ex)
+
+## End(Not run)                     
 }

@@ -22,7 +22,7 @@
 #' 
 #' ## End(Not run)                     
 download_bien_range_maps <- function(spp_list, output_path) {
-  # spp_list = targets::tar_read(target_spp_list)
+  # spp_list = targets::tar_read(elig_list)
   # output_path = file.path("data", "bien_maps")
   
   # subset plants
@@ -37,14 +37,12 @@ download_bien_range_maps <- function(spp_list, output_path) {
   # download range maps
   bien_maps = BIEN::BIEN_ranges_species(plants$scientific_name,
                                         directory = output_path,
-                                        matched = TRUE)
+                                        matched = TRUE) |> 
+    janitor::clean_names() |> 
+    dplyr::filter(range_map_downloaded == "Yes") |> 
+    dplyr::mutate(species = gsub("_", " ", species)) |> 
+    dplyr::rename("scientific_name" = species) |> 
+    mpsgSE::get_taxonomies(query_field = "scientific_name")
   
-  # get species list of downloaded range maps
-  bien_spp = tibble::tibble(
-    scientific_name = list.files(file.path(output_path, 1), ".shp") |> 
-      stringr::str_replace(".shp", "") |> 
-      stringr::str_replace("_", " ")
-    ) |> 
-    mpsgSE::get_taxonomies("scientific_name")
-  return(bien_spp)
+  return(bien_maps)
   }
