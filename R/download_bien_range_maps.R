@@ -22,14 +22,23 @@
 #' 
 #' ## End(Not run)                     
 download_bien_range_maps <- function(spp_list, output_path) {
+  # spp_list = targets::tar_read(target_spp_list)
+  # output_path = file.path("data", "bien_maps")
+  
   # subset plants
   plants = spp_list |>
     dplyr::filter(kingdom == "Plantae") |>
     dplyr::select(taxon_id, scientific_name) |> 
     dplyr::distinct(taxon_id, .keep_all = TRUE)
+  
+  # evaluate output directory
+  if(!dir.exists(output_path)) dir.create(output_path)
+  
   # download range maps
-  BIEN::BIEN_ranges_species_bulk(plants$scientific_name, 
-                                 directory = output_path)
+  bien_maps = BIEN::BIEN_ranges_species(plants$scientific_name,
+                                        directory = output_path,
+                                        matched = TRUE)
+  
   # get species list of downloaded range maps
   bien_spp = tibble::tibble(
     scientific_name = list.files(file.path(output_path, 1), ".shp") |> 

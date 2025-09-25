@@ -31,6 +31,9 @@
 #' ## End(Not run)                     
 download_ebird_range_maps = function(spp_list, output_path, ebird_access_key){
 
+  # evaluate output directory
+  if(!dir.exists(output_path)) dir.create(output_path)
+  
   eligible_birds = spp_list |>
     dplyr::filter(class == "Aves") |>
     dplyr::select(taxon_id, scientific_name) |>
@@ -92,6 +95,8 @@ download_ebird_range_maps = function(spp_list, output_path, ebird_access_key){
 download_ebird_status_maps = function(spp_list, output_path, ebird_access_key){
   
   ebirdst::set_ebirdst_access_key(ebird_access_key, overwrite = TRUE)
+  # evaluate output directory
+  if(!dir.exists(output_path)) dir.create(output_path)
   
   # eBird status & trend information
   eligible_birds = spp_list |>
@@ -145,6 +150,8 @@ download_ebird_status_maps = function(spp_list, output_path, ebird_access_key){
 download_ebird_trends_maps <- function(spp_list, output_path, ebird_access_key){
   
   ebirdst::set_ebirdst_access_key(ebird_access_key, overwrite = TRUE)
+  # evaluate output directory
+  if(!dir.exists(output_path)) dir.create(output_path)
   
   eligible_birds = spp_list |>
     dplyr::filter(class == "Aves") |>
@@ -260,6 +267,8 @@ get_ebird_regional_stats <- function(spp_list, ebird_access_key){
 get_ebird_trends <- function(spp_list, output_path, ebird_access_key){
   
   ebirdst::set_ebirdst_access_key(ebird_access_key, overwrite = TRUE)
+  # evaluate output directory
+  if(!dir.exists(output_path)) dir.create(output_path)
   
   eligible_birds = spp_list |>
     dplyr::filter(class == "Aves") |>
