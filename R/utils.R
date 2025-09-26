@@ -14,7 +14,7 @@
 #' @param gbif_buff Species list for 1-km Buffer.
 #'
 #' @return A tibble.
-#' @seealso [gbif_spp()], [seinet_spp()], [imbcr_spp()]
+#' @seealso [gbif_spp()], [seinet_spp()], [build_imbcr_spp()]
 #' @export
 #'
 #' @examples

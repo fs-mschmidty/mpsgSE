@@ -4,12 +4,10 @@
 \alias{build_imbcr_spatial_data}
 \title{Subset eligible species from IMBCR data.}
 \usage{
-build_imbcr_spatial_data(imbcr_data, imbcr_list, spp_list)
+build_imbcr_spatial_data(imbcr_data, spp_list)
 }
 \arguments{
-\item{imbcr_data}{Spatial IMBCR data from \code{\link[=get_imbcr]{get_imbcr()}}.}
-
-\item{imbcr_list}{List of IMBCR species from \code{\link[=imbcr_spp]{imbcr_spp()}}.}
+\item{imbcr_data}{Spatial IMBCR data from \code{\link[=get_imbcr_data]{get_imbcr_data()}}.}
 
 \item{spp_list}{Species list that includes taxon ID from \code{\link[=get_taxonomies]{get_taxonomies()}}.
 This is the list that is used to subset the spatial data.}
@@ -30,9 +28,9 @@ library("mpsgSE")
 
 # Read IMBCR data into R
 mgmt_units <- c("Cimarron National Grassland", "Comanche National Grassland")
-imbcr_dat <- get_imbcr(mgmt_units)
+imbcr_dat <- get_imbcr_data(mgmt_units)
 # Summarize data by species
-spp_list <- imbcr_spp(imbcr_dat)
+spp_list <- build_imbcr_spp(imbcr_dat)
 birds <- dplyr::filter(spp_list, family == "Corvidae")
 # Subset spatial data
 corvids <- build_imbcr_spatial_data(imbcr_dat, spp_list, birds)
@@ -40,5 +38,5 @@ corvids <- build_imbcr_spatial_data(imbcr_dat, spp_list, birds)
 ## End(Not run)
 }
 \seealso{
-\code{\link[=get_imbcr]{get_imbcr()}}, \code{\link[=imbcr_spp]{imbcr_spp()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
+\code{\link[=get_imbcr_data]{get_imbcr_data()}}, \code{\link[=build_imbcr_spp]{build_imbcr_spp()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
 }
