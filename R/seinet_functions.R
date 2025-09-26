@@ -1,7 +1,6 @@
 #' Subset eligible species from SEINet data and reduce variables. 
 #'
-#' @param sei_data Spatial SEINet data from [get_seinet()].
-#' @param sei_list Species list from [seinet_spp()]. This list is used to 
+#' @param sei_data Spatial SEINet data from [get_seinet_data()].
 #' @param spp_list Species list that includes taxon ID from [get_taxonomies()]. 
 #'                     This is the list that is used to subset the spatial data. 
 #'
@@ -10,7 +9,7 @@
 #' @details
 #' Additional details...
 #' 
-#' @seealso [get_seinet()], [seinet_spp()], [get_taxonomies()]
+#' @seealso [get_seinet_data()], [build_seinet_spp()], [get_taxonomies()]
 #' 
 #' @export
 #'
@@ -23,31 +22,19 @@
 #' data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 #' 
 #' # Read SEINet data into R
-#' sei_dat <- get_seinet(data_folder, crs = "NAD83")
+#' sei_dat <- get_seinet_data(data_folder, crs = "NAD83")
 #' # Create species list
 #' spp_list <- sei_spp(sei_dat)
 #' # Subset species list
 #' birds <- dplyr::filter(class == "Aves")
 #' # Subset spatial SEINet data
-#' sei_birds <- build_seinet_spatial_data(sei_dat, spp_list, birds)
+#' sei_birds <- build_seinet_spatial_data(sei_dat, birds)
 #'  
 #' ## End(Not run)                     
-build_seinet_spatial_data <- function(sei_data, sei_list, spp_list) {
+build_seinet_spatial_data <- function(sei_data, spp_list) {
   
-  # targets::tar_load(sei_data); targets::tar_load(sei_list)
-  # targets::tar_load(elig_list)
-  
-  # Get eligible species taxon ID's
-  t_ids = sei_list |> 
-    dplyr::select(SEINet_taxonID, taxon_id) |> 
-    dplyr::distinct() |> 
-    dplyr::filter(taxon_id %in% spp_list$taxon_id) |> 
-    dplyr::pull(SEINet_taxonID) |> 
-    stringr::str_split(", ") |> 
-    unlist()
-  
-  sei_tids = dplyr::select(sei_list, SEINet_taxonID, taxon_id) |> 
-    dplyr::mutate(SEINet_taxonID = as.character(SEINet_taxonID))
+  # targets::tar_load(sei_data)
+  # spp_list = targets::tar_read(elig_list)
   
   var_names = c(
     "taxonID", "occurrenceID", "scientificName", "scientificNameAuthorship",  
@@ -65,12 +52,7 @@ build_seinet_spatial_data <- function(sei_data, sei_list, spp_list) {
   # Filter spatial data
   elig_sei = sei_data |> 
     dplyr::select(dplyr::any_of(var_names)) |> 
-    dplyr::rename("SEINet_taxonID" = taxonID) |> 
-    dplyr::mutate(SEINet_taxonID = as.character(SEINet_taxonID)) |> 
-    dplyr::filter(SEINet_taxonID %in% t_ids) |> 
-    dplyr::left_join(sei_tids, by = "SEINet_taxonID", 
-                     relationship = 'many-to-many') |> 
-    dplyr::select(taxon_id, SEINet_taxonID:geometry)
+    dplyr::filter(SEINet_taxonID %in% spp_list$taxon_id)
   
   return(elig_sei)
 }
@@ -102,13 +84,16 @@ build_seinet_spatial_data <- function(sei_data, sei_list, spp_list) {
 #' data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 #' 
 #' # Pull data from existing SEINet query
-#' sei_dat <- get_seinet(data_folder, crs = "NAD83")
+#' sei_dat <- get_seinet_data(data_folder, crs = "EPSG:26913")
 #' 
 #' ## End(Not run)                     
-get_seinet <- function(dir_path, crs = NULL){
+get_seinet_data <- function(dir_path, crs = NULL){
+  # dir_path = file.path("data", "SEINet"); crs = "EPSG:26913"
+  
   data_path = file.path(dir_path, "occurrences.csv")
   date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS", 
                    "ymd", "ymd HM")
+  
   #  Read data into R
   dat = readr::read_csv(data_path, show_col_types = FALSE) |> 
     dplyr::filter(taxonRank %in% c('Species', 'Variety', 'Subspecies')) |> 
@@ -120,8 +105,18 @@ get_seinet <- function(dir_path, crs = NULL){
       # year = lubridate::year(date),
       source = "SEINet"
       ) |> 
+    dplyr::rename("SEINet_taxonID" = taxonID) |> 
     sf::st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
                  crs = "WGS84")
+  # Get taxonomies
+  taxonomy = sf::st_drop_geometry(dat) |> 
+    dplyr::select(SEINet_taxonID, scientificName) |>
+    dplyr::distinct() |> 
+    mpsgSE::get_taxonomies() |> 
+    dplyr::select(SEINet_taxonID, taxon_id)
+  
+  dat = dplyr::left_join(dat, taxonomy, 
+                         by = "SEINet_taxonID", relationship = 'many-to-many')
   # Re-project CRS
   if(!is.null(crs)){
     if(sf::st_crs(dat) != crs) dat = sf::st_transform(dat, crs = crs)
@@ -132,17 +127,17 @@ get_seinet <- function(dir_path, crs = NULL){
 
 #' Summarize SEINet data by species
 #' 
-#' This function summarizes the spatial SEINet object from `get_seinet()` by 
+#' This function summarizes the spatial SEINet object from `get_seinet_data()` by 
 #'     species. The summary includes the number of records per species, minimum 
 #'     and maximum year a species is observed, and the SEINet occurrence ID if 
 #'     there are less than seven (7) observations. This function then verifies 
 #'     taxonomy using the `get_taxonomies()` function.
 #'
-#' @param seinet_data Spatial SEINet data from `get_seinet()`.
+#' @param seinet_data Spatial SEINet data from `get_seinet_data()`.
 #'
 #' @return A [tibble::tibble()].
 #' 
-#' @seealso [get_seinet()], [get_taxonomies()]
+#' @seealso [get_seinet_data()], [get_taxonomies()]
 #' 
 #' @export
 #'
@@ -155,13 +150,13 @@ get_seinet <- function(dir_path, crs = NULL){
 #' data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 #' 
 #' # Pull data from existing SEINet query
-#' sei_dat <- get_seinet(data_folder, crs = "NAD83")
+#' sei_dat <- get_seinet_data(data_folder, crs = "NAD83")
 #' 
 #' # Summarize species
-#' spp_list <- seinet_spp(sei_dat)
+#' spp_list <- build_seinet_spp(sei_dat)
 #' 
 #' ## End(Not run)                     
-seinet_spp <- function(seinet_data, locale = TRUE){
+build_seinet_spp <- function(seinet_data, locale = TRUE){
   # Date formats
   date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS", 
                    "ymd", "ymd HM")

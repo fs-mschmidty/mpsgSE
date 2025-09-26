@@ -40,5 +40,5 @@ gbif_list <- compile_spp_list(unit_gbif, buff_gbif)
 ## End(Not run)                     
 }
 \seealso{
-\code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=seinet_spp]{seinet_spp()}}, \code{\link[=build_imbcr_spp]{build_imbcr_spp()}}
+\code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=build_seinet_spp]{build_seinet_spp()}}, \code{\link[=build_imbcr_spp]{build_imbcr_spp()}}
 }

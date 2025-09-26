@@ -33,7 +33,7 @@ imbcr_dat <- get_imbcr_data(mgmt_units)
 spp_list <- build_imbcr_spp(imbcr_dat)
 birds <- dplyr::filter(spp_list, family == "Corvidae")
 # Subset spatial data
-corvids <- build_imbcr_spatial_data(imbcr_dat, spp_list, birds)
+corvids <- build_imbcr_spatial_data(imbcr_dat, birds)
 
 ## End(Not run)
 }

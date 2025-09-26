@@ -4,12 +4,10 @@
 \alias{build_seinet_spatial_data}
 \title{Subset eligible species from SEINet data and reduce variables.}
 \usage{
-build_seinet_spatial_data(sei_data, sei_list, spp_list)
+build_seinet_spatial_data(sei_data, spp_list)
 }
 \arguments{
-\item{sei_data}{Spatial SEINet data from \code{\link[=get_seinet]{get_seinet()}}.}
-
-\item{sei_list}{Species list from \code{\link[=seinet_spp]{seinet_spp()}}. This list is used to}
+\item{sei_data}{Spatial SEINet data from \code{\link[=get_seinet_data]{get_seinet_data()}}.}
 
 \item{spp_list}{Species list that includes taxon ID from \code{\link[=get_taxonomies]{get_taxonomies()}}.
 This is the list that is used to subset the spatial data.}
@@ -32,16 +30,16 @@ library("mpsgSE")
 data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 
 # Read SEINet data into R
-sei_dat <- get_seinet(data_folder, crs = "NAD83")
+sei_dat <- get_seinet_data(data_folder, crs = "NAD83")
 # Create species list
 spp_list <- sei_spp(sei_dat)
 # Subset species list
 birds <- dplyr::filter(class == "Aves")
 # Subset spatial SEINet data
-sei_birds <- build_seinet_spatial_data(sei_dat, spp_list, birds)
+sei_birds <- build_seinet_spatial_data(sei_dat, birds)
  
 ## End(Not run)                     
 }
 \seealso{
-\code{\link[=get_seinet]{get_seinet()}}, \code{\link[=seinet_spp]{seinet_spp()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
+\code{\link[=get_seinet_data]{get_seinet_data()}}, \code{\link[=build_seinet_spp]{build_seinet_spp()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
 }
