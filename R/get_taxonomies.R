@@ -21,46 +21,57 @@
 #' 
 #' ## End(Not run)                     
 get_taxonomies <- function(spp_list, query_field = "scientific_name") {
-  distinct_x <- spp_list |>
-    dplyr::distinct(eval(parse(text=query_field)), .keep_all=T) |>
-    dplyr::select(query_field)
-
-  sci_name<- distinct_x |> 
+  # Get list of distinct species.
+  distinct_spp = spp_list |>
+    dplyr::select(dplyr::any_of(query_field)) |> 
+    dplyr::distinct()
+  # Clean text
+  distinct_spp$my_clean_query_name = distinct_spp |> 
     dplyr::pull(query_field) |>
     stringr::str_replace("[\r\n]", " ") |>
     stringr::str_replace("[\r\n]", "") |>
+    stringr::str_replace("  ", " ") |> 
     stringr::str_to_sentence()
-
-
-  orig_id <- taxize::get_gbifid(sci_name, ask = FALSE, rows = 1, messages = FALSE)
+  # Get GBIF Taxon ID's
+  distinct_spp$gbif_taxonID <- taxize::get_gbifid(
+    distinct_spp$my_clean_query_name, ask = FALSE, rows = 1, messages = FALSE
+  )
   
-  class <- taxize::classification(orig_id, db = "gbif")
-
-  convert_taxonomy <- function(i, spp_list) {
-    gbif_taxonID <- names(spp_list)[[i]]
-
-    if (!is.na(gbif_taxonID)) {
-      named_taxonomy <- spp_list[[i]] |>
-        dplyr::select(rank, name) |>
-        tidyr::pivot_wider(names_from = rank, values_from = name)
-
-      final_id <- spp_list[[i]] |>
+  # Pull Taxonomy from GBIF backbone taxonomy
+  taxonomy_list = taxize::classification(distinct_spp$gbif_taxonID, db = "gbif")
+  
+  # Function to convert long list to wide data frame and add taxon ID's
+  convert_taxonomy = function(i, tax_list) {
+    # Get GBIF IF
+    gbif_taxonID = names(tax_list)[[i]]
+    if(!is.na(gbif_taxonID)){
+      # Get MPSG taxon ID
+      final_id = tax_list[[i]] |>
         tail(1) |> 
         dplyr::pull(id)
-
-      named_taxonomy |>
-        dplyr::bind_cols(tibble::tibble(taxon_id = as.character(final_id))) |>
-        dplyr::bind_cols(tibble::tibble(gbif_taxonID = gbif_taxonID))
+      # Get taxonomy
+      named_taxonomy = tax_list[[i]] |>
+        dplyr::select(rank, name) |>
+        tidyr::pivot_wider(names_from = rank, values_from = name)
+      # Stitch together data frame
+      tibble::tibble(taxon_id = as.character(final_id)) |>
+        dplyr::bind_cols(tibble::tibble(gbif_taxonID = gbif_taxonID)) |> 
+        dplyr::bind_cols(named_taxonomy)
     }
   }
-  t <- lapply(seq_along(class), convert_taxonomy, class)
-
-  all_taxonomies <- dplyr::bind_rows(t)
-
-  all_sp_taxonomies_table<-distinct_x |>
-    dplyr::bind_cols(tibble::tibble(gbif_taxonID = as.character(orig_id))) |>
-    dplyr::left_join(all_taxonomies, by = "gbif_taxonID") 
-
-  spp_list |> dplyr::left_join(all_sp_taxonomies_table, by=query_field)
-
+  
+  # Convert list to data frame
+  all_taxonomies = lapply(seq_along(taxonomy_list), convert_taxonomy, taxonomy_list) |> 
+    dplyr::bind_rows()
+  
+  # Create final data frame
+  variable_order = c(query_field, "taxon_id", "gbif_taxonID", "kingdom", 
+                     "phylum", "class", "order", "family", "genus", "species", 
+                     "subspecies", "variety", "form")
+  all_spp_taxonomies = distinct_spp |>
+    dplyr::mutate(gbif_taxonID = as.character(gbif_taxonID)) |> 
+    dplyr::left_join(all_taxonomies, by = "gbif_taxonID") |> 
+    dplyr::select(dplyr::any_of(variable_order))
+  returned_dat = dplyr::left_join(spp_list, all_spp_taxonomies, by=query_field)
+  return(returned_dat)
 }
