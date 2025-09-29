@@ -13,11 +13,10 @@ build_seinet_spp(seinet_data, locale = TRUE)
 A \code{\link[tibble:tibble]{tibble::tibble()}}.
 }
 \description{
-This function summarizes the spatial SEINet object from \code{get_seinet_data()} by
-species. The summary includes the number of records per species, minimum
-and maximum year a species is observed, and the SEINet occurrence ID if
-there are less than seven (7) observations. This function then verifies
-taxonomy using the \code{get_taxonomies()} function.
+This function summarizes the spatial SEINet object from \code{get_seinet_data()}
+by species. The summary includes the number of records per species,
+minimum and maximum year a species is observed, and the SEINet occurrence ID if
+there are less than seven (7) observations.
 }
 \examples{
 ## Not run:

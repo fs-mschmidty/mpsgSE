@@ -18,7 +18,9 @@ resulting sf object CRS will be WGS84.}
 An \code{sf} class object.
 }
 \description{
-This function reads SEINet data in Darwin Core Archive format into R.
+This function reads SEINet data in Darwin Core Archive format into R and
+pulls taxon ID's and taxonomies from GBIF using \code{get_taxonomies()}
+function.
 }
 \details{
 Additional details...
@@ -35,4 +37,7 @@ data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 sei_dat <- get_seinet_data(data_folder, crs = "EPSG:26913")
 
 ## End(Not run)                     
+}
+\seealso{
+\code{\link[=get_taxonomies]{get_taxonomies()}}
 }
