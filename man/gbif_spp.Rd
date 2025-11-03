@@ -30,13 +30,13 @@ library("mpsgSE")
 t_path <- file.path("T:/path/to/project/directory")
 
 # Pull data from existing GBIF query
-gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
+gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
                      t_path = file.path(t_path, "data"))
 
 # Summarize species
 gbif_list <- gbif_spp(gbif_dat)
 
-## End(Not run)                     
+## End(Not run)
 }
 \seealso{
 \code{\link[=get_gbif]{get_gbif()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}

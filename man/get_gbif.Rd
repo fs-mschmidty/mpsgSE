@@ -76,20 +76,20 @@ gdb_path <- file.path(t_path, "GIS_Data.gdb")
 sf_aoa <- read_fc(lyr = "AdminBdy_1kmBuffer", dsn = gdb_path, crs = "NAD83")
 
 # New GBIF data query
-gbif_dat <- get_gbif(gbif_key = 'new', 
-                     t_path = file.path(t_path, "data"), 
+gbif_dat <- get_gbif(gbif_key = 'new',
+                     t_path = file.path(t_path, "data"),
                      aoa_wkt = wkt_string(sf_aoa),
                      gbif_user = Sys.getenv("GBIF_USER"),
                      gbif_pwd = Sys.getenv("GBIF_PWD"),
-                     gbif_email = Sys.getenv("GBIF_EMAIL"), 
-                     crs = 'NAD83')
-                     
-# Pull data from existing GBIF query
-gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999', 
-                     t_path = file.path(t_path, "data"), 
+                     gbif_email = Sys.getenv("GBIF_EMAIL"),
                      crs = 'NAD83')
 
-## End(Not run)                     
+# Pull data from existing GBIF query
+gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
+                     t_path = file.path(t_path, "data"),
+                     crs = 'NAD83')
+
+## End(Not run)
 }
 \seealso{
 \code{\link[rgbif:download_predicate_dsl]{rgbif::pred_within()}}, \code{\link[rgbif:occ_download]{rgbif::occ_download()}},

@@ -1,24 +1,24 @@
 #' Build NatureServe Species List
-#' 
-#' This function builds a species list with global and state NatureServe 
+#'
+#' This function builds a species list with global and state NatureServe
 #'     rankings using data returned from `get_ns_state_list()`.
 #'
 #' @param ns_data NatureServe data from `get_ns_state_list()`.
 #'
 #' @return A [tibble::tibble()]
-#' 
+#'
 #' @seealso [get_ns_state_list()]
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' ## Not run:
-#' 
+#'
 #' library("mpsgSE")
 #' ns_co <- get_ns_state_list("CO")
 #' spp_ranks <- build_ns_spp_list(ns_co)
-#' 
-#' ## End(Not run)                     
+#'
+#' ## End(Not run)
 build_ns_spp_list <- function(ns_data){
   dat = ns_data[
     names(ns_data)[stringr::str_detect(names(ns_data), "state_list")]
@@ -27,11 +27,11 @@ build_ns_spp_list <- function(ns_data){
                            scientific_name, common_name,
                            species_group_broad, species_group_fine,
                            nature_serve_global_rank:sara_status,
-                           dplyr::contains("sRank"), 
+                           dplyr::contains("sRank"),
                            distribution:view_on_nature_serve_explorer,
-                           kingdom:species, subspecies:form, synonyms, 
+                           kingdom:species, subspecies:form, synonyms,
                            source) |>
-    dplyr::distinct() |> 
+    dplyr::distinct() |>
     dplyr::rename('broad_group' = species_group_broad,
                   'fine_group' = species_group_fine,
                   'esa_status' = u_s_endangered_species_act_status,
@@ -42,101 +42,103 @@ build_ns_spp_list <- function(ns_data){
 
 
 #' Combine Two NatureServe Habitat Data Frames
-#' 
+#'
 #' This function combines two habitat lists returned from `get_ns_habitat()`.
 #'
 #' @param state_a_habitats Idaho NatureServe Habitats from this pipeline.
 #' @param state_b_habitats Montana NatureServe Habitats from this pipeline
 #'
 #' @returns A [tibble::tibble()]
-#' 
+#'
 #' @seealso [get_ns_habitat()]
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' ## Not run:
-#' 
+#'
 #' library("mpsgSE")
-#' 
+#'
 #' # Colorado
 #' ns_co <- get_ns_state_list("CO")
 #' hab_co <- get_ns_habitat(ns_co)
-#' 
+#'
 #' # Wyoming
 #' ns_wy <- get_ns_state_list("WY")
 #' hab_wy <- get_ns_habitat(ns_wy)
-#' 
+#'
 #' # Combine CO and WY
 #' habitats <- combine_ns_habs(hab_co, hab_wy)
-#' 
-#' ## End(Not run)                     
+#'
+#' ## End(Not run)
 combine_ns_habs <- function(state_a_habitats, state_b_habitats){
   ns_habitats = dplyr::full_join(state_a_habitats, state_b_habitats,
-                             by = c("habitat_category", "ns_habitat_type"), 
-                             relationship = 'many-to-many') |> 
-    dplyr::mutate(taxon_id = ifelse(taxon_id.x == taxon_id.y, 
-                                    taxon_id.x, c(taxon_id.x, taxon_id.y))) |> 
-    dplyr::select(-taxon_id.x, -taxon_id.y) |> 
+                             by = c("habitat_category", "ns_habitat_type"),
+                             relationship = 'many-to-many') |>
+    dplyr::mutate(taxon_id = ifelse(taxon_id.x == taxon_id.y,
+                                    taxon_id.x, c(taxon_id.x, taxon_id.y))) |>
+    dplyr::select(-taxon_id.x, -taxon_id.y) |>
     dplyr::distinct()
   return(ns_habitats)
 }
 
 
 #' Count Species by NatureServe Habitat Type
-#' 
-#' This function creates a data frame that counts the number of species by 
-#'     habitat in a data frame returned from `get_ns_habitat()`. 
+#'
+#' This function creates a data frame that counts the number of species by
+#'     habitat in a data frame returned from `get_ns_habitat()`.
 #'
 #' @param ns_habitats Data frame from `get_ns_habitat()`.
 #'
 #' @return A [tibble::tibble()].
-#' 
+#'
 #' @seealso [get_ns_habitat()]
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' ## Not run:
-#' 
+#'
 #' library("mpsgSE")
 #' ns_co <- get_ns_state_list("CO")
 #' habitats <- get_ns_habitat(ns_co)
 #' habitat_xwalk <- count_spp_by_hab(habitats)
-#' 
-#' ## End(Not run)                     
+#'
+#' ## End(Not run)
 count_spp_by_hab <- function(ns_habitats){
-  df = ns_habitats |> 
-    dplyr::filter(!habitat_category == "comments") |> 
-    dplyr::ungroup() |> 
-    dplyr::summarise(n_spp = dplyr::n(), 
-                     .by = c("habitat_category", "ns_habitat_type")) |> 
-    dplyr::mutate(mpsg_habitat = NA) |> 
+  df = ns_habitats |>
+    dplyr::filter(!habitat_category == "comments") |>
+    dplyr::ungroup() |>
+    dplyr::summarise(n_spp = dplyr::n(),
+                     .by = c("habitat_category", "ns_habitat_type")) |>
+    dplyr::mutate(mpsg_habitat = NA) |>
     dplyr::arrange(habitat_category, ns_habitat_type)
   return(df)
 }
 
 
-#' This function exports all species from a state with NS state rank
-#' 
-#' @param state A character with state code, exmaple: "CO".
-#' @param taxonomy TRUE of FALSE.  TRUE if you want to return the data with 
-#'                     taxonomic information included.  This can take a long 
+#' Import NatureServe Species Data
+#'
+#' This function imports NatureServe species data for a given state into R.
+#'
+#' @param state A character with state code, example: "CO".
+#' @param taxonomy TRUE of FALSE.  TRUE if you want to return the data with
+#'                     taxonomic information included.  This can take a long
 #'                     time for states with large lists.
 #'
 #' @return A [list()]
 #' @export
-#' 
+#'
 #' @examples
 #' ## Not run:
-#' 
+#'
 #' library("mpsgSE")
 #' co_ns_data <- get_ns_state_list("CO")
-#' 
-#' ## End(Not run)                     
+#'
+#' ## End(Not run)
 get_ns_state_list <- function(state, taxonomy = TRUE) {
   # state = "CO"; taxonomy = TRUE
-  
+
   get_state_rank <- function(x, state_code) {
     regex <- paste0(state_code, " \\(([^)]+)\\)")
 
@@ -148,7 +150,7 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
       stringr::str_replace_all("\\(|\\)", "")
   }
 
-  export <- natserv::ns_export(location = list(nation = "US", subnation = state), 
+  export <- natserv::ns_export(location = list(nation = "US", subnation = state),
                                format = "xlsx")
   res <- natserv::ns_export_status(export)
 
@@ -183,57 +185,57 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
 
 
 #' Get NatureServe Habitats
-#' 
-#' This function makes a call to the NatureServe API using the NatureServe State 
+#'
+#' This function makes a call to the NatureServe API using the NatureServe State
 #'     List and returns all habitats associated with any given species.
 #'
 #' @param ns_state_list NatureServe State list from [get_ns_state_list()].
 #' @param spp_list Species list with taxonomy from [get_taxonomies()].
-#' 
+#'
 #' @return A [tibble::tibble()]
 #' @export
-#' 
+#'
 #' @examples
 #' ## Not run:
-#' 
+#'
 #' library("mpsgSE")
 #' ns_co <- get_ns_state_list("CO")
 #' habitats <- get_ns_habitat(ns_co)
-#' 
-#' ## End(Not run)                     
+#'
+#' ## End(Not run)
 get_ns_habitat <- function(ns_state_list, spp_list) {
   # ns_state_list = targets::tar_read(natureserve_data)
   # spp_list = targets::tar_read(elig_list)
-  
+
   t_ids = spp_list$taxon_id
-  
+
   dat = ns_state_list[
     names(ns_state_list)[
       stringr::str_detect(names(ns_state_list), "natureserve_state_list")
       ]
     ][[1]]
-  
+
   ns_el_data = dat |>
     dplyr::filter(taxon_id %in% t_ids) |>
     dplyr::mutate(
-      api_shortcode = stringr::str_extract(view_on_nature_serve_explorer, 
-                                           "ELEMENT_GLOBAL\\.\\d+\\.\\d+"), 
+      api_shortcode = stringr::str_extract(view_on_nature_serve_explorer,
+                                           "ELEMENT_GLOBAL\\.\\d+\\.\\d+"),
       ns_taxon_api_url = glue::glue("https://explorer.natureserve.org/api/data/taxon/{api_shortcode}")) |>
     dplyr::distinct() |>
     dplyr::group_by(taxon_id) |>
     dplyr::mutate(n = dplyr::n()) |>
     dplyr::ungroup() |>
     dplyr::filter(n == 1)
-  
+
   natureserv_get_hab_data = function(x) {
     # x = as.character(ns_el_data$ns_taxon_api_url[1])
-    
+
     req = httr2::request(x)
     resp = req |>
       httr2::req_error(is_error = \(resp) FALSE) |>
       httr2::req_perform()
-    
-    
+
+
     #-- Explore resp
     # lapply(1:length(resp), function(l){
     #   message("Names:")
@@ -242,13 +244,13 @@ get_ns_habitat <- function(ns_state_list, spp_list) {
     #   print(class(resp[[l]]))
     #   message("Data names:")
     #   print(names(resp[[l]]))
-    #   # if(length(resp[[l]]) < 20){ 
+    #   # if(length(resp[[l]]) < 20){
     #   #   message("Data:")
     #   #   print(resp[[l]])
     #   #   }
     #   readline(prompt = "Press Enter to continue...")
     # })
-    # 
+    #
     # # Range Extent
     # resp$rankInfo$rangeExtentComments
     # # Threat Impacts
@@ -258,8 +260,8 @@ get_ns_habitat <- function(ns_state_list, spp_list) {
     # resp$rankInfo$longTermTrendComments
     # # Habitat Comments
     # resp$speciesCharacteristics$habitatComments
-    
-    
+
+
     if (resp$status_code == 200) {
       resp = httr2::resp_body_json(resp)
       all_hab_names = c("terrestrial", "marine", "riverine", "palustrine",
@@ -267,12 +269,12 @@ get_ns_habitat <- function(ns_state_list, spp_list) {
       root_of_chars = resp$speciesCharacteristics
       hab_df = tibble::tibble(habitat_category = "comments",
                                ns_habitat_type = root_of_chars$habitatComments)
-      
+
       return_habs_from_hab_cat = function(x, h_t) {
-        tibble::tibble(habitat_category = h_t, 
+        tibble::tibble(habitat_category = h_t,
                        ns_habitat_type = x[2][[1]][[2]])
         }
-      
+
       get_all_habs = function(x, ls_json) {
         hab_type = x
         hab_list = ls_json[glue::glue("species{stringr::str_to_title(hab_type)}Habitats")]
@@ -280,7 +282,7 @@ get_ns_habitat <- function(ns_state_list, spp_list) {
           lapply(return_habs_from_hab_cat, hab_type) |>
           dplyr::bind_rows()
         }
-      
+
       lapply(all_hab_names, get_all_habs, root_of_chars) |>
         dplyr::bind_rows() |>
         dplyr::bind_rows(hab_df)
@@ -288,31 +290,31 @@ get_ns_habitat <- function(ns_state_list, spp_list) {
         tibble::tibble(habitat_category = NA, ns_habitat_type = NA)
       }
     } # End of natureserv_get_hab_data()
-  
+
   get_all_ns_data = function(t_id, ns_dat) {
     # t_id = ns_el_data$taxon_id[1]; ns_dat = ns_el_data
     sp_data = ns_dat |>
       dplyr::filter(taxon_id == t_id)
     print(sp_data$scientific_name)
-    
+
     natureserv_get_hab_data(as.character(sp_data$ns_taxon_api_url)) |>
       dplyr::mutate(taxon_id = t_id)
   }
-  
-  hab_dat = ns_el_data$taxon_id |> 
+
+  hab_dat = ns_el_data$taxon_id |>
     lapply(get_all_ns_data, ns_el_data) |>
     dplyr::bind_rows() |>
     dplyr::filter(!is.na(ns_habitat_type))
-  
+
   return(hab_dat)
 }
 
 
 #' DEPRECATED: Generate a species list with NatureServe G- and S-ranks
 #'
-#' This function is deprecated. Use `get_ns_state_list()` and 
+#' This function is deprecated. Use `get_ns_state_list()` and
 #'     `build_ns_spp_list()` instead.
-#' 
+#'
 #' This function uses the `natserv` package to query the NatureServe API
 #'     and read those data into R. This function then converts the JSON
 #'     data returned into a `tibble::tibble()`.
@@ -334,7 +336,7 @@ ns_ranks <- function(species_list, states = NULL) {
     trimws()
   #-- Assign states
   if (is.null(states)) states <- state.abb
-  
+
   #-- Notify user of time to pull data
   message(
     paste0(

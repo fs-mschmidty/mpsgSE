@@ -1,7 +1,7 @@
 #' Get a Regional Forester's Sensitive Species List
-#' 
+#'
 #' This funciton filter's the master Regional Forester's Sensitive Species List
-#'     saved as the `rfss` dataset in the `mpsgSE` package to a specified Forest 
+#'     saved as the `rfss` dataset in the `mpsgSE` package to a specified Forest
 #'     Service Region.
 #'
 #' @param fs_region Character. Forest Service Region (e.g. "R1")
@@ -18,11 +18,8 @@ get_rfss_list <- function(fs_region){
 }
 
 
-
-
-
 #' List regions in rfss dataset
-#' 
+#'
 #' This function lists the regions in the `rfss` dataset.
 #'
 #' @return A `vector()`

@@ -25,5 +25,5 @@ library("mpsgSE")
 ns_co <- get_ns_state_list("CO")
 habitats <- get_ns_habitat(ns_co)
 
-## End(Not run)                     
+## End(Not run)
 }

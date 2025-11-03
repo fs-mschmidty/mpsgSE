@@ -2,12 +2,12 @@
 % Please edit documentation in R/natureserve_functions.R
 \name{get_ns_state_list}
 \alias{get_ns_state_list}
-\title{This function exports all species from a state with NS state rank}
+\title{Import NatureServe Species Data}
 \usage{
 get_ns_state_list(state, taxonomy = TRUE)
 }
 \arguments{
-\item{state}{A character with state code, exmaple: "CO".}
+\item{state}{A character with state code, example: "CO".}
 
 \item{taxonomy}{TRUE of FALSE.  TRUE if you want to return the data with
 taxonomic information included.  This can take a long
@@ -17,7 +17,7 @@ time for states with large lists.}
 A \code{\link[=list]{list()}}
 }
 \description{
-This function exports all species from a state with NS state rank
+This function imports NatureServe species data for a given state into R.
 }
 \examples{
 ## Not run:
@@ -25,5 +25,5 @@ This function exports all species from a state with NS state rank
 library("mpsgSE")
 co_ns_data <- get_ns_state_list("CO")
 
-## End(Not run)                     
+## End(Not run)
 }

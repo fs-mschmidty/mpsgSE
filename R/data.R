@@ -53,7 +53,7 @@
 
 
 
-#' Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2023
+#' Expanded Trend Data from the Breeding Bird Survey (USGS) 1993-2023
 #'
 #' @format A data frame of 19,762 observations and 15 variables.
 #' \describe{
@@ -78,7 +78,7 @@
 
 
 #' 2024 US Fish & Wildlife Birds of Conservation Concern List
-#' 
+#'
 #' @format A data frame of 333 observations and 17 variables.
 #' \describe{
 #'   \item{common_name}{Common name of bird species.}
@@ -103,8 +103,8 @@
 "bcc_list"
 
 
-#'  North American Bird Conservation Initiative Birds Conservation Regions
-#' 
+#' North American Bird Conservation Initiative Birds Conservation Regions
+#'
 #' @format An `sf` object (polygon) of 4414 observations and 9 variables.
 #' \describe{
 #'   \item{bcr_label}{Birds Conservation Region codes.}
@@ -121,12 +121,12 @@
 "bcc_regions"
 
 
-#' Conservation lists in standardized format.  All lists have a taxon_id based 
+#' Conservation lists in standardized format.  All lists have a taxon_id based
 #'     on the GBIF accepted taxonomy. Lists so far included are:
 #' * Colorado SWAP
 #' * Colorado T and E
 #' * USFS Region 2 Sensitive Species
-#' 
+#'
 #' @format A data frame of 399 observations and 8 variables.
 #' \describe{
 #'   \item{taxon_id}{MPSG taxon ID.}
@@ -142,7 +142,7 @@
 
 
 #' List of Forest Service Units
-#' 
+#'
 #' @format A data frame of 114 observations and 6 variables.
 #' \describe{
 #'   \item{adminforestid}{Administrative forest ID.}
@@ -157,7 +157,7 @@
 
 
 #' 2023 Idaho SWAP List
-#' 
+#'
 #' @format A data frame of 282 observations and 21 variables.
 #' \describe{
 #'   \item{ID_taxonID}{Idaho taxon ID}
@@ -187,7 +187,7 @@
 
 
 #' 2023 Montana SWAP List
-#' 
+#'
 #' @format A data frame of 154 observations and 12 variables.
 #' \describe{
 #'   \item{group}{Taxonomic group of species.}
@@ -208,7 +208,7 @@
 
 
 #' 2024 Regional Forester's Sensitive Species List for Forest Service Regions 1-10
-#' 
+#'
 #' @format A data frame of 4142 observations and 11 variables.
 #' \describe{
 #'   \item{taxon_id}{MPSG taxon ID.}
@@ -228,7 +228,7 @@
 
 
 #' Taxonomy for 2024 Regional Forester's Sensitive Species List for Forest Service Regions 1-10
-#' 
+#'
 #' @format A data frame of 3746 observations and 12 variables.
 #' \describe{
 #'   \item{taxon_id}{MPSG taxon ID.}
@@ -259,7 +259,7 @@
 
 
 #' 2025 Utah BLM Sensitive Species List
-#' 
+#'
 #' @format A data frame of 191 observations and 14 variables.
 #' \describe{
 #'   \item{taxon_id}{MPSG taxon ID.}
@@ -281,7 +281,7 @@
 
 
 #' 2025 Utah SWAP List
-#' 
+#'
 #' @format A data frame of 191 observations and 14 variables.
 #' \describe{
 #'   \item{taxon_id}{MPSG taxon ID.}

@@ -24,7 +24,7 @@ ns_co <- get_ns_state_list("CO")
 habitats <- get_ns_habitat(ns_co)
 habitat_xwalk <- count_spp_by_hab(habitats)
 
-## End(Not run)                     
+## End(Not run)
 }
 \seealso{
 \code{\link[=get_ns_habitat]{get_ns_habitat()}}

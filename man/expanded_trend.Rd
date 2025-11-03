@@ -3,7 +3,7 @@
 \docType{data}
 \name{expanded_trend}
 \alias{expanded_trend}
-\title{Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2023}
+\title{Expanded Trend Data from the Breeding Bird Survey (USGS) 1993-2023}
 \format{
 A data frame of 19,762 observations and 15 variables.
 \describe{
@@ -31,6 +31,6 @@ https://www.sciencebase.gov/catalog/item/67aba702d34e329fb20457b1
 expanded_trend
 }
 \description{
-Expanded Trend Data from the Breeding Bird Survey (USGS), 1993-2023
+Expanded Trend Data from the Breeding Bird Survey (USGS) 1993-2023
 }
 \keyword{datasets}

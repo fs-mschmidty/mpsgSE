@@ -1,14 +1,13 @@
 Package: mpsgSE
 Title: Functions for Creating Species Evalutaions for the Mountain States Planning Group
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
     c(person("Mike", "Schmidt", , "Michael.Schmidt4@usda.gov",
              role = c("aut", "cre")),
       person("Matthew", "Van Scoyoc", , "matthew.vanscoyoc@usda.gov",
              role = c("ctb", "aut"), comment = c(ORCID = "0000-0001-6821-4476")))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: This package has been developed by MPSG staff to standardize species data and produce template species evaluation documents that are part of the Species of Conservation Concern (SCC) process.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

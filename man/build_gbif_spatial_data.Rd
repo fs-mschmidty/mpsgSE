@@ -38,7 +38,7 @@ birds <- dplyr::filter(gbif_list, class == "Aves")
 # Subset spatial data
 gbif_birds <- build_gbif_spatial_data(gbif_dat, birds)
 
-## End(Not run)                     
+## End(Not run)
 }
 \seealso{
 \code{\link[=get_gbif]{get_gbif()}}, \code{\link[=gbif_spp]{gbif_spp()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}

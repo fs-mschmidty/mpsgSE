@@ -23,7 +23,13 @@ pulls taxon ID's and taxonomies from GBIF using \code{get_taxonomies()}
 function.
 }
 \details{
-Additional details...
+SEINet data are available through an online data portal and need to be
+downloaded manually. A polygon box, or well-known text (WKT) footprint,
+is drawn around an area of interest to query species observations using
+the Taxonomic Criteria search page
+(\url{https://swbiodiversity.org/seinet/collections/harvestparams.php}).
+The query results need to be manually downloaded in Darwin Core Archive
+format and unzipped before using this function.
 }
 \examples{
 ## Not run:
@@ -36,7 +42,7 @@ data_folder <- file.path("T:/path/to/project/directory", "data/SEINet")
 # Pull data from existing SEINet query
 sei_dat <- get_seinet_data(data_folder, crs = "EPSG:26913")
 
-## End(Not run)                     
+## End(Not run)
 }
 \seealso{
 \code{\link[=get_taxonomies]{get_taxonomies()}}

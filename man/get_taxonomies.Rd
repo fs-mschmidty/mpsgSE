@@ -27,5 +27,5 @@ from the GBIF backbone.
 library(mpsgSE)
 spp_list <- get_taxonomies(sp_list_ex)
 
-## End(Not run)                     
+## End(Not run)
 }

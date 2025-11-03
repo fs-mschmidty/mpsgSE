@@ -32,7 +32,7 @@ sei_dat <- get_seinet_data(data_folder, crs = "NAD83")
 # Summarize species
 spp_list <- build_seinet_spp(sei_dat)
 
-## End(Not run)                     
+## End(Not run)
 }
 \seealso{
 \code{\link[=get_seinet_data]{get_seinet_data()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
