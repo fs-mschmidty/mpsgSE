@@ -16,7 +16,7 @@ Welcome to the Mountain Planning Service Group (MPSG; USDA Forest Service) Speci
 
 **Version:** 0.1.0
 
-**License:** Mit + file [LICENSE](https://github.com/fs-mschmidty/mpsgSE/LICENSE)
+**License:** Mit + file [LICENSE](https://github.com/fs-mschmidty/mpsgSE/blob/main/LICENSE.md)
 
 **Depends:** R (\>= 4.1.0)
 
@@ -34,7 +34,7 @@ remotes::install_github("fs-mschmidty/mpsgSE")
 
 ## Template Species Evaluation Documents
 
-[Here](fs-mschmidty/mpsgSE/docs/Example_Olive-sided_Flycatcher_Contopus_cooperi.pdf) is an example of a template species evaluation document for Olive-sided Flycatcher on the Bitterroot National Forest. These documnents are templates that are customzed for each land management revision project (i.e., a National Forest or Grassland) and MPSG biologists will add, revise, or remove information using their best professional judgment before this document becomes part of the project record.
+[Here](https://github.com/fs-mschmidty/mpsgSE/blob/main/docs/Example_Olive-sided_Flycatcher_Contopus_cooperi.pdf) is an example of a template species evaluation document for Olive-sided Flycatcher on the Bitterroot National Forest. These documnents are templates that are customzed for each land management revision project (i.e., a National Forest or Grassland) and MPSG biologists will add, revise, or remove information using their best professional judgment before this document becomes part of the project record.
 
 ## List of Functions
 
@@ -116,7 +116,7 @@ remotes::install_github("fs-mschmidty/mpsgSE")
 
 ## List of Data Sets
 
-The data sets listed below are being used in the MPSG species evaluation process and not intended for distribution. Recommended best practice is to obtain these data from their sources.
+The data sets listed below are used in the MPSG species evaluation process and not intended for distribution. Recommended best practice is to obtain these data from their sources.
 
 -   `core_index`: Core Index data from the USGS Breeding Bird Survey (1966-2023).
 
