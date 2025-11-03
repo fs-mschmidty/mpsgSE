@@ -1,7 +1,3 @@
----
-output: html_document
----
-
 # Mountain Planning Service Group Species Evaluation (`mpsgSE`) R Package
 
 ## Overview
