@@ -24,5 +24,5 @@ library("mpsgSE")
 regions <- c("UT-BCR9", "UT-BCR16", "UT")
 imbcr_trends <- get_imbcr_trends(regions)
 
-## End(Not run)                     
+## End(Not run)
 }

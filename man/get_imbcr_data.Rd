@@ -39,5 +39,5 @@ library("mpsgSE")
 mgmt_units <- c("Cimarron National Grassland", "Comanche National Grassland")
 get_imbcr_data(mgmt_units)
 
-## End(Not run)                     
+## End(Not run)
 }

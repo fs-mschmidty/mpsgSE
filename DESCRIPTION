@@ -3,9 +3,9 @@ Title: Functions for Creating Species Evalutaions for the Mountain States Planni
 Version: 0.1.0
 Authors@R: 
     c(person("Mike", "Schmidt", , "Michael.Schmidt4@usda.gov",
-             role = c("aut", "cre")),
+             role = c("aut", "ctb")),
       person("Matthew", "Van Scoyoc", , "matthew.vanscoyoc@usda.gov",
-             role = c("ctb", "aut"), comment = c(ORCID = "0000-0001-6821-4476")))
+             role = c("cre", "aut"), comment = c(ORCID = "0000-0001-6821-4476")))
 Description: This package has been developed by MPSG staff to standardize species data and produce template species evaluation documents that are part of the Species of Conservation Concern (SCC) process.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -24,6 +24,7 @@ Imports:
     httr2,
     janitor,
     lubridate,
+    mpsgSEdata,
     natserv,
     osmdata,
     readr,

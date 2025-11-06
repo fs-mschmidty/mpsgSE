@@ -16,7 +16,7 @@ Welcome to the Mountain Planning Service Group (MPSG; USDA Forest Service) Speci
 
 **Depends:** R (\>= 4.1.0)
 
-**Imports:** arcgislayers, BIEN, devtools, dplyr, ebirdst, glue, httr2, janitor, lubridate, natserv, osmdata, readr, remotes, rgbif, readxl, rnaturalearth, sf, stringr, taxize, tibble, tidyr, tidyselect
+**Imports:** arcgislayers, BIEN, devtools, dplyr, ebirdst, glue, httr2, janitor, lubridate, mpsgSEdata, natserv, osmdata, readr, remotes, rgbif, readxl, rnaturalearth, sf, stringr, taxize, tibble, tidyr, tidyselect
 
 **Issues:** This package is under active development and changes often with out warning. Functions may experience breaking changes at any time. If you find a bugs or have an idea for a feature, please submit an Issue at <https://github.com/fs-mschmidty/mpsgSE/issues>.
 
