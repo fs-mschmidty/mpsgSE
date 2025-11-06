@@ -114,32 +114,10 @@ remotes::install_github("fs-mschmidty/mpsgSE")
 
 The data sets listed below are used in the MPSG species evaluation process and not intended for distribution. Recommended best practice is to obtain these data from their sources.
 
--   `core_index`: Core Index data from the USGS Breeding Bird Survey (1966-2023).
-
--   `core_trend`: Core Trend data from the USGS Breeding Bird Survey (1966-2023).
-
--   `expanded_index`: Expanded Index data from the USGS Breeding Bird Survey (1993-2023).
-
--   `expanded_trend`: Expanded Trend data from the USGS Breeding Bird Survey (1993-2023).
-
--   `bcc_list`: 2024 US Fish & Wildlife Birds of Conservation Concern List.
-
 -   `bcc_regions`: North American Bird Conservation Initiative Birds Conservation Regions.
-
--   `conservation_lists`: **Deprecated**. List of conservation lists including Colorado SWAP, T&E, and USFS Region 2 Sensitive Species List.
 
 -   `fs_units`: National Forests and Grasslands.
 
--   `id_swap`: Specieis on the 2023 Idaho State Wildlife Action Plan.
-
--   `mt_swap`: Species on the 2023 Montana State Wildlife Action Plan.
-
--   `rfss`: 2024 Forets Service Regional Forester's Sensitive Species List for Regions 1-10.
-
--   `rfss_taxonomy`: Taxonomy for `rfss` using `get_taxonomies()`.
+-   `imbcr_mgmt_units`: List of National Forests and Grasslands IMBCR conducts surveys on.
 
 -   `sp_list_ex`: An example data set of common names and scientific names of species.
-
--   `ut_blm_ss`: 2025 Utah BLM Sensitive Species List
-
--   `ut_swap`: Species on the 2025 Utah State Wildlife Action Plan.
