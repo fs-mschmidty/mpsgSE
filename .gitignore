@@ -9,5 +9,6 @@
 *.Rproj
 .Rproj.user/
 tmp/
+\tests
 
 docs/species_evaluation_automation_process_files/libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css

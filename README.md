@@ -114,6 +114,8 @@ remotes::install_github("fs-mschmidty/mpsgSE")
 
 The data sets listed below are used in the MPSG species evaluation process and not intended for distribution. Recommended best practice is to obtain these data from their sources.
 
+-   `bcc_list`: 2024 US Fish & Wildlife Birds of Conservation Concern List.
+
 -   `bcc_regions`: North American Bird Conservation Initiative Birds Conservation Regions.
 
 -   `fs_units`: National Forests and Grasslands.

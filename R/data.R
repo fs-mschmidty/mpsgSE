@@ -1,3 +1,29 @@
+#' 2024 US Fish & Wildlife Birds of Conservation Concern List
+#'
+#' @format A data frame of 333 observations and 17 variables.
+#' \describe{
+#'   \item{common_name}{Common name of bird species.}
+#'   \item{scientific_name}{Scientific name of bird species.}
+#'   \item{mbta}{Migratory Bird Treaty Act designation.}
+#'   \item{federally_endangered}{Location description of where the species is Endangered.}
+#'   \item{federally_threatened}{Location description of where the species is Threatened.}
+#'   \item{bcc_rangewide_in_continental_us_and_or_pr_and_vi_or_hi_and_pacific_islands}{description}
+#'   \item{bc_rs_for_bcc_listing_non_breeding}{List of Bird Conservation Region codes for non-breeding birds.}
+#'   \item{bc_rs_for_bcc_listing_breeding}{List of Bird Conservation Region codes for breeding birds.}
+#'   \item{gbif_taxonID}{GBIF taxon ID}
+#'   \item{kingdom}{Taxonomic Kingdom}
+#'   \item{phylum}{Taxonomic Phylum}
+#'   \item{class}{Taxonomic Class}
+#'   \item{order}{Taxonomic Order}
+#'   \item{family}{Taxonomic Family}
+#'   \item{genus}{Taxonomic Genus}
+#'   \item{species}{Taxonomic Species}
+#'   \item{taxon_id}{MPSG taxon ID.}
+#' }
+#' @source https://www.fws.gov/media/usfws-bird-species-concern
+"bcc_list"
+
+
 #' North American Bird Conservation Initiative Birds Conservation Regions
 #'
 #' @format An `sf` object (polygon) of 4414 observations and 9 variables.
