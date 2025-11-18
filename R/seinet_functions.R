@@ -37,7 +37,7 @@ build_seinet_spatial_data <- function(sei_data, spp_list) {
   # spp_list = targets::tar_read(elig_list)
 
   var_names = c(
-    "taxon_id", "taxonID", "occurrenceID", "scientificName", 
+    "taxon_id", "SEINet_taxonID", "occurrenceID", "scientificName", 
     "scientificNameAuthorship", "basisOfRecord", "eventDate", 
     "verbatimEventDate", "institutionCode", "collectionCode", "collectionID", 
     "recordedBy", "identifiedBy", "occurrenceRemarks", "habitat",  "references",
@@ -52,8 +52,7 @@ build_seinet_spatial_data <- function(sei_data, spp_list) {
   # Filter spatial data
   elig_sei = sei_data |>
     dplyr::select(dplyr::any_of(var_names)) |>
-    dplyr::filter(taxon_id %in% spp_list$taxon_id) |> 
-    dplyr::rename("SEINet_taxonID" = taxonID)
+    dplyr::filter(taxon_id %in% spp_list$taxon_id)
 
   return(elig_sei)
 }
