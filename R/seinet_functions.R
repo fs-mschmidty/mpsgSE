@@ -33,14 +33,14 @@
 #' ## End(Not run)
 build_seinet_spatial_data <- function(sei_data, spp_list) {
 
-  # targets::tar_load(sei_data)
+  # sei_data = targets::tar_read(sei_unit)
   # spp_list = targets::tar_read(elig_list)
 
   var_names = c(
-    "taxonID", "occurrenceID", "scientificName", "scientificNameAuthorship",
-    "basisOfRecord", "eventDate", "verbatimEventDate",
-    "institutionCode", "collectionCode", "collectionID", "recordedBy",
-    "identifiedBy", "occurrenceRemarks", "habitat",  "references",
+    "taxon_id", "taxonID", "occurrenceID", "scientificName", 
+    "scientificNameAuthorship", "basisOfRecord", "eventDate", 
+    "verbatimEventDate", "institutionCode", "collectionCode", "collectionID", 
+    "recordedBy", "identifiedBy", "occurrenceRemarks", "habitat",  "references",
     "country", "stateProvince", "county", "locality",
     "geodeticDatum", "coordinateUncertaintyInMeters",
     "georeferencedBy", "georeferenceProtocol", "georeferenceProtocol",
@@ -52,7 +52,8 @@ build_seinet_spatial_data <- function(sei_data, spp_list) {
   # Filter spatial data
   elig_sei = sei_data |>
     dplyr::select(dplyr::any_of(var_names)) |>
-    dplyr::filter(taxon_id %in% spp_list$taxon_id)
+    dplyr::filter(taxon_id %in% spp_list$taxon_id) |> 
+    dplyr::rename("SEINet_taxonID" = taxonID)
 
   return(elig_sei)
 }
@@ -176,6 +177,7 @@ get_seinet_data <- function(dir_path, crs = NULL){
 #'
 #' ## End(Not run)
 build_seinet_spp <- function(seinet_data, locale = TRUE){
+  
   # Date formats
   date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS",
                    "ymd", "ymd HM")
