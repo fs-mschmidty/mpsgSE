@@ -26,7 +26,7 @@ build_bbs_trend_narratives <- function(region_codes, region_names){
   region_df = tibble::tibble(region = region_codes,
                              region_long_name = region_names)
   
-  bbs_narratives = mpsgSE::core_trend |>
+  bbs_narratives = mpsgSEdata::core_trend |>
     dplyr::filter(region %in% region_df$region) |>
     dplyr::left_join(region_df, by = "region") |>
     dplyr::mutate(
