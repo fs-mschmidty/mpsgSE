@@ -122,4 +122,8 @@ The data sets listed below are used in the MPSG species evaluation process and n
 
 -   `imbcr_mgmt_units`: List of National Forests and Grasslands IMBCR conducts surveys on.
 
+-   `rfss`: 2024 Forest Service Regional Forester's Sensitive Species List for Regions 1-10.
+
+-   `rfss_taxonomy`: Taxonomy for `rfss` using `mpsgSE::get_taxonomies()`.
+
 -   `sp_list_ex`: An example data set of common names and scientific names of species.

@@ -3,7 +3,7 @@
 \docType{data}
 \name{imbcr_mgmt_units}
 \alias{imbcr_mgmt_units}
-\title{List of National Forests and Grasslands IMBCR survyes on.}
+\title{List of National Forests and Grasslands IMBCR surveys on.}
 \format{
 \subsection{\code{imbcr_mgmt_units}}{
 }
@@ -12,6 +12,6 @@
 imbcr_mgmt_units
 }
 \description{
-List of National Forests and Grasslands IMBCR survyes on.
+List of National Forests and Grasslands IMBCR surveys on.
 }
 \keyword{datasets}
