@@ -58,6 +58,8 @@ remotes::install_github("fs-mschmidty/mpsgSE")
 
 -   `compile_spp_list`: Combine species lists into one data frame.
 
+-   `correct_taxon_ids`: Correct known issues with taxon ID's.
+
 -   `count_spp_by_hab`: Count species by NatureServe habitat type.
 
 -   `download_bien_range_maps`: Download BIEN range map data and read them into R.

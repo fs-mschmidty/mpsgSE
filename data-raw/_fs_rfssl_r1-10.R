@@ -70,9 +70,9 @@ rfss_taxonomy <- dplyr::select(rfss_raw, dplyr::any_of(taxa_select))
 
 # save ----
 readr::write_csv(rfss,
-                 file.path("data-raw/output/species_lists/fs_rfss_lists.csv"))
+                 file.path("data-raw/output/fs_rfss_lists.csv"))
 readr::write_csv(rfss_taxonomy,
-                 file.path("data-raw/output/species_lists/fs_rfss_taxonomy.csv"))
+                 file.path("data-raw/output/fs_rfss_taxonomy.csv"))
 
 # rfss <- readr::read_csv(
 #   file.path("data-raw/output/species_lists/fs_rfss_lists.csv")

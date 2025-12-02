@@ -42,7 +42,8 @@ bcc_file <- file.path("data-raw/data", "BirdsOfConservationConcern_2024.xlsx")
 bcc_list <- readxl::read_excel(path = bcc_file, sheet = "Table001 (Page 1-4)", 
                                skip = 1, col_names = TRUE) |> 
   janitor::clean_names() |> 
-  mpsgSE::get_taxonomies('scientific_name')
+  mpsgSE::get_taxonomies('scientific_name') |> 
+  mpsgSE::correct_taxon_ids()
 
 
 # save ----
