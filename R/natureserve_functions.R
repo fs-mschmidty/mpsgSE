@@ -83,6 +83,59 @@ combine_ns_habs <- function(state_a_habitats, state_b_habitats){
 }
 
 
+#' Combine NatureServe Data
+#' 
+#' This function combines the state NatureServe lists from the 
+#'     `get_natureserve_state_data()` function in this pipeline.
+#'
+#' @param ns_list_1 State list.
+#' @param ns_list_2 State list.
+#'
+#' @return A [tibble::tibble()]
+combine_natureserve_data <- function(ns_list_1, ns_list_2){
+  # Function to pull species list from NatureServe List
+  pull_spp_list = function(ns_list){
+    dat = ns_list[
+      names(ns_list)[stringr::str_detect(names(ns_list), "state_list")]
+    ][[1]]
+    my_list = list(
+      base_info = dplyr::select(dat, taxon_id, gbif_taxonID, element_code,
+                                scientific_name, common_name, 
+                                species_group_broad, species_group_fine,
+                                nature_serve_global_rank:sara_status,
+                                distribution:view_on_nature_serve_explorer, 
+                                kingdom:species, subspecies:form, synonyms) |>
+        dplyr::distinct(),
+      state_rank = dplyr::select(dat, taxon_id, dplyr::contains("sRank")) |>
+        dplyr::distinct(), 
+      source = dplyr::select(dat, taxon_id, source) |> dplyr::distinct()
+    )
+    return(my_list)
+  }
+  
+  # Process State NatureServe Lists
+  sl1 = pull_spp_list(ns_list_1)
+  sl2 = pull_spp_list(ns_list_2)
+  base_info = dplyr::bind_rows(sl1$base_info, sl2$base_info) |> 
+    dplyr::distinct()
+  state_rank = dplyr::bind_rows(sl1$state_rank, sl2$state_rank) |>
+    dplyr::distinct()
+  ns_source = dplyr::bind_rows(sl1$source, sl2$source) |> 
+    dplyr::group_by(taxon_id) |> 
+    dplyr::summarise(source = stringr::str_c(source, collapse = "; ")) |> 
+    dplyr::distinct()
+  
+  
+  # Combine lists into one dataframe
+  ns_dat = dplyr::left_join(base_info, state_rank, by = "taxon_id",
+                            relationship = 'many-to-many') |>
+    # dplyr::left_join(ns_source, by = "taxon_id", 
+    #                  relationship = 'many-to-many') |> 
+    dplyr::distinct()
+  return(ns_dat)
+}
+
+
 #' Count Species by NatureServe Habitat Type
 #'
 #' This function creates a data frame that counts the number of species by
