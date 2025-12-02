@@ -8,6 +8,8 @@ build_seinet_spp(seinet_data, locale = TRUE)
 }
 \arguments{
 \item{seinet_data}{Spatial SEINet data from \code{get_seinet_data()}.}
+
+\item{locale}{Logical. Location description of data. E.g., unit acronym or "Buffer"}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}}.

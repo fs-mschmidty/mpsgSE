@@ -153,6 +153,7 @@ get_seinet_data <- function(dir_path, crs = NULL){
 #'     there are less than seven (7) observations.
 #'
 #' @param seinet_data Spatial SEINet data from `get_seinet_data()`.
+#' @param locale Logical. Location description of data. E.g., unit acronym or "Buffer"
 #'
 #' @return A [tibble::tibble()].
 #'

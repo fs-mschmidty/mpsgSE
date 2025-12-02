@@ -8,6 +8,8 @@ gbif_spp(gbif_data, locale = TRUE)
 }
 \arguments{
 \item{gbif_data}{Spatial GBIF data from \code{get_gbif()}.}
+
+\item{locale}{Logical. Location description of data. E.g., unit acronym or "Buffer"}
 }
 \value{
 A tibble.

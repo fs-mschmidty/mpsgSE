@@ -206,6 +206,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #'     function.
 #'
 #' @param gbif_data Spatial GBIF data from `get_gbif()`.
+#' @param locale Logical. Location description of data. E.g., unit acronym or "Buffer"
 #'
 #' @return A tibble.
 #' @seealso [get_gbif()], [get_taxonomies()]
