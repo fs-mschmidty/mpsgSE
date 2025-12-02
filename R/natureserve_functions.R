@@ -86,12 +86,23 @@ combine_ns_habs <- function(state_a_habitats, state_b_habitats){
 #' Combine NatureServe Data
 #' 
 #' This function combines the state NatureServe lists from the 
-#'     `get_natureserve_state_data()` function in this pipeline.
+#'     `get_ns_state_list()` function in this pipeline.
 #'
-#' @param ns_list_1 State list.
-#' @param ns_list_2 State list.
+#' @param ns_list_1 State data from `get_ns_state_list()`.
+#' @param ns_list_2 State data from `get_ns_state_list()`.
 #'
 #' @return A [tibble::tibble()]
+#'
+#' @seealso [get_ns_state_list()]
+#'
+#' @export
+#'
+#' @examples
+#' library("mpsgSE")
+#'
+#' ns_co <- get_ns_state_list("CO")
+#' ns_ks <- get_ns_state_list("KS")
+#' ns_data <- combine_natureserve_data(ns_co, ns_ks)
 combine_natureserve_data <- function(ns_list_1, ns_list_2){
   # Function to pull species list from NatureServe List
   pull_spp_list = function(ns_list){

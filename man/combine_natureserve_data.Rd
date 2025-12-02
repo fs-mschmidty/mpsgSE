@@ -7,14 +7,24 @@
 combine_natureserve_data(ns_list_1, ns_list_2)
 }
 \arguments{
-\item{ns_list_1}{State list.}
+\item{ns_list_1}{State data from \code{get_ns_state_list()}.}
 
-\item{ns_list_2}{State list.}
+\item{ns_list_2}{State data from \code{get_ns_state_list()}.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}}
 }
 \description{
 This function combines the state NatureServe lists from the
-\code{get_natureserve_state_data()} function in this pipeline.
+\code{get_ns_state_list()} function in this pipeline.
+}
+\examples{
+library("mpsgSE")
+
+ns_co <- get_ns_state_list("CO")
+ns_ks <- get_ns_state_list("KS")
+ns_data <- combine_natureserve_data(ns_co, ns_ks)
+}
+\seealso{
+\code{\link[=get_ns_state_list]{get_ns_state_list()}}
 }

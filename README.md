@@ -54,6 +54,8 @@ remotes::install_github("fs-mschmidty/mpsgSE")
 
 -   `clip_fc`: Clip an `sf` object to polygon.
 
+-   `combine_natureserve_data`: Combine NatureServe data from `get_ns_state_list()`.
+
 -   `combine_ns_habs`: Combine two NatureServe habitat data frames from `get_ns_habitat()`.
 
 -   `compile_spp_list`: Combine species lists into one data frame.
