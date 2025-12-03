@@ -15,29 +15,38 @@
 #' ## Not run:
 #'
 #' library("mpsgSE")
-#' ns_co <- get_ns_state_list("CO")
-#' spp_ranks <- build_ns_spp_list(ns_co)
+#' ns_co <- get_ns_state_list("CO", taxonomy = FALSE)
+#' spp_list <- build_ns_spp_list(ns_co)
 #'
 #' ## End(Not run)
 build_ns_spp_list <- function(ns_data){
+  # ns_data = ns_co
+  
+  # columns to select
+  col_select1 <- c("taxon_id", "gbif_taxonID", "element_code",
+                   "scientific_name", "common_name",
+                   "species_group_broad", "species_group_fine",
+                   "nature_serve_global_rank", 
+                   "nature_serve_rounded_global_rank",
+                   "u_s_endangered_species_act_status", "sara_status")
+  col_select2 = c("distribution", "view_on_nature_serve_explorer",
+                  "kingdom", "phylum", "class", "order", "family", "genus",
+                  "species", "subspecies", "variety", "form", "synonyms",
+                  "source")
+  
+  
   dat = ns_data[
     names(ns_data)[stringr::str_detect(names(ns_data), "state_list")]
-  ][[1]]
-  spp_list = dplyr::select(dat, taxon_id, gbif_taxonID, element_code,
-                           scientific_name, common_name,
-                           species_group_broad, species_group_fine,
-                           nature_serve_global_rank:sara_status,
-                           dplyr::contains("sRank"),
-                           distribution:view_on_nature_serve_explorer,
-                           kingdom:species, subspecies:form, synonyms,
-                           source) |>
+    ][[1]] |>
+    dplyr::select(dplyr::any_of(col_select1), dplyr::contains("sRank"),
+                  dplyr::any_of(col_select2)) |>
     dplyr::distinct() |>
     dplyr::rename('broad_group' = species_group_broad,
                   'fine_group' = species_group_fine,
                   'esa_status' = u_s_endangered_species_act_status,
                   'gRank' = nature_serve_global_rank,
                   'rounded_gRank' = nature_serve_rounded_global_rank)
-  return(spp_list)
+  return(dat)
 }
 
 
@@ -194,15 +203,13 @@ count_spp_by_hab <- function(ns_habitats){
 #' @export
 #'
 #' @examples
-#' ## Not run:
-#'
 #' library("mpsgSE")
+#' co_ns_data_no_taxonid <- get_ns_state_list("CO", taxonomy = FALSE)
 #' co_ns_data <- get_ns_state_list("CO")
-#'
-#' ## End(Not run)
 get_ns_state_list <- function(state, taxonomy = TRUE) {
   # state = "CO"; taxonomy = TRUE
 
+  # Function to pull S-ranks
   get_state_rank <- function(x, state_code) {
     regex <- paste0(state_code, " \\(([^)]+)\\)")
 
@@ -213,18 +220,17 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
       stringr::str_extract("\\(([^)]+)\\)") |>
       stringr::str_replace_all("\\(|\\)", "")
   }
-
+  
+  # Generate request from API
   export <- natserv::ns_export(location = list(nation = "US", subnation = state),
                                format = "xlsx")
   res <- natserv::ns_export_status(export)
-
-  while (res$state != "Finished") {
-    res <- natserv::ns_export_status(export)
-  }
-
+  while (res$state != "Finished") res <- natserv::ns_export_status(export)
+  # execute API request and save as temp xlsx file
   httr2::request(res$data$url) |>
     httr2::req_perform(tmpf <- tempfile(fileext = ".xlsx"))
-
+  
+  # pull species list from temp xlsx
   sss <- readxl::read_excel(tmpf, skip = 1) |>
     janitor::clean_names() |>
     dplyr::filter(!is.na(nature_serve_global_rank)) |>
@@ -235,15 +241,15 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
     dplyr::mutate("{state}_sRank" := get_state_rank(distribution, state)) |>
     dplyr::ungroup() |> 
     dplyr::distinct()
-
-  if (taxonomy) {
-    sss <- mpsgSE::get_taxonomies(sss)
-  }
-
+  # get taxon ids and taxonomies
+  if (taxonomy) sss <- mpsgSE::get_taxonomies(sss)
+  
+  # construct output list
   l <- list()
   l[[glue::glue("{state}_export_id")]] <- export
   l[[glue::glue("{state}_natureserve_api_response")]] <- res
   l[[glue::glue("{state}_natureserve_state_list")]] <- sss
+  
   return(l)
 }
 
