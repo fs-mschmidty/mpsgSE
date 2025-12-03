@@ -25,7 +25,7 @@
 #'  
 #' ## End(Not run)                     
 get_bcr_list <- function(sf_lyr){
-  bcrs = mpsgSE::get_bcc_regions(sf_lyr) |> dplyr::pull(bcr_label)
+  bcrs = mpsgSE::get_bc_regions(sf_lyr) |> dplyr::pull(bcr_label)
   bcc = mpsgSE::bcc_list
   
   get_list = function(bcr_code){
