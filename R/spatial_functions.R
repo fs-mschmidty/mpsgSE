@@ -156,14 +156,15 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
   
   message("FS Boundaries")
   # Administrative Boundary
-  admin_bndry = mpsgSE::read_edw_lyr("EDW_ForestSystemBoundaries_01", layer = 1) |> 
+  admin_bndry = mpsgSE::read_edw_lyr("EDW_ForestSystemBoundaries_01", 
+                                     layer = 1) |> 
     dplyr::filter(region == region_number & forestnumber == forest_number) |>
     sf::st_transform(crs) |> 
     sf::st_make_valid()
   # Plan Area (Forest Service Land)
-  plan_area = mpsgSE::read_edw_lyr("EDW_BasicOwnership_02", layer = 0) |> 
-    dplyr::filter(region == region_number & forestname == forest_name) |>
-    dplyr::filter(ownerclassification != "NON-FS") |>
+  plan_area = mpsgSE::read_edw_lyr("EDW_BasicOwnership_01", layer = 0) |> 
+    dplyr::filter(forestname == forest_name) |>
+    dplyr::filter(ownerclassification == "USDA FOREST SERVICE") |>
     sf::st_transform(crs) |> 
     sf::st_make_valid()
   # Ranger Districts
@@ -172,11 +173,12 @@ get_basemap_data = function(states, region_number, forest_number, forest_name,
     sf::st_transform(crs) |> 
     sf::st_make_valid()
   # Buffer
-  aoa = sf::st_buffer(admin_bndry, 4828) |> sf::st_transform(crs) |> 
+  aoa = sf::st_buffer(admin_bndry, units::as_units(3,"mi")) |> 
+    sf::st_transform(crs) |> 
     sf::st_make_valid()
   # Area of Analysis
   aoa_bbox = aoa |> sf::st_bbox() |> sf::st_transform(crs)
-  plan_area_doughnut = sf::st_buffer(plan_area, 1000) |> 
+  plan_area_doughnut = sf::st_buffer(plan_area, units::as_units(1,"km")) |> 
     sf::st_difference(plan_area) |> 
     sf::st_transform(crs) |> 
     sf::st_make_valid() |> 
