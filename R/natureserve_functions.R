@@ -233,18 +233,18 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
     ) |>
     dplyr::rowwise() |>
     dplyr::mutate("{state}_sRank" := get_state_rank(distribution, state)) |>
-    dplyr::ungroup()
+    dplyr::ungroup() |> 
+    dplyr::distinct()
 
   if (taxonomy) {
-    sss <- sss |>
-      mpsgSE::get_taxonomies()
+    sss <- mpsgSE::get_taxonomies(sss)
   }
 
   l <- list()
   l[[glue::glue("{state}_export_id")]] <- export
   l[[glue::glue("{state}_natureserve_api_response")]] <- res
   l[[glue::glue("{state}_natureserve_state_list")]] <- sss
-  l
+  return(l)
 }
 
 
