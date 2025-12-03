@@ -20,8 +20,8 @@ rankings using data returned from \code{get_ns_state_list()}.
 ## Not run:
 
 library("mpsgSE")
-ns_co <- get_ns_state_list("CO")
-spp_ranks <- build_ns_spp_list(ns_co)
+ns_co <- get_ns_state_list("CO", taxonomy = FALSE)
+spp_list <- build_ns_spp_list(ns_co)
 
 ## End(Not run)
 }
