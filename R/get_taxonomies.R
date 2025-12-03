@@ -54,7 +54,7 @@ get_taxonomies <- function(spp_list, query_field = "scientific_name") {
         dplyr::select(rank, name) |>
         tidyr::pivot_wider(names_from = rank, values_from = name)
       # Stitch together data frame
-      tibble::tibble(taxon_id = as.character(final_id)) |>
+      tibble::tibble(taxon_id = as.numeric(final_id)) |>
         dplyr::bind_cols(tibble::tibble(gbif_taxonID = gbif_taxonID)) |>
         dplyr::bind_cols(named_taxonomy)
     }
