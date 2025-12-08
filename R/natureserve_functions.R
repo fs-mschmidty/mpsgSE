@@ -274,18 +274,22 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
 #'
 #' ## End(Not run)
 get_ns_habitat <- function(ns_state_list, spp_list) {
-  # ns_state_list = targets::tar_read(natureserve_data)
+  # ns_state_list = targets::tar_read(co_ns_spp)
   # spp_list = targets::tar_read(elig_list)
 
   t_ids = spp_list$taxon_id
-
-  dat = ns_state_list[
-    names(ns_state_list)[
-      stringr::str_detect(names(ns_state_list), "natureserve_state_list")
-      ]
-    ][[1]]
-
-  ns_el_data = dat |>
+  
+  dat = if(is.list(ns_state_list)){
+    dat = ns_state_list[
+      names(ns_state_list)[
+        stringr::str_detect(names(ns_state_list), "natureserve_state_list")
+        ]
+      ][[1]]
+  } else if(is.data.frame(ns_state_list)){
+    ns_state_list
+  } else (message("'ns_state_list' data type not recognized."))
+  
+  ns_el_data = ns_state_list |>
     dplyr::filter(taxon_id %in% t_ids) |>
     dplyr::mutate(
       api_shortcode = stringr::str_extract(view_on_nature_serve_explorer,
