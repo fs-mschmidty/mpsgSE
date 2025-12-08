@@ -274,20 +274,18 @@ get_ns_state_list <- function(state, taxonomy = TRUE) {
 #'
 #' ## End(Not run)
 get_ns_habitat <- function(ns_state_list, spp_list) {
-  # ns_state_list = targets::tar_read(co_ns_spp)
+  # ns_state_list = targets::tar_read(ns_list)
   # spp_list = targets::tar_read(elig_list)
 
   t_ids = spp_list$taxon_id
   
-  dat = if(is.list(ns_state_list)){
-    dat = ns_state_list[
-      names(ns_state_list)[
-        stringr::str_detect(names(ns_state_list), "natureserve_state_list")
-        ]
-      ][[1]]
-  } else if(is.data.frame(ns_state_list)){
+  dat = if(tibble::is_tibble(ns_state_list)){
     ns_state_list
-  } else (message("'ns_state_list' data type not recognized."))
+    } else if(is.list(ns_state_list)){
+      dat = ns_state_list[names(ns_state_list)[
+        stringr::str_detect(names(ns_state_list), "natureserve_state_list")
+        ]][[1]]
+      } else (message("Data type not recognized. Check 'ns_state_list'."))
   
   ns_el_data = ns_state_list |>
     dplyr::filter(taxon_id %in% t_ids) |>
