@@ -16,6 +16,7 @@ correct_taxon_ids <- function(spp_list){
     dplyr::mutate(
       taxon_id = as.numeric(taxon_id),
       taxon_id = ifelse(scientific_name == "Anarhynchus montanus", 2480292, taxon_id),
+      taxon_id = ifelse(scientific_name == "Accipiter atricapillus", 12290241, taxon_id),
       taxon_id = ifelse(scientific_name == "Neotamias rufus", 11062336, taxon_id),
       taxon_id = ifelse(scientific_name == "Micropterus nigricans", 5211240, taxon_id),
       taxon_id = ifelse(scientific_name == "Oncorhynchus lewisi", 5711980, taxon_id), 
