@@ -10,15 +10,13 @@ wkt_string(my_polygon)
 \item{my_polygon}{An \code{sf} polygon object.}
 }
 \value{
-A vector.
+An \code{sf} vector object.
 }
 \description{
 Creates a well-known text string from a polygon (\code{sf} object). This function
 transforms the input polygon to WGS84 prior to calculating the wkt string.
 }
 \examples{
-## Not run:
-
 library("mpsgSE")
 
 # Read spatial data into R
@@ -28,6 +26,4 @@ sf_aoa <- read_fc(lyr = "AdminBdy_1kmBuffer", dsn = gdb_path, crs = "NAD83")
 
 # Create WKT string
 wkt_string(sf_aoa)
-
-## End (Not run)
 }

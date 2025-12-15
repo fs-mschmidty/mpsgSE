@@ -69,6 +69,7 @@ build_seinet_spatial_data <- function(sei_data, spp_list) {
 #'                [sf::st_crs()] object or accepted input string (e.g. "NAD83").
 #'                See [sf::st_crs()] for more details. Default is NULL. If NULL,
 #'                resulting sf object CRS will be WGS84.
+#' @param correct Logical. Run `correct_taxon_ids()` on data. Default is TRUE.
 #'
 #' @return An `sf` class object.
 #'
@@ -97,7 +98,7 @@ build_seinet_spatial_data <- function(sei_data, spp_list) {
 #' sei_dat <- get_seinet_data(data_folder, crs = "EPSG:26913")
 #'
 #' ## End(Not run)
-get_seinet_data <- function(dir_path, crs = NULL){
+get_seinet_data <- function(dir_path, crs = NULL, correct = TRUE){
   # dir_path = file.path("data", "SEINet"); crs = "EPSG:26913"
 
   data_path = file.path(dir_path, "occurrences.csv")
@@ -135,6 +136,9 @@ get_seinet_data <- function(dir_path, crs = NULL){
   sei_data = dplyr::left_join(raw_dat, gbif_tids,
                               by = "SEINet_taxonID",
                               relationship = 'many-to-many')
+  #  Correct Taxon IDs
+  if(correct) sei_data = mpsgSE::correct_taxon_ids(sei_data) 
+  
   # Re-project CRS
   if(!is.null(crs)){
     if(sf::st_crs(sei_data) != crs){
@@ -153,7 +157,8 @@ get_seinet_data <- function(dir_path, crs = NULL){
 #'     there are less than seven (7) observations.
 #'
 #' @param seinet_data Spatial SEINet data from `get_seinet_data()`.
-#' @param locale Logical. Location description of data. E.g., unit acronym or "Buffer"
+#' @param locale Location description of data. E.g., unit acronym or "Buffer"
+#' @param correct Logical. Run `correct_taxon_ids()` on data. Default is TRUE.
 #'
 #' @return A [tibble::tibble()].
 #'
@@ -176,7 +181,7 @@ get_seinet_data <- function(dir_path, crs = NULL){
 #' spp_list <- build_seinet_spp(sei_dat)
 #'
 #' ## End(Not run)
-build_seinet_spp <- function(seinet_data, locale = TRUE){
+build_seinet_spp <- function(seinet_data, locale = FALSE, correct = TRUE){
   
   # Date formats
   date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS",
@@ -185,7 +190,7 @@ build_seinet_spp <- function(seinet_data, locale = TRUE){
                   "genus", "species", "subspecies", "variety", "form")
 
   # Locale
-  if(isTRUE(locale)){
+  if(!isFALSE(locale)){
     locale = stringr::str_c(unique(seinet_data$locale), collapse = ", ")
   }
 
@@ -227,5 +232,9 @@ build_seinet_spp <- function(seinet_data, locale = TRUE){
     dplyr::arrange(kingdom, phylum, class, order, family, genus,
                    species, scientificName) |>
     dplyr::rename("scientific_name" = scientificName)
+  
+  #  Correct Taxon IDs
+  if(correct) dat = mpsgSE::correct_taxon_ids(dat) 
+  
   return(dat)
 }

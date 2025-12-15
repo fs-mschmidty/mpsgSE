@@ -13,7 +13,8 @@ get_gbif(
   gbif_email = NULL,
   gbif_format = "DWCA",
   crs = NULL,
-  process_data = TRUE
+  process_data = TRUE,
+  correct = TRUE
 )
 }
 \arguments{
@@ -45,7 +46,9 @@ See \code{sf::st_crs()} for more details. Default is NULL. If NULL,
 resulting sf object CRS will be WGS84.}
 
 \item{process_data}{Logical. Process data after reading them into R (TRUE ==
-yes, FALSE == no). Default is TRUE. The processing step
+yes, FALSE == no). Default is TRUE. The processing step}
+
+\item{correct}{Logical. Run \code{correct_taxon_ids()} on data. Default is TRUE.
 \enumerate{
 \item filters the data for species, subspecies, and varieties,
 \item filters the data for present records,
@@ -66,8 +69,6 @@ or polygon (\code{sf} object), and then reads the data into R.
 Additional details...
 }
 \examples{
-## Not run:
-
 library("mpsgSE")
 
 # Read spatial data into R
@@ -88,8 +89,6 @@ gbif_dat <- get_gbif(gbif_key = 'new',
 gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
                      t_path = file.path(t_path, "data"),
                      crs = 'NAD83')
-
-## End(Not run)
 }
 \seealso{
 \code{\link[rgbif:download_predicate_dsl]{rgbif::pred_within()}}, \code{\link[rgbif:occ_download]{rgbif::occ_download()}},

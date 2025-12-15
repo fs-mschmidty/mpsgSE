@@ -4,7 +4,7 @@
 \alias{get_seinet_data}
 \title{Read SEINet data into R}
 \usage{
-get_seinet_data(dir_path, crs = NULL)
+get_seinet_data(dir_path, crs = NULL, correct = TRUE)
 }
 \arguments{
 \item{dir_path}{Path to SEINet data folder.}
@@ -13,6 +13,8 @@ get_seinet_data(dir_path, crs = NULL)
 \code{\link[sf:st_crs]{sf::st_crs()}} object or accepted input string (e.g. "NAD83").
 See \code{\link[sf:st_crs]{sf::st_crs()}} for more details. Default is NULL. If NULL,
 resulting sf object CRS will be WGS84.}
+
+\item{correct}{Logical. Run \code{correct_taxon_ids()} on data. Default is TRUE.}
 }
 \value{
 An \code{sf} class object.

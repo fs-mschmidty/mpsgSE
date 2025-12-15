@@ -4,12 +4,14 @@
 \alias{build_seinet_spp}
 \title{Summarize SEINet data by species}
 \usage{
-build_seinet_spp(seinet_data, locale = TRUE)
+build_seinet_spp(seinet_data, locale = FALSE, correct = TRUE)
 }
 \arguments{
 \item{seinet_data}{Spatial SEINet data from \code{get_seinet_data()}.}
 
-\item{locale}{Logical. Location description of data. E.g., unit acronym or "Buffer"}
+\item{locale}{Location description of data. E.g., unit acronym or "Buffer"}
+
+\item{correct}{Logical. Run \code{correct_taxon_ids()} on data. Default is TRUE.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}}.

@@ -4,12 +4,14 @@
 \alias{gbif_spp}
 \title{Summarize GBIF data by species}
 \usage{
-gbif_spp(gbif_data, locale = TRUE)
+gbif_spp(gbif_data, locale = TRUE, correct = TRUE)
 }
 \arguments{
 \item{gbif_data}{Spatial GBIF data from \code{get_gbif()}.}
 
 \item{locale}{Logical. Location description of data. E.g., unit acronym or "Buffer"}
+
+\item{correct}{Logical. Run \code{correct_taxon_ids()} on data. Default is TRUE.}
 }
 \value{
 A tibble.
@@ -41,5 +43,5 @@ gbif_list <- gbif_spp(gbif_dat)
 ## End(Not run)
 }
 \seealso{
-\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}
+\code{\link[=get_gbif]{get_gbif()}}, \code{\link[=get_taxonomies]{get_taxonomies()}}, \code{\link[=correct_taxon_ids]{correct_taxon_ids()}}
 }

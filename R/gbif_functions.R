@@ -86,6 +86,7 @@ build_gbif_spatial_data <- function(gbif_data, spp_list) {
 #'                resulting sf object CRS will be WGS84.
 #' @param process_data Logical. Process data after reading them into R (TRUE ==
 #'   yes, FALSE == no). Default is TRUE. The processing step
+#' @param correct Logical. Run `correct_taxon_ids()` on data. Default is TRUE.
 #'
 #'   1. filters the data for species, subspecies, and varieties,
 #'   2. filters the data for present records,
@@ -105,8 +106,6 @@ build_gbif_spatial_data <- function(gbif_data, spp_list) {
 #' @export
 #'
 #' @examples
-#' ## Not run:
-#'
 #' library("mpsgSE")
 #'
 #' # Read spatial data into R
@@ -127,12 +126,9 @@ build_gbif_spatial_data <- function(gbif_data, spp_list) {
 #' gbif_dat <- get_gbif(gbif_key = '9999999-999999999999999',
 #'                      t_path = file.path(t_path, "data"),
 #'                      crs = 'NAD83')
-#'
-#' ## End(Not run)
-
 get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
                      gbif_pwd = NULL, gbif_email = NULL, gbif_format = "DWCA",
-                     crs = NULL, process_data = TRUE){
+                     crs = NULL, process_data = TRUE, correct = TRUE){
   #-- Function variables
   # GBIF data package file path
   gbif_path = if(!gbif_key == "new"){
@@ -161,7 +157,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
   })
 
   #-- Process GBIF data
-  if(isTRUE(process_data)){
+  if(process_data){
     gbif = gbif |>
       # Filter for species & subspecies and not fossil records
       dplyr::filter(taxonRank %in% c("SPECIES", "SUBSPECIES", "VARIETY") &
@@ -169,6 +165,7 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
                       !basisOfRecord == "FOSSIL_SPECIMEN") |>
       # Create clean scientific names
       dplyr::mutate(
+        taxon_id = acceptedTaxonKey, 
         infraspecificEpithet = ifelse(grepl("^//s*$", infraspecificEpithet),
                                       NA, infraspecificEpithet),
         scientific_name = paste(trimws(genus), trimws(specificEpithet),
@@ -185,13 +182,15 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
         year = lubridate::year(date),
         source = "GBIF"
       ) |>
-      dplyr::mutate_if(is.character, trimws)
+      dplyr::mutate_if(is.character, trimws) |> 
+      mpsgSE::correct_taxon_ids()
   }
+  
+  # Correct Taxon IDs
+  if(correct) gbif = mpsgSE::correct_taxon_ids(gbif) 
 
-  gbif = gbif_spatial(gbif)
-
-  #-- Return GBIF data
-  return(gbif)
+  #-- Return spatial GBIF data
+  return(gbif_spatial(gbif))
 }
 
 
@@ -207,9 +206,10 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #'
 #' @param gbif_data Spatial GBIF data from `get_gbif()`.
 #' @param locale Logical. Location description of data. E.g., unit acronym or "Buffer"
+#' @param correct Logical. Run `correct_taxon_ids()` on data. Default is TRUE.
 #'
 #' @return A tibble.
-#' @seealso [get_gbif()], [get_taxonomies()]
+#' @seealso [get_gbif()], [get_taxonomies()], [correct_taxon_ids()]
 #' @export
 #'
 #' @examples
@@ -228,15 +228,15 @@ get_gbif <- function(gbif_key, t_path, aoa_wkt = NULL, gbif_user = NULL,
 #' gbif_list <- gbif_spp(gbif_dat)
 #'
 #' ## End(Not run)
-gbif_spp <- function(gbif_data, locale = TRUE){
+gbif_spp <- function(gbif_data, locale = TRUE, correct = TRUE){
   # Date formats
   date_formats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m", "%Y", "ymd HMS",
                    "ymd", "ymd HM")
+
   # Locale
   if(isTRUE(locale)){
     locale = stringr::str_c(unique(gbif_data$locale), collapse = ", ")
   }
-
   # Summarize data
   dat = sf::st_drop_geometry(gbif_data) |>
     dplyr::select(taxonKey, occurrenceID, scientific_name, eventDate)  |>
@@ -246,19 +246,24 @@ gbif_spp <- function(gbif_data, locale = TRUE){
       ) |>
     dplyr::distinct() |>
     dplyr::group_by(scientific_name) |>
-    dplyr::summarize(nObs = dplyr::n(),
-                     minYear = min(year, na.rm = TRUE),
-                     maxYear = max(year, na.rm = TRUE),
-                     occID = ifelse(nObs <= 6,
-                                    stringr::str_c(unique(occurrenceID),
-                                                   collapse = "; "),
-                                    NA),
-                     .groups = "drop") |>
+    dplyr::summarize(
+      nObs = dplyr::n(),
+      minYear = min(year, na.rm = TRUE),
+      maxYear = max(year, na.rm = TRUE),
+      occID = ifelse(nObs <= 6, 
+                     stringr::str_c(unique(occurrenceID), collapse = "; "),
+                     NA),
+      .groups = "drop"
+      ) |>
     dplyr::mutate(locale = locale, source = "GBIF") |>
     dplyr::distinct(scientific_name, .keep_all = TRUE) |>
-    mpsgSE::get_taxonomies(query_field = "scientific_name") |>
+    mpsgSE::get_taxonomies() |> 
     dplyr::arrange(kingdom, phylum, class, order, family, genus,
                    species, scientific_name)
+
+  # Correct Taxon IDs
+  if(correct) dat = mpsgSE::correct_taxon_ids(dat) 
+
   return(dat)
 }
 
@@ -270,12 +275,10 @@ gbif_spp <- function(gbif_data, locale = TRUE){
 #'
 #' @param my_polygon An `sf` polygon object.
 #'
-#' @return A vector.
+#' @return An `sf` vector object.
 #' @export
 #'
 #' @examples
-#' ## Not run:
-#'
 #' library("mpsgSE")
 #'
 #' # Read spatial data into R
@@ -285,8 +288,6 @@ gbif_spp <- function(gbif_data, locale = TRUE){
 #'
 #' # Create WKT string
 #' wkt_string(sf_aoa)
-#'
-#' ## End (Not run)
 wkt_string <- function(my_polygon){
   fc = sf::st_transform(my_polygon, crs ="WGS84" )
   wkt = sf::st_bbox(fc) |>
