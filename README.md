@@ -1,7 +1,7 @@
 # Mountain Planning Service Group Species Evaluation (`mpsgSE`) R Package
 
 # !!! This Package Has Been Archived
-The MPSG is still working on the package.  I finished my detail and handed the package over to Matt Van Scoyoc.  You can find the current version of the package at (https://github.com/fs-scoyoc/mpsgSE)[https://github.com/fs-scoyoc/mpsgSE]
+I am no longer working on this package and have handed it over to Matt Van Scoyoc.  You can find the current version of the package at (https://github.com/fs-scoyoc/mpsgSE)
 
 
 ## Overview
