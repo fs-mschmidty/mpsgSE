@@ -1,5 +1,9 @@
 # Mountain Planning Service Group Species Evaluation (`mpsgSE`) R Package
 
+# !!! This Package Has Been Archived
+The MPSG is still working on the package.  I finished my detail and handed the package over to Matt Van Scoyoc.  You can find the current version of the package at (https://github.com/fs-scoyoc/mpsgSE)[https://github.com/fs-scoyoc/mpsgSE]
+
+
 ## Overview
 
 Welcome to the Mountain Planning Service Group (MPSG; USDA Forest Service) Species Evaluation R package. This package has been developed by MPSG staff to standardize species data and produce template species evaluation documents that are part of the [Species of Conservation Concern (SCC)](https://www.fs.usda.gov/naturalresources/programs/scc.shtml) process. This package hosts several utilities that standardize species observation data from repositories like the Global Biodiversity Information Facility (GBIF; <https://www.gbif.org/>) and SEINet <https://swbiodiversity.org/seinet/index.php>), query species range data from eBird <https://science.ebird.org/en/status-and-trends>) and the Botanical Information and Ecological Network (<https://bien.nceas.ucsb.edu/bien/>), and produces template species evaluation documents in Microsoft Word format using a `Quarto` scrip.
